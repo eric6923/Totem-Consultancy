@@ -1,4 +1,3 @@
-import React from "react";
 import digitalMarketingImg from "../home/assets/digitalmarketing.gif";
 import graphicsDesignImg from "../home/assets/graphic.gif";
 import mediaProductionImg from "../home/assets/media.gif";
