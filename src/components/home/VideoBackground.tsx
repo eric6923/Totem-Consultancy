@@ -1,112 +1,99 @@
-import { Link } from 'react-router-dom';
-import Logo from '../home/assets/logo2.png';
+import React, { useRef, useEffect, useState } from 'react';
 
-// VideoBackground component to handle the video
-const VideoBackground = () => {
+interface VideoBackgroundProps {
+  videoUrl: string;
+}
+
+const VideoBackground: React.FC<VideoBackgroundProps> = ({ videoUrl }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [error, setError] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Try to play the video when component mounts
+    const playVideo = async () => {
+      try {
+        if (videoRef.current) {
+          // Log video properties
+          console.log('Video properties:', {
+            duration: videoRef.current.duration,
+            currentTime: videoRef.current.currentTime,
+            paused: videoRef.current.paused,
+            muted: videoRef.current.muted,
+            volume: videoRef.current.volume,
+            readyState: videoRef.current.readyState
+          });
+
+          const playPromise = videoRef.current.play();
+          if (playPromise !== undefined) {
+            await playPromise;
+            console.log('Video playback started successfully');
+          }
+        }
+      } catch (err) {
+        console.error('Error playing video:', err);
+        setError('Error playing video');
+      }
+    };
+
+    playVideo();
+
+    // Cleanup
+    return () => {
+      if (videoRef.current) {
+        videoRef.current.pause();
+        videoRef.current.src = '';
+      }
+    };
+  }, []);
+
   return (
-    <div className="fixed top-0 left-0 w-full h-full z-0 overflow-hidden">
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute min-w-full min-h-full object-cover"
-        style={{
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)'
-        }}
-      >
-        <source src="/path-to-your-video.mp4" type="video/mp4" />
-      </video>
-      {/* Optional overlay to ensure text readability */}
-      <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-    </div>
-  );
-};
-
-// Updated Header component
-const Header = () => {
-  return (
-    <header className="relative z-50 py-4 px-6">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2">
-          <img 
-            src={Logo} 
-            alt="Totem Logo" 
-            className="h-12 w-auto"
-          />
-        </Link>
-        
-        <nav className="hidden md:flex items-center gap-8">
-          <Link to="/" className="text-white hover:text-gray-200 font-medium">
-            Home
-          </Link>
-          <Link to="/about" className="text-white hover:text-gray-200 font-medium">
-            About
-          </Link>
-          <Link to="/services" className="text-white hover:text-gray-200 font-medium">
-            Services
-          </Link>
-          <Link to="/projects" className="text-white hover:text-gray-200 font-medium">
-            Projects
-          </Link>
-          <Link to="/gallery" className="text-white hover:text-gray-200 font-medium">
-            Gallery
-          </Link>
-          <Link to="/contact" className="text-white hover:text-gray-200 font-medium">
-            Contact
-          </Link>
-        </nav>
-
-        <Link 
-          to="/contact" 
-          className="bg-white text-gray-900 px-6 py-2.5 rounded hover:bg-gray-100 transition-colors font-medium"
-        >
-          Get Started
-        </Link>
-      </div>
-    </header>
-  );
-};
-
-// Updated Hero component
-const Hero = () => {
-  return (
-    <div className="relative z-10 text-white min-h-screen flex items-center">
-      <div className="max-w-7xl mx-auto px-6 w-full">
-        <div className="max-w-3xl mt-16">
-          <h1 className="text-7xl font-bold mb-6 leading-tight">
-            We Empower Brands and Individuals
-          </h1>
-          <div className="text-lg text-gray-300 mb-8 max-w-2xl">
-            <p>A one-stop shop for the solution of Digital Marketing,</p>
-            <p>Content Creation, Graphics, Animation, and Customized</p>
-            <p>Courses that demonstrate individuals and brands.</p>
-          </div>
-          <button
-            className="bg-[#E6D5B9] text-black px-6 py-2.5 text-lg font-medium shadow-md hover:bg-[#d4c3a7] transition-colors rounded-lg"
-            style={{ boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)" }}
-          >
-            Get Started
-          </button>
+    <div className="absolute inset-0 w-full h-full overflow-hidden bg-gray-900">
+      {isLoading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-900">
+          <p className="text-white">Loading video...</p>
         </div>
-      </div>
+      )}
+      
+      {error && (
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-900">
+          <p className="text-red-500">{error}</p>
+        </div>
+      )}
+
+      <video
+        ref={videoRef}
+        autoPlay
+        loop
+        muted
+        playsInline
+        onLoadedData={() => {
+          console.log('Video loaded successfully');
+          setIsLoading(false);
+          
+          // Try to play again after load
+          if (videoRef.current) {
+            videoRef.current.play()
+              .then(() => console.log('Playback started after load'))
+              .catch(e => console.error('Playback failed after load:', e));
+          }
+        }}
+        onPlay={() => console.log('Video play event triggered')}
+        onPause={() => console.log('Video paused')}
+        onError={(e) => {
+          console.error('Video error:', e);
+          setError('Error loading video');
+          setIsLoading(false);
+        }}
+        className="absolute top-0 left-0 w-full h-full object-cover"
+        style={{ minHeight: '100vh' }}
+      >
+        <source src={videoUrl} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      <div className="absolute inset-0 bg-black/30" />
     </div>
   );
 };
 
-// Main layout component that combines everything
-const Layout = () => {
-  return (
-    <div className="relative min-h-screen overflow-hidden">
-      <VideoBackground />
-      <div className="relative z-10">
-        <Header />
-        <Hero />
-      </div>
-    </div>
-  );
-};
-
-export default Layout;
+export default VideoBackground;
