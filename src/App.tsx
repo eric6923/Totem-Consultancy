@@ -4,7 +4,7 @@ import Header2 from './components/layout/Header2'; // Import the secondary heade
 import Footer from './components/layout/Footer';
 import Home from './pages/Home';
 import About from './pages/About';
-// import Services from './pages/Services';
+import Services from './pages/Services';
 import Projects from './pages/Projects';
 import Gallery from './pages/Gallery';
 import Contact from './pages/Contact';
@@ -15,7 +15,7 @@ import Animation from '../src/components/home/Courses/Animation'
 import CourseHome from '../src/components/home/Courses/CourseHome'
 import UI from '../src/components/home/Courses/UI'
 import Pricing from './components/home/Courses/Pricing';
-
+import GraphicWork from '../src/components/Works/GraphicWork'
 // Component to conditionally render headers based on the route
 function ConditionalHeader() {
   const location = useLocation(); // Access the current route
@@ -30,6 +30,7 @@ function ConditionalFooter() {
 
   // Do not render Footer for the Contact page
   return location.pathname !== '/contact' ? <Footer /> : null;
+  
 }
 
 function App() {
@@ -45,7 +46,7 @@ function App() {
             <Route path="/projects" element={<Projects />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/contact" element={<Contact />} />
-            {/* <Route path="/services" element={<Services />} */}
+            <Route path="/services" element={<Services />}/>
 
             <Route path="/digital" element={<DigitalMarketing />} />
             <Route path="/graphics" element={<Graphics/>} />
@@ -54,6 +55,8 @@ function App() {
             <Route path="/courses" element={<CourseHome />} />
             <Route path="/ui" element={<UI />} />
             <Route path="/pricing" element={<Pricing />} />
+            <Route path="/graphicwork" element={<GraphicWork/>} />
+
           </Routes>
         </main>
         {/* Conditionally render Footer */}
