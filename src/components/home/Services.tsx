@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // Importing images
 import digitalMarketingImg from '../home/assets/digitalmarketing.gif'
@@ -12,19 +13,22 @@ interface ServiceCardProps {
   title: string;
   description: string;
   image: string;
+  onClick?: () => void;
 }
 
-const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, image }) => (
+const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, image, onClick }) => (
   <div className="bg-[#343434] rounded-2xl text-center overflow-hidden shadow-lg">
     <div className="relative w-full h-56 bg-white rounded-t-2xl flex justify-center items-center overflow-hidden">
       {/* Displaying the image */}
       <img src={image} alt={title} className="w-56 h-56 object-contain" />
-
     </div>
     <div className="p-6 text-white">
       <h3 className="text-2xl font-semibold">{title}</h3>
       <p className="mt-4">{description}</p>
-      <button className="mt-6 bg-white text-black font-semibold px-6 py-2 rounded-2xl">
+      <button 
+        className="mt-6 bg-white text-black font-semibold px-6 py-2 rounded-2xl"
+        onClick={onClick}
+      >
         Explore Now
       </button>
     </div>
@@ -65,6 +69,30 @@ const services = [
 ];
 
 const Services: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleServiceClick = (title: string) => {
+    if (title === 'Digital Marketing') {
+      navigate('/digital');
+    }
+    if (title === 'Graphics Design') {
+      navigate('/graphics');
+    }
+    if (title === 'Media Production') {
+      navigate('/media');
+    }
+    if (title === 'UI/UX Design') {
+      navigate('/ui');
+    }
+    if (title === 'Animation (2D & 3D)') {
+      navigate('/animation');
+    }
+    if (title === 'Customized Courses') {
+      navigate('/courses');
+    }
+  };
+  
+
   return (
     <div className="bg-[#F6DCAB] py-12 px-6">
       <div className="text-center space-y-6">
@@ -79,6 +107,7 @@ const Services: React.FC = () => {
             title={service.title}
             description={service.description}
             image={service.image}
+            onClick={() => handleServiceClick(service.title)}
           />
         ))}
       </div>
@@ -89,6 +118,7 @@ const Services: React.FC = () => {
             title={service.title}
             description={service.description}
             image={service.image}
+            onClick={() => handleServiceClick(service.title)}
           />
         ))}
       </div>

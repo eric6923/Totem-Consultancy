@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Img1 from '../projects/assets/project1.png';
 import Img2 from '../projects/assets/project2.png';
 
@@ -9,6 +10,7 @@ interface Project {
 }
 
 const PortfolioShowcase: React.FC = () => {
+    const navigate = useNavigate();
   const projects: Project[] = [
     {
       id: 1,
@@ -41,6 +43,15 @@ const PortfolioShowcase: React.FC = () => {
       image: Img2,
     },
   ];
+
+  const handleClick = (title: string) => {
+    // Example of using the title parameter
+    if (title === "Graphics Design") {
+      navigate('/digitalmarketing');
+    } else {
+      navigate(`/${title.toLowerCase().replace(' ', '-')}`);
+    }
+  };
 
   return (
     // Change your outermost div to this:
@@ -81,7 +92,7 @@ const PortfolioShowcase: React.FC = () => {
             {/* View Button */}
             <button
               className="w-[290px] py-3 border border-black hover:bg-black hover:text-white transition-colors duration-300"
-              onClick={() => console.log(`Viewing ${project.title}`)}
+              onClick={() => handleClick(project.title)}
             >
               View
             </button>

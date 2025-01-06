@@ -8,7 +8,12 @@ import About from './pages/About';
 import Projects from './pages/Projects';
 import Gallery from './pages/Gallery';
 import Contact from './pages/Contact';
-
+import DigitalMarketing from './components/home/Courses/DigitalMarketing';
+import Graphics from '../src/components/home/Courses/Graphics'
+import Media from '../src/components/home/Courses/Media'
+import Animation from '../src/components/home/Courses/Animation'
+import CourseHome from '../src/components/home/Courses/CourseHome'
+import UI from '../src/components/home/Courses/UI'
 // Component to conditionally render headers based on the route
 function ConditionalHeader() {
   const location = useLocation(); // Access the current route
@@ -39,6 +44,13 @@ function App() {
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/contact" element={<Contact />} />
             {/* <Route path="/services" element={<Services />} */}
+
+            <Route path="/digital" element={<DigitalMarketing />} />
+            <Route path="/graphics" element={<Graphics/>} />
+            <Route path="/media" element={<Media />} />
+            <Route path="/animation" element={<Animation />} />
+            <Route path="/courses" element={<CourseHome />} />
+            <Route path="/ui" element={<UI />} />
           </Routes>
         </main>
         {/* Conditionally render Footer */}
