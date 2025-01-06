@@ -3,7 +3,7 @@ import d38 from "../Courses/assets/d38.png";
 import d39 from "../Courses/assets/d39.png";
 import d40 from "../Courses/assets/d40.png";
 import digital from "../Courses/assets/courses.png";
-
+import {Link} from 'react-router-dom'
 const DigitalMarketingSection = () => {
   const services = [
     {
@@ -92,12 +92,12 @@ const DigitalMarketingSection = () => {
         {/* <button className="w-60 md:w-48 bg-[#333333] text-[#D4B996] py-3 px-6 rounded">
           View Pricing
         </button> */}
-        <a
-          href="/pricing"
+        <Link
+          to="/pricing"
           className="w-60 md:w-48 bg-[#333333] text-[#D4B996] py-3 px-6 rounded text-center"
         >
           View Pricing
-        </a>
+        </Link>
       </div>
     </div>
   );
