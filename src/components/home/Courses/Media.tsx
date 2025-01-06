@@ -1,53 +1,62 @@
-import d1 from "../Courses/assets/d1.png";
-import d2 from "../Courses/assets/d2.png";
-import d3 from "../Courses/assets/d3.png";
-import d4 from "../Courses/assets/d4.png";
-import d5 from "../Courses/assets/d5.png";
-import d6 from "../Courses/assets/d6.png";
-import digital from "../Courses/assets/digital.png";
+import d13 from "../Courses/assets/d13.png";
+import d14 from "../Courses/assets/d14.png";
+import d15 from "../Courses/assets/d15.png";
+import d16 from "../Courses/assets/d16.png";
+import d17 from "../Courses/assets/d17.png";
+import d18 from "../Courses/assets/d18.png";
+import digital from "../Courses/assets/media.png";
 
 const DigitalMarketingSection = () => {
   const services = [
     {
-      icon: d1,
-      title: "Branding and Logo Design",
+      icon: d13,
+      title: "ScriptWriting",
       description:
-        "Our branding and logo design services create distinctive identities that leave a lasting impact. We create logos and brand elements that effectively communicate your values and set your company out in the marketplace.",
+        "We provide expert scriptwriting services to bring your vision to life with engaging and impactful storytelling.We make sure your story is organized creatively and clearly from concept to completion to enable a smooth animation process.",
       iconSize: "w-24 h-24",
     },
     {
-      icon: d2,
-      title: "Content Marketing",
+      icon: d14,
+      title: "StoryBoarding",
       description:
-        "Our content marketing services create effective, engaging contents that attract and maintain your target audience. We create important assets that increase your brand's credibility and growth.",
+        "We offer storyboarding services to visually outline your concepts and ensure a seamless narrative flow. We provide expert storyboarding and scriptwriting services to create gripping tales that convey your vision." 
+,
       iconSize: "w-14 h-14",
     },
     {
-      icon: d3,
-      title: "SEO and Google Ads (PPC)",
+      icon: d15,
+      title: "Filming/Recording",
       description:
-        "Improve your brand's visibility with our experienced SEO and targeted Google Ads services. Improve your web visibility and attract more customers effectively.",
+        "We deliver top-notch filming services to capture stunning visuals and bring your project to life with clarity and creativity."
+
+,
       iconSize: "w-14 h-14",
     },
     {
-      icon: d4,
-      title: "Social Media Marketing",
+      icon: d16,
+      title: "Editing",
       description:
-        "Boost your brand's visibility with our creative social media marketing techniques. Connect with, engage, and expand your audience on all major platforms.",
+        "We provide accurate editing services to improve your video. Convert your unprocessed stuff into a polished, polished finished result."
+
+,
       iconSize: "w-14 h-14",
     },
     {
-      icon: d5,
-      title: "E-commerce Marketing",
+      icon: d17,
+      title: "Photography",
       description:
-        "Our complete e-commerce marketing solutions will increase sales and visibility for your online store. Optimize your strategy for optimal customer acquisition, conversion, and retention.",
+        "We offer expert photography services to produce breathtaking images. Improve your brand with powerful, high-quality photos."
+
+,
       iconSize: "w-14 h-14",
     },
     {
-      icon: d6,
-      title: "AdSense Marketing",
+      icon: d18,
+      title: "Animation",
       description:
-        "Take advantage of our focused AdSense marketing techniques to increase your revenue. For improved ad effectiveness, monetize your website wisely and draw in high-quality traffic.",
+        "We produce engrossing animations that give your concepts life. Use creative and captivating visual storytelling to elevate your project."
+
+,
       iconSize: "w-14 h-14",
     },
   ];
@@ -65,12 +74,9 @@ const DigitalMarketingSection = () => {
           />
         </div>
         <div className="w-full md:w-[612px] h-auto md:h-[223px] flex flex-col justify-center px-4 md:px-0 mt-8 md:mt-0">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4 text-center md:text-left">Digital Marketing</h2>
+          <h2 className="text-3xl md:text-5xl font-bold mb-4 text-center md:text-left">Media Production</h2>
           <p className="text-gray-600 leading-relaxed text-center md:text-justify mt-4 md:mt-6 text-sm md:text-base">
-            "Our digital marketing services develop tailored plans to increase
-            your online presence and engagement. We employ new approaches to
-            increase traffic, improve visibility, and generate demonstrable
-            outcomes."
+          "Throughout digital advertising, video production is the process to produce enjoyable, informative, and interactive videos for audiences."
           </p>
         </div>
       </div>

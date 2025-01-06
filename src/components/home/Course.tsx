@@ -3,6 +3,7 @@ import graphicsDesignImg from "../home/assets/graphic.gif";
 import mediaProductionImg from "../home/assets/media.gif";
 import Animate from "../home/assets/animation2.gif";
 
+
 const courses = [
   {
     title: "Digital Marketing",
@@ -29,6 +30,7 @@ const courses = [
     image: Animate,
   },
 ];
+
 
 const Course = () => {
   return (
@@ -63,9 +65,12 @@ const Course = () => {
                   {course.title}
                 </h3>
                 <p className="mt-4 text-gray-700">{course.description}</p>
-                <button className="mt-6 bg-[#343434] text-white font-semibold px-6 py-2 rounded-2xl">
+                <a 
+                  href="/courses"
+                  className="mt-6 bg-[#343434] text-white font-semibold px-6 py-2 rounded-2xl inline-block"
+                >
                   View Pricing
-                </button>
+                </a>
               </div>
             </div>
           ))}

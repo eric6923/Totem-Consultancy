@@ -1,53 +1,53 @@
-import d1 from "../Courses/assets/d1.png";
-import d2 from "../Courses/assets/d2.png";
-import d3 from "../Courses/assets/d3.png";
-import d4 from "../Courses/assets/d4.png";
-import d5 from "../Courses/assets/d5.png";
-import d6 from "../Courses/assets/d6.png";
-import digital from "../Courses/assets/digital.png";
+import d25 from "../Courses/assets/d25.png";
+import d26 from "../Courses/assets/d26.png";
+import d27 from "../Courses/assets/d27.png";
+import d28 from "../Courses/assets/d28.png";
+import d29 from "../Courses/assets/d29.png";
+import d30 from "../Courses/assets/d30.png";
+import digital from "../Courses/assets/animation.png";
 
 const DigitalMarketingSection = () => {
   const services = [
     {
-      icon: d1,
-      title: "Branding and Logo Design",
+      icon: d25,
+      title: "Script, Scriptboard",
       description:
-        "Our branding and logo design services create distinctive identities that leave a lasting impact. We create logos and brand elements that effectively communicate your values and set your company out in the marketplace.",
+        "By leveraging data-driven strategies and cutting-edge technology, we help businesses reach a targeted audience, engage with customers, and drive conversions more efficiently than traditional methods. ",
       iconSize: "w-24 h-24",
     },
     {
-      icon: d2,
-      title: "Content Marketing",
+      icon: d26,
+      title: "Modeling & Texturing",
       description:
-        "Our content marketing services create effective, engaging contents that attract and maintain your target audience. We create important assets that increase your brand's credibility and growth.",
+        "By leveraging data-driven strategies and cutting-edge technology, we help businesses reach a targeted audience, engage with customers, and drive conversions more efficiently than traditional methods. ",
       iconSize: "w-14 h-14",
     },
     {
-      icon: d3,
-      title: "SEO and Google Ads (PPC)",
+      icon: d27,
+      title: "Ringing & Animation",
       description:
-        "Improve your brand's visibility with our experienced SEO and targeted Google Ads services. Improve your web visibility and attract more customers effectively.",
+        "By leveraging data-driven strategies and cutting-edge technology, we help businesses reach a targeted audience, engage with customers, and drive conversions more efficiently than traditional methods. ",
       iconSize: "w-14 h-14",
     },
     {
-      icon: d4,
-      title: "Social Media Marketing",
+      icon: d28,
+      title: "Rendering",
       description:
-        "Boost your brand's visibility with our creative social media marketing techniques. Connect with, engage, and expand your audience on all major platforms.",
+        "By leveraging data-driven strategies and cutting-edge technology, we help businesses reach a targeted audience, engage with customers, and drive conversions more efficiently than traditional methods. ",
       iconSize: "w-14 h-14",
     },
     {
-      icon: d5,
-      title: "E-commerce Marketing",
+      icon: d29,
+      title: "Architectural Visualization",
       description:
-        "Our complete e-commerce marketing solutions will increase sales and visibility for your online store. Optimize your strategy for optimal customer acquisition, conversion, and retention.",
+        "By leveraging data-driven strategies and cutting-edge technology, we help businesses reach a targeted audience, engage with customers, and drive conversions more efficiently than traditional methods. ",
       iconSize: "w-14 h-14",
     },
     {
-      icon: d6,
-      title: "AdSense Marketing",
+      icon: d30,
+      title: "Product Visualization",
       description:
-        "Take advantage of our focused AdSense marketing techniques to increase your revenue. For improved ad effectiveness, monetize your website wisely and draw in high-quality traffic.",
+        "By leveraging data-driven strategies and cutting-edge technology, we help businesses reach a targeted audience, engage with customers, and drive conversions more efficiently than traditional methods. ",
       iconSize: "w-14 h-14",
     },
   ];
@@ -65,12 +65,10 @@ const DigitalMarketingSection = () => {
           />
         </div>
         <div className="w-full md:w-[612px] h-auto md:h-[223px] flex flex-col justify-center px-4 md:px-0 mt-8 md:mt-0">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4 text-center md:text-left">Digital Marketing</h2>
+          <h2 className="text-3xl md:text-5xl font-bold mb-4 text-center md:text-left">Animation</h2>
           <p className="text-gray-600 leading-relaxed text-center md:text-justify mt-4 md:mt-6 text-sm md:text-base">
-            "Our digital marketing services develop tailored plans to increase
-            your online presence and engagement. We employ new approaches to
-            increase traffic, improve visibility, and generate demonstrable
-            outcomes."
+          By leveraging data-driven strategies and cutting-edge technology, we help businesses reach a targeted audience, engage with customers, and drive conversions more efficiently than traditional methods. our services pack a serious punch, from award-winning web design and social media marketing to unique branding and Digital marketing just for your startup.  "
+
           </p>
         </div>
       </div>

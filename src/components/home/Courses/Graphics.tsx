@@ -10,44 +10,50 @@ const DigitalMarketingSection = () => {
   const services = [
     {
       icon: d7,
-      title: "Branding and Logo Design",
+      title: "Visiual Branding",
       description:
-        "Our branding and logo design services create distinctive identities that leave a lasting impact. We create logos and brand elements that effectively communicate your values and set your company out in the marketplace.",
+        "Our visual branding services create distinctive and cohesive identities that resonate with your target audience. We build features that improve your brand's visibility and leave a lasting impression."
+,
       iconSize: "w-24 h-24",
-    },
+    }, 
     {
       icon: d8,
-      title: "Content Marketing",
+      title: "Content Creation",
       description:
-        "Our content marketing services create effective, engaging contents that attract and maintain your target audience. We create important assets that increase your brand's credibility and growth.",
+        "Our content production services create compelling and unique products that are suited to your needs. We create captivating stories and images that pique your audience's attention and strengthen your brand's voice."
+,
       iconSize: "w-14 h-14",
     },
     {
       icon: d9,
-      title: "SEO and Google Ads (PPC)",
+      title: "Social Media Design",
       description:
-        "Improve your brand's visibility with our experienced SEO and targeted Google Ads services. Improve your web visibility and attract more customers effectively.",
+        "Our social media design services provide eye-catching and effective visuals adapted to numerous platforms. We create engaging content that draws attention and increases your internet visibility."
+,
       iconSize: "w-14 h-14",
     },
     {
       icon: d10,
-      title: "Social Media Marketing",
+      title: "Advertising Design",
       description:
-        "Boost your brand's visibility with our creative social media marketing techniques. Connect with, engage, and expand your audience on all major platforms.",
+        "Our advertising design services generate appealing images that increase engagement and magnify your message. We provide innovative concepts that attract attention and boost your promotional efforts."
+,
       iconSize: "w-14 h-14",
     },
     {
       icon: d11,
-      title: "E-commerce Marketing",
+      title: "Broachers Design",
       description:
-        "Our complete e-commerce marketing solutions will increase sales and visibility for your online store. Optimize your strategy for optimal customer acquisition, conversion, and retention.",
+        "Our brochure design services provide visually appealing and useful documents that successfully communicate your message. We create layouts and images that draw attention and convey your brand's essence."
+,
       iconSize: "w-14 h-14",
     },
     {
       icon: d12,
-      title: "AdSense Marketing",
+      title: "Printing",
       description:
-        "Take advantage of our focused AdSense marketing techniques to increase your revenue. For improved ad effectiveness, monetize your website wisely and draw in high-quality traffic.",
+        "We offer high-quality, colourful prints that bring your designs to life. We guarantee accurate colour reproduction and quality finishes for all of your printing needs."
+,
       iconSize: "w-14 h-14",
     },
   ];
