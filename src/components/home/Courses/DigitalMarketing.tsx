@@ -5,8 +5,13 @@ import d4 from "../Courses/assets/d4.png";
 import d5 from "../Courses/assets/d5.png";
 import d6 from "../Courses/assets/d6.png";
 import digital from "../Courses/assets/digital.png";
+import { useEffect } from "react";
 
 const DigitalMarketingSection = () => {
+  // Scroll to the top on component mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const services = [
     {
       icon: d1,

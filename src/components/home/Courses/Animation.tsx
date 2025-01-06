@@ -5,8 +5,11 @@ import d28 from "../Courses/assets/d28.png";
 import d29 from "../Courses/assets/d29.png";
 import d30 from "../Courses/assets/d30.png";
 import digital from "../Courses/assets/animation.png";
-
+import { useEffect } from "react";
 const DigitalMarketingSection = () => {
+  useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
   const services = [
     {
       icon: d25,

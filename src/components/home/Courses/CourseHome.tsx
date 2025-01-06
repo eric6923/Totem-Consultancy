@@ -4,7 +4,11 @@ import d39 from "../Courses/assets/d39.png";
 import d40 from "../Courses/assets/d40.png";
 import digital from "../Courses/assets/courses.png";
 import {Link} from 'react-router-dom'
+import { useEffect } from "react";
 const DigitalMarketingSection = () => {
+  useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
   const services = [
     {
       icon: d37,

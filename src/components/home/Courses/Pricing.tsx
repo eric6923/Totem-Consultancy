@@ -2,6 +2,7 @@ import p1 from '../Courses/assets/p1.png'
 import p2 from '../Courses/assets/p2.png'
 import p3 from '../Courses/assets/p3.png'
 import p4 from '../Courses/assets/p4.png'
+import { useEffect } from 'react'
 interface CourseCardProps {
   title: string;
   duration: string;
@@ -17,6 +18,7 @@ interface Course {
 }
 
 const CourseCard: React.FC<CourseCardProps> = ({ title, duration, price, imageUrl }) => (
+ 
   <div className="w-[370px] h-[326px] bg-white p-6 flex flex-col items-center justify-center shadow-sm">
     <div className="w-[266px] h-[252px] flex flex-col items-center space-y-6">
       <div className="w-[130px] h-[130px] flex items-center justify-center">
@@ -36,6 +38,9 @@ const CourseCard: React.FC<CourseCardProps> = ({ title, duration, price, imageUr
 );
 
 const CourseGrid: React.FC = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const courses: Course[] = [
     {
       title: 'Digital Marketing',
