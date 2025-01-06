@@ -49,9 +49,16 @@ const DigitalMarketingSection = () => {
           />
         </div>
         <div className="w-full md:w-[612px] h-auto md:h-[223px] flex flex-col justify-center px-4 md:px-0 mt-8 md:mt-0">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4 text-center md:text-left">Customized Courses</h2>
+          <h2 className="text-3xl md:text-5xl font-bold mb-4 text-center md:text-left">
+            Customized Courses
+          </h2>
           <p className="text-gray-600 leading-relaxed text-center md:text-justify mt-4 md:mt-6 text-sm md:text-base">
-          "By leveraging data-driven strategies and cutting-edge technology, we help businesses reach a targeted audience, engage with customers, and drive conversions more efficiently than traditional methods. our services pack a serious punch, from award-winning web design and social media marketing to unique branding and Digital marketing just for your startup." 
+            "By leveraging data-driven strategies and cutting-edge technology,
+            we help businesses reach a targeted audience, engage with customers,
+            and drive conversions more efficiently than traditional methods. our
+            services pack a serious punch, from award-winning web design and
+            social media marketing to unique branding and Digital marketing just
+            for your startup."
           </p>
         </div>
       </div>
@@ -82,14 +89,15 @@ const DigitalMarketingSection = () => {
 
       {/* Action Buttons */}
       <div className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8 px-4 mb-24">
-        
-        <a 
-                  href="/pricing"
-                  className="w-60 md:w-48 bg-[#333333] text-[#D4B996] py-3 px-6 rounded text-center"
-                >
-                  View Pricing
-                </a>
-        
+        {/* <button className="w-60 md:w-48 bg-[#333333] text-[#D4B996] py-3 px-6 rounded">
+          View Pricing
+        </button> */}
+        <a
+          href="/pricing"
+          className="w-60 md:w-48 bg-[#333333] text-[#D4B996] py-3 px-6 rounded text-center"
+        >
+          View Pricing
+        </a>
       </div>
     </div>
   );
