@@ -29,34 +29,36 @@ export default function Hero() {
       </video>
 
       {/* Content */}
-      <div className="max-w-7xl mx-auto px-6 w-full relative z-10">
-        <div className="max-w-3xl mt-0 lg:mt-16 text-center lg:text-left">
-          <h1 className="text-6xl sm:text-5xl lg:text-7xl font-bold mb-6 leading-tight">
-            <span className="lg:hidden">
-              We<br />
-              Empower<br />
-              Brands<br />
-              and<br />
-              Individuals
-            </span>
-            <span className="hidden lg:inline">
-              We Empower Brands and Individuals
-            </span>
-          </h1>
-          <div className="text-xl sm:text-lg text-gray-300 mb-8 max-w-2xl mx-auto lg:mx-0">
-            <p className="lg:inline">A one-stop shop for the solution of </p>
-            <p className="lg:inline">Digital Marketing, Content Creation, </p>
-            <p className="lg:inline">Graphics, Animation, and Customized </p>
-            <p className="lg:inline">Courses that demonstrate individuals and brands.</p>
-          </div>
-          <div className="flex justify-center lg:justify-start">
-            <button
-              onClick={() => setShowForm(true)}
-              className="bg-[#E6D5B9] text-black px-8 py-3 text-xl lg:text-lg font-medium shadow-md hover:bg-[#d4c3a7] transition-colors rounded-lg"
-              style={{ boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)" }}
-            >
-              Get Started
-            </button>
+      <div className="relative z-10 w-full min-h-screen flex items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 w-full">
+          <div className="max-w-3xl mt-0 lg:mt-16 text-center lg:text-left">
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold mb-6 leading-tight">
+              <span className="lg:hidden block">
+                We<br />
+                Empower<br />
+                Brands<br />
+                and<br />
+                Individuals
+              </span>
+              <span className="hidden lg:inline">
+                We Empower Brands and Individuals
+              </span>
+            </h1>
+            <div className="text-base sm:text-lg text-gray-300 mb-8 max-w-2xl mx-auto lg:mx-0">
+              <p className="mb-1 lg:mb-0 lg:inline">A one-stop shop for the solution of </p>
+              <p className="mb-1 lg:mb-0 lg:inline">Digital Marketing, Content Creation, </p>
+              <p className="mb-1 lg:mb-0 lg:inline">Graphics, Animation, and Customized </p>
+              <p className="lg:inline">Courses that demonstrate individuals and brands.</p>
+            </div>
+            <div className="flex justify-center lg:justify-start">
+              <button
+                onClick={() => setShowForm(true)}
+                className="bg-[#E6D5B9] text-black px-6 sm:px-8 py-2.5 sm:py-3 text-lg sm:text-xl lg:text-lg font-medium shadow-md hover:bg-[#d4c3a7] transition-colors rounded-lg"
+                style={{ boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)" }}
+              >
+                Get Started
+              </button>
+            </div>
           </div>
         </div>
       </div>
