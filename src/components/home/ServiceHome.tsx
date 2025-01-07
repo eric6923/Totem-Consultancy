@@ -9,12 +9,13 @@ import planningImg from '../home/Courses/assets/Planing 1.png';
 import animationImg from '../home/Courses/assets/animation.png';
 import empathizeImg from '../home/Courses/assets/courses.png';
 
+
 interface Service {
   title: string;
   description: string;
   items: string[];
   image: any;
-  path: string; // Added path property for routing
+  path: string;
 }
 
 const Service: React.FC = () => {
@@ -34,7 +35,7 @@ const Service: React.FC = () => {
         "Affiliate Marketing",
       ],
       image: marketingImg,
-      path: "/digital", // You can update these paths later
+      path: "/digital",
     },
     {
       title: "Graphics Design",
@@ -108,6 +109,8 @@ const Service: React.FC = () => {
     },
   ];
 
+  
+
   const handleExplore = (path: string) => {
     navigate(path);
   };
@@ -137,7 +140,7 @@ const Service: React.FC = () => {
                   {service.description}
                 </p>
                 <ul 
-                  className="space-y-3 mb-8" 
+                  className="grid grid-cols-2 gap-3 mb-8 sm:block sm:space-y-3" 
                   aria-label={`${service.title} features`}
                 >
                   {service.items.map((item, idx) => (
@@ -146,7 +149,7 @@ const Service: React.FC = () => {
                       className="flex items-center text-gray-700"
                       aria-label={item}
                     >
-                      <span className="w-1.5 h-1.5 bg-gray-400 rounded-full mr-3"></span>
+                      <span className="w-1.5 h-1.5 bg-gray-400 rounded-full mr-3 shrink-0"></span>
                       {item}
                     </li>
                   ))}
