@@ -9,7 +9,7 @@ const Event: React.FC = () => {
     <div className="py-12 px-4 md:px-6 bg-[#FDF8F3] min-h-screen">
       {/* Title Section */}
       <div className="text-center space-y-6">
-        <h1 className="text-3xl md:text-4xl lg:text-5xl text-gray-900 font-bold">
+        <h1 className="text-4xl md:text-4xl lg:text-5xl text-gray-900 font-bold ">
           Event Management
         </h1>
       </div>
