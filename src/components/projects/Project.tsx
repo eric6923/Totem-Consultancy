@@ -47,7 +47,7 @@ const PortfolioShowcase: React.FC = () => {
   const handleClick = (title: string) => {
     // Example of using the title parameter
     if (title === "Graphics Design") {
-      navigate('/digitalmarketing');
+      navigate('/graphicwork');
     } else {
       navigate(`/${title.toLowerCase().replace(' ', '-')}`);
     }
@@ -55,7 +55,7 @@ const PortfolioShowcase: React.FC = () => {
 
   return (
     // Change your outermost div to this:
-<div className="w-[100vw] min-h-screen bg-[#FDF8F3] -mx-8 -mt-8 -mb-8 overflow-x-hidden">
+<div className="w-[100vw] min-h-screen bg-[#FDF8F3]  -mt-8 -mb-8 overflow-x-hidden">
 <div className="max-w-[1000px] mx-auto px-4 py-12">
     {/* Rest of your code stays exactly the same */}
       {/* Header Section */}
@@ -71,7 +71,7 @@ const PortfolioShowcase: React.FC = () => {
       </div>
 
       {/* Projects Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-y-16 justify-items-center mb-28">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-16 gap-x-60 justify-items-center mb-28">
         {projects.map((project) => (
           <div
             key={project.id}

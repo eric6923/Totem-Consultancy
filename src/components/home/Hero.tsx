@@ -70,7 +70,7 @@ export default function Hero() {
           >
             ✕
           </button>
-          <form className="p-4 mt-6">
+          <form className="p-4 mt-10">
             <div className="space-y-4">
               <div>
                 <label htmlFor="name" className="block text-sm text-black mb-1">

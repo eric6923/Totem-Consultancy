@@ -6,9 +6,12 @@ import w4 from '../Works/w4.png'
 import w5 from '../Works/w5.png'
 import w6 from '../Works/w6.png'
 import w7 from '../Works/w7.png'
-import w8 from '../Works/w8.png'
+
 
 const CarouselWithGrid = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const [items, setItems] = useState([
     { id: 1, src: w1 },
     { id: 2, src: w2 },
@@ -90,18 +93,6 @@ const CarouselWithGrid = () => {
               />
             </div>
             
-          </div>
-        </div>
-      </div>
-      <div className="w-full px-4 mt-8">
-        <h2 className="text-3xl text-center font-bold mb-10 ml-0 md:ml-20">Logo Design</h2>
-        <div className="flex justify-start max-w-[1400px] mx-auto">
-          <div className="w-full md:w-[684px] h-[400px] md:h-[681px] ml-0 md:ml-20 mb-10">
-            <img
-              src={w8}
-              alt="Logo Design"
-              className="w-full h-full object-cover rounded-lg shadow-lg"
-            />
           </div>
         </div>
       </div>
