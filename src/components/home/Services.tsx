@@ -27,11 +27,12 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, image, on
       <p className="mt-4">{description}</p>
       <div className="mt-4">
       <button 
-        className="w-80 md:w-64  bg-[#FFFF] text-[#333333] py-3 px-6 rounded transition-colors duration-300 hover:bg-[#F6DCAB] hover:text-[#333333]"
-        onClick={onClick}
-      >
-        Explore Now
-      </button>
+  className="w-60 md:w-64 bg-[#FFFF] text-[#333333] py-3 px-6 rounded transition-colors duration-300 hover:bg-[#F6DCAB] hover:text-[#333333]"
+  onClick={onClick}
+>
+  Explore Now
+</button>
+
       </div>
       
     </div>

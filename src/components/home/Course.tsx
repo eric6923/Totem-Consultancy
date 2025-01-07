@@ -35,8 +35,6 @@ const Course = () => {
   return (
     <div className="bg-[#FDF8F3] min-h-screen py-16">
       <div className="max-w-[1280px] mx-auto px-4">
-        {" "}
-        {/* Changed from container to max-w-[1400px] */}
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold text-gray-800 mb-4">Courses</h1>
@@ -45,33 +43,34 @@ const Course = () => {
           </p>
         </div>
         {/* Course Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-y-16 gap-x-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-y-12 md:gap-y-16 gap-x-4">
           {courses.map((course, index) => (
             <div
               key={index}
-              className="bg-white border-2 border-gray-300 rounded-2xl text-center overflow-hidden p-8 max-w-xl mx-auto"
+              className="bg-white border-2 border-gray-300 rounded-2xl text-center overflow-hidden p-6 sm:p-8 max-w-lg mx-auto"
             >
               {/* Image */}
-              <div className="relative w-full h-52 flex justify-center items-center overflow-hidden">
+              <div className="relative w-full h-48 sm:h-52 flex justify-center items-center overflow-hidden">
                 <img
                   alt={course.title}
-                  className="w-52 h-52 object-contain"
+                  className="w-40 h-40 sm:w-52 sm:h-52 object-contain"
                   src={course.image}
                 />
               </div>
               {/* Content */}
-              <div className="p-6">
+              <div className="p-4 sm:p-6">
                 <h3 className="text-2xl font-semibold text-gray-900">
                   {course.title}
                 </h3>
-                <p className="mt-4 text-gray-700 font-sans">
+                <p className="mt-4 text-gray-700 font-sans text-sm sm:text-base">
                   {course.description}
                 </p>
-                <div className="mt-8 flex justify-center">
+                <div className="mt-6 sm:mt-8 flex justify-center">
                   <Link to="/pricing">
-                    <button className="w-64 md:w-72 bg-[#333333] text-[#F6DCAB] py-3 px-6 rounded transition-colors duration-300 hover:bg-[#F6DCAB] hover:text-[#333333]">
-                      View Pricing
-                    </button>
+                  <button className="w-full sm:w-64 md:w-72 bg-[#333333] text-[#F6DCAB] py-3 px-6 rounded transition-colors duration-300 hover:bg-[#F6DCAB] hover:text-[#333333]">
+  View Pricing
+</button>
+
                   </Link>
                 </div>
               </div>
