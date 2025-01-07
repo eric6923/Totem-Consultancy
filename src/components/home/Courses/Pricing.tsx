@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+// import React, { useEffect } from 'react';
 import p1 from '../Courses/assets/p1.png';
 import p2 from '../Courses/assets/p2.png';
 import p3 from '../Courses/assets/p3.png';
@@ -16,7 +16,7 @@ interface CourseCardProps {
 }
 
 const CourseCard: React.FC<CourseCardProps> = ({ title, duration, price, imageUrl }) => (
-  <div className="w-[370px] h-[326px] bg-white p-6 flex flex-col items-center justify-center shadow-sm">
+  <div className="w-[370px] h-[326px] bg-white p-6 flex flex-col items-center justify-center rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 mx-auto">
     <div className="w-[266px] h-[252px] flex flex-col items-center space-y-6">
       <div className="w-[130px] h-[130px] flex items-center justify-center">
         <img
@@ -32,7 +32,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ title, duration, price, imageUr
       </div>
     </div>
   </div>
-);
+ );
 
 interface AnimationCardProps {
   icon: string;
@@ -50,10 +50,10 @@ const AnimationCard: React.FC<AnimationCardProps> = ({ icon, title, description 
       />
     </div>
     <div className="pt-16 md:pt-20">
-      <h3 className="text-xl md:text-2xl font-semibold text-center">
+      <h3 className="text-2xl md:text-3xl font-semibold text-center">
         {title}
       </h3>
-      <p className="text-sm md:text-base text-gray-800 text-center mt-4">
+      <p className="text-lg md:text-lg text-gray-800 text-center mt-4">
         {description}
       </p>
     </div>
@@ -61,9 +61,9 @@ const AnimationCard: React.FC<AnimationCardProps> = ({ icon, title, description 
 );
 
 const CourseGrid: React.FC = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // }, []);
 
   const courses = [
     {
@@ -120,17 +120,17 @@ const CourseGrid: React.FC = () => {
   ];
 
   return (
-    <div style={{ backgroundColor: '#FDF8F3' }} className="min-h-screen w-full">
+    <div style={{ backgroundColor: '#FDF8F3' }} className="min-h-screen w-full pb-16 md:pb-36 pt-20 md:pt-20">
       {/* Course Cards Section */}
       <div className="max-w-6xl mx-auto p-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 justify-items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-16 justify-items-center">
           {courses.map((course, index) => (
             <CourseCard key={index} {...course} />
           ))}
         </div>
-        <div className="mt-8 flex justify-center">
+        <div className="mt-20 flex justify-center">
           <Link to ='/contact'>
-          <button className="bg-gray-800 text-white px-6 py-2 rounded hover:bg-gray-700 transition-colors">
+          <button className="w-60 md:w-48 bg-[#333333] text-[#F6DCAB] py-3 px-6 rounded transition-colors duration-300 hover:bg-[#F6DCAB] hover:text-[#333333]">
             Contact Now
           </button>
           </Link>
@@ -138,16 +138,16 @@ const CourseGrid: React.FC = () => {
       </div>
 
       {/* Animation Services Section */}
-      <div className="container mx-auto px-4 md:px-8 lg:px-16 mt-24 md:mt-36 mb-16 md:mb-36">
-        <h2 className="text-3xl md:text-5xl font-bold text-center mb-24 md:mb-32">
-          Why Choose Us !
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-x-12 gap-y-24 max-w-6xl mx-auto">
-          {animationServices.map((service, index) => (
-            <AnimationCard key={index} {...service} />
-          ))}
-        </div>
-      </div>
+      <div className="container mx-auto px-4 md:px-8 lg:px-16 mt-20 md:mt-36 mb-16 md:mb-18 bg-[#FDF8F3]">
+  <h2 className="text-3xl md:text-5xl font-bold text-center mb-24 md:mb-36">
+    Why Choose Us !
+  </h2>
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-x-14 gap-y-28 max-w-5xl mx-auto">
+    {animationServices.map((service, index) => (
+      <AnimationCard key={index} {...service} />
+    ))}
+  </div>
+</div>
     </div>
   );
 };

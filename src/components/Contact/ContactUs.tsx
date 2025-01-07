@@ -125,33 +125,7 @@ const ContactForm = () => {
 
       {/* Footer */}
       {/* Footer */}
-<footer className="text-black bg-white md:text-white md:bg-[#343434]">
-  <div className="container mx-auto px-4 py-4">
-    {/* Mobile-first approach with flex column */}
-    <div className="flex flex-col items-center md:flex-row md:justify-between md:h-[131px]">
-      {/* Navigation Links - On top for mobile */}
-      <div className="flex flex-wrap justify-center gap-6 mb-4 md:mb-0 md:order-2">
-        <a href="#" className="text-sm text-gray-700 hover:text-gray-900 md:text-gray-300 md:hover:text-white transition duration-300">
-          Home
-        </a>
-        <a href="#" className="text-sm text-gray-700 hover:text-gray-900 md:text-gray-300 md:hover:text-white transition duration-300">
-          Team
-        </a>
-        <a href="#" className="text-sm text-gray-700 hover:text-gray-900 md:text-gray-300 md:hover:text-white transition duration-300">
-          Privacy & Policy
-        </a>
-        <a href="#" className="text-sm text-gray-700 hover:text-gray-900 md:text-gray-300 md:hover:text-white transition duration-300">
-          Contact
-        </a>
-      </div>
 
-      {/* Copyright - Below links for mobile */}
-      <div className="text-sm text-gray-600 text-center md:text-gray-300 md:order-1">
-        © 2025 - Totem Management & Consultancy
-      </div>
-    </div>
-  </div>
-</footer>
 
     </div>
   );

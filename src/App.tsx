@@ -29,10 +29,10 @@ function ConditionalHeader() {
 
 // Component to conditionally render the footer
 function ConditionalFooter() {
-  const location = useLocation(); // Access the current route
+  // Access the current route
 
   // Do not render Footer for the Contact page
-  return location.pathname !== '/contact' ? <Footer /> : null;
+  return <Footer /> ;
   
 }
 

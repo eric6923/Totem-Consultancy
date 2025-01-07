@@ -178,21 +178,21 @@ const Footer: React.FC = () => {
 
         {/* Bottom Section */}
         <div className="my-8 border-t border-gray-500" />
-        <div className="flex flex-col md:flex-row justify-between text-lg font-bold">
-          <p>2025 - Totem Management &amp; Consultancy</p>
-          <div className="space-x-6 mt-4 md:mt-0">
-            {bottomRoutes.map((route) => (
-              <Link
-                key={route.name}
-                to={route.path}
-                className="hover:underline cursor-pointer"
-                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              >
-                {route.name}
-              </Link>
-            ))}
-          </div>
-        </div>
+<div className="flex flex-col-reverse sm:flex-row justify-between text-sm text-center">
+ <p className="mt-4 mb-6 sm:my-0">&copy; 2025 - Totem Management &amp; Consultancy</p>
+ <div className="space-x-4">
+   {bottomRoutes.map((route) => (
+     <Link
+       key={route.name}
+       to={route.path}
+       className="hover:underline cursor-pointer"
+       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+     >
+       {route.name}
+     </Link>
+   ))}
+ </div>
+</div>
       </footer>
     </>
   );

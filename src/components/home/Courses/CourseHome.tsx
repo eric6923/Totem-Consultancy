@@ -57,7 +57,7 @@ const CoursesSection = () => {
           <h2 className="text-3xl md:text-5xl font-bold mb-4 text-center md:text-left">
             Customized Courses
           </h2>
-          <p className="text-gray-600 leading-relaxed text-center md:text-justify mt-4 md:mt-6 text-sm md:text-base">
+          <p className="text-gray-600 leading-relaxed text-center md:text-justify mt-4 md:mt-6 text-sm md:text-lg">
             "By leveraging data-driven strategies and cutting-edge technology,
             we help businesses reach a targeted audience, engage with customers,
             and drive conversions more efficiently than traditional methods. our
@@ -84,10 +84,10 @@ const CoursesSection = () => {
                 />
               </div>
               <div className="pt-16 md:pt-20">
-                <h3 className="text-xl md:text-2xl font-semibold text-center">
+                <h3 className="text-xl md:text-3xl font-semibold text-center">
                   {service.title}
                 </h3>
-                <p className="text-sm md:text-base text-gray-800 text-center mt-4">
+                <p className="text-sm md:text-lg text-gray-800 text-center mt-4">
                   {service.description}
                 </p>
               </div>

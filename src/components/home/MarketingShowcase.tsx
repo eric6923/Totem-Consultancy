@@ -37,16 +37,10 @@ const MarketingShowcase = () => {
         <div className="w-full lg:w-[45%] bg-[#FFEFD2] rounded-lg p-8 flex flex-col h-auto">
           <div className="flex flex-col justify-center h-full py-4">
             <div className="space-y-6">
-              <div className="block lg:hidden">
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-snug">
-                  Empower Your Brand With Our Result-Driven Digital Marketing Agency
-                </h1>
-              </div>
-              <div className="hidden lg:block">
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-snug">
-                  Empower Your Brand With Our Result-Driven Digital Marketing Agency
-                </h1>
-              </div>
+              {/* Single h1 with responsive styling */}
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-snug">
+                Empower Your Brand With Our Result-Driven Digital Marketing Agency
+              </h1>
               <p className="text-base md:text-lg text-gray-700">
                 Strategies that can empower your brand and reach the maximum audience.
               </p>
@@ -54,9 +48,7 @@ const MarketingShowcase = () => {
                 {features.map((feature, index) => (
                   <li 
                     key={index} 
-                    className={`flex items-start sm:items-center gap-3 ${
-                      index === 2 ? 'sm:mt-0 mt-4' : ''
-                    }`}
+                    className="flex items-start sm:items-center gap-3"
                   >
                     <CheckSquare className="h-6 w-6 text-gray-800 flex-shrink-0" />
                     <span className="text-lg text-gray-800">{feature}</span>
@@ -68,19 +60,23 @@ const MarketingShowcase = () => {
         </div>
 
         {/* Right Section */}
-        <div className="w-full lg:w-[45%] grid grid-cols-2 gap-4">
-          {marketingItems.map((item, index) => (
-            <div 
-              key={index} 
-              className="aspect-square sm:aspect-video lg:h-[220px] relative overflow-hidden rounded-lg"
-            >
-              <img
-                src={item.image}
-                alt={item.alt}
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-            </div>
-          ))}
+        <div className="w-full lg:w-[45%]">
+          <div className="grid grid-cols-2 gap-4 h-full">
+            {marketingItems.map((item, index) => (
+              <div 
+                key={index} 
+                className="relative overflow-hidden rounded-lg"
+              >
+                <div className="aspect-square lg:aspect-auto lg:h-[220px]">
+                  <img
+                    src={item.image}
+                    alt={item.alt}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>

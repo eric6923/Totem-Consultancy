@@ -5,13 +5,7 @@ import LogoMobile from '../home/assets/logo.png';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isFormOpen, setIsFormOpen] = useState(false);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle form submission logic here
-    setIsFormOpen(false);
-  };
+  const [showForm, setShowForm] = useState(false);
 
   return (
     <>
@@ -58,7 +52,7 @@ export default function Header() {
             </nav>
             
             <button 
-              onClick={() => setIsFormOpen(true)}
+              onClick={() => setShowForm(true)}
               className="bg-white text-gray-900 px-6 py-2.5 rounded hover:bg-gray-100 transition-colors font-medium"
             >
               Get Started
@@ -114,77 +108,73 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Modal Overlay */}
-      {isFormOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 h-[550px]  z-50 flex items-center justify-end p-4">
-          <div className="bg-white rounded-lg max-w-md w-full relative">
-            {/* Close Button */}
-            <button
-              onClick={() => setIsFormOpen(false)}
-              className="absolute right-4 top-4 text-gray-500 hover:text-gray-700"
-            >
-              ×
-            </button>
-
-            <form onSubmit={handleSubmit} className="p-4 mt-6">
-              <div className="space-y-4">
-                <div>
-                  <label htmlFor="name" className="block text-sm text-black mb-1">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    className="w-full px-3 py-2 bg-gray-100 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-200 focus:border-transparent outline-none transition-all text-black"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="email" className="block text-sm text-black mb-1">
-                    Email Address
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    className="w-full px-3 py-2 bg-gray-100 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-200 focus:border-transparent outline-none transition-all text-black"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="service" className="block text-sm text-black mb-1">
-                    Service you are Interested in
-                  </label>
-                  <input
-                    type="text"
-                    id="service"
-                    className="w-full px-3 py-2 bg-gray-100 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-200 focus:border-transparent outline-none transition-all text-black"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="message" className="block text-sm text-black mb-1">
-                    Message
-                  </label>
-                  <textarea
-                    id="message"
-                    rows={3}
-                    className="w-full px-3 py-2 bg-gray-100 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-200 focus:border-transparent outline-none transition-all text-black resize-none"
-                    required
-                  ></textarea>
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full bg-black text-white px-6 py-2 text-lg font-medium rounded-lg hover:bg-gray-900 transition-colors"
-                >
-                  Submit
-                </button>
+      {/* Contact Form */}
+      {showForm && (
+        <div className="fixed top-1/2 right-0 -translate-y-1/2 h-[550px] w-full lg:w-[400px] bg-white z-50 overflow-y-auto transition-transform duration-300 transform rounded-l-lg">
+          <button 
+            onClick={() => setShowForm(false)}
+            className="absolute top-4 right-4 text-black hover:text-gray-600"
+          >
+            ✕
+          </button>
+          <form className="p-4 mt-10">
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="name" className="block text-sm text-black mb-1">
+                  Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  className="w-full px-3 py-2 bg-gray-100 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-200 focus:border-transparent outline-none transition-all text-black"
+                  required
+                />
               </div>
-            </form>
-          </div>
+
+              <div>
+                <label htmlFor="email" className="block text-sm text-black mb-1">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  className="w-full px-3 py-2 bg-gray-100 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-200 focus:border-transparent outline-none transition-all text-black"
+                  required
+                />
+              </div>
+
+              <div>
+                <label htmlFor="service" className="block text-sm text-black mb-1">
+                  Service you are Interested in
+                </label>
+                <input
+                  type="text"
+                  id="service"
+                  className="w-full px-3 py-2 bg-gray-100 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-200 focus:border-transparent outline-none transition-all text-black"
+                  required
+                />
+              </div>
+
+              <div>
+                <label htmlFor="message" className="block text-sm text-black mb-1">
+                  Message
+                </label>
+                <textarea
+                  id="message"
+                  rows={3}
+                  className="w-full px-3 py-2 bg-gray-100 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-200 focus:border-transparent outline-none transition-all text-black resize-none"
+                  required
+                ></textarea>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-black text-white px-6 py-2 text-lg font-medium rounded-lg hover:bg-gray-900 transition-colors"
+              >
+                Submit
+              </button>
+            </div>
+          </form>
         </div>
       )}
     </>
