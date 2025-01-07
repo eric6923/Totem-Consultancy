@@ -37,9 +37,16 @@ const MarketingShowcase = () => {
         <div className="w-full lg:w-[45%] bg-[#F6DCAB] rounded-lg p-8 flex flex-col h-auto">
           <div className="flex flex-col justify-center h-full py-4">
             <div className="space-y-6">
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-snug">
-                Empower Your Brand With Our Result-Driven Digital Marketing Agency
-              </h1>
+              <div className="block lg:hidden">
+                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-snug">
+                  Empower Your Brand With Our Result-Driven Digital Marketing Agency
+                </h1>
+              </div>
+              <div className="hidden lg:block">
+                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-snug">
+                  Empower Your Brand With Our Result-Driven Digital Marketing Agency
+                </h1>
+              </div>
               <p className="text-base md:text-lg text-gray-700">
                 Strategies that can empower your brand and reach the maximum audience.
               </p>
