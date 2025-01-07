@@ -178,7 +178,7 @@ const Footer: React.FC = () => {
         {/* Bottom Section */}
         <div className="my-8 border-t border-gray-500" />
         <div className="flex flex-col md:flex-row justify-between text-lg font-bold">
-          <p>2024 - Totem Management &amp; Consultancy</p>
+          <p>2025 - Totem Management &amp; Consultancy</p>
           <div className="space-x-6 mt-4 md:mt-0">
             {bottomRoutes.map((route) => (
               <Link

@@ -7,7 +7,7 @@ import b1 from '../Courses/assets/b1.png';
 import b2 from '../Courses/assets/b2.png';
 import b3 from '../Courses/assets/b3.png';
 import b4 from '../Courses/assets/b4.png';
-
+import {Link} from 'react-router-dom'
 interface CourseCardProps {
   title: string;
   duration: string;
@@ -129,9 +129,11 @@ const CourseGrid: React.FC = () => {
           ))}
         </div>
         <div className="mt-8 flex justify-center">
+          <Link to ='/contact'>
           <button className="bg-gray-800 text-white px-6 py-2 rounded hover:bg-gray-700 transition-colors">
             Contact Now
           </button>
+          </Link>
         </div>
       </div>
 
