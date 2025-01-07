@@ -43,27 +43,27 @@ const services = [
   },
   {
     title: 'Graphics Design',
-    description: 'Transform your ideas into stunning visuals. Our designs effectively communicate your brand\'s message.',
+    description: 'Transform your ideas into stunning visuals with our services. We create designs that effectively communicate your brand\'s message.',
     image: graphicsDesignImg,
   },
   {
     title: 'Media Production',
-    description: 'Enhance your footage with our professional video editing services, delivering polished, engaging content.',
+    description: 'Enhance your footage with our professional video editing services, delivering polished, engaging content for any platform.',
     image: mediaProductionImg,
   },
   {
     title: 'UI/UX Design',
-    description: 'Design accessible and visually appealing interfaces. We create designs that enhance user satisfaction.',
+    description: 'Design accessible and visually appealing interfaces with UI/UX Services. We focus on creating those designs that enhance engagement & satisfaction.',
     image: uiUxDesignImg,
   },
   {
     title: 'Animation (2D & 3D)',
-    description: 'Bring ideas to life with our engaging and visually stunning animations that captivate and inform.',
+    description: 'Bring ideas to life with our Animation Services. Engaging and visually stunning animations that captivate audiences and communicate your message effectively.',
     image: animationImg,
   },
   {
     title: 'Customized Courses',
-    description: 'We design tailored educational experiences that engage learners and meet specific skill development needs.',
+    description: 'We design tailored educational experiences that engage learners and meet specific needs for enhanced knowledge and skill development.',
     image: customizedCoursesImg,
   },
 ];

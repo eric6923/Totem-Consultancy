@@ -2,7 +2,7 @@ import digitalMarketingImg from "../home/assets/digitalmarketing.gif";
 import graphicsDesignImg from "../home/assets/graphic.gif";
 import mediaProductionImg from "../home/assets/media.gif";
 import Animate from "../home/assets/animation2.gif";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 const courses = [
   {
@@ -31,11 +31,12 @@ const courses = [
   },
 ];
 
-
 const Course = () => {
   return (
     <div className="bg-[#FDF8F3] min-h-screen py-16">
-      <div className="max-w-[1280px] mx-auto px-4"> {/* Changed from container to max-w-[1400px] */}
+      <div className="max-w-[1280px] mx-auto px-4">
+        {" "}
+        {/* Changed from container to max-w-[1400px] */}
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-800 mb-4">Courses</h1>
@@ -43,7 +44,6 @@ const Course = () => {
             Enhance your skills with our customized courses
           </p>
         </div>
-
         {/* Course Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-y-16 gap-x-4">
           {courses.map((course, index) => (
@@ -64,13 +64,15 @@ const Course = () => {
                 <h3 className="text-2xl font-semibold text-gray-900">
                   {course.title}
                 </h3>
-                <p className="mt-4 text-gray-700">{course.description}</p>
-                <Link 
-  to="/courses"
-  className="mt-6 bg-[#343434] text-white font-semibold px-6 py-2 rounded-2xl inline-block"
->
-  View Pricing
-</Link>
+                <p className="mt-4 text-gray-700 font-sans">
+                  {course.description}
+                </p>
+                <Link
+                  to="/courses"
+                  className="mt-6 bg-[#343434] text-white font-semibold px-6 py-2 rounded-2xl inline-block"
+                >
+                  View Pricing
+                </Link>
               </div>
             </div>
           ))}
