@@ -9,6 +9,7 @@ import planningImg from '../home/Courses/assets/Planing 1.png';
 import animationImg from '../home/Courses/assets/animation.png';
 import empathizeImg from '../home/Courses/assets/courses.png';
 
+
 interface Service {
   title: string;
   description: string;
