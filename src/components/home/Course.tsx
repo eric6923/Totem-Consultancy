@@ -67,10 +67,9 @@ const Course = () => {
                 </p>
                 <div className="mt-6 sm:mt-8 flex justify-center">
                   <Link to="/pricing">
-                  <button className="w-full sm:w-64 md:w-72 bg-[#333333] text-[#F6DCAB] py-3 px-6 rounded transition-colors duration-300 hover:bg-[#F6DCAB] hover:text-[#333333]">
-  View Pricing
-</button>
-
+                    <button className="w-full sm:w-64 md:w-72 bg-[#333333] text-[#F6DCAB] py-3 px-6 rounded transition-colors duration-300 hover:bg-[#F6DCAB] hover:text-[#333333]">
+                      View Pricing
+                    </button>
                   </Link>
                 </div>
               </div>

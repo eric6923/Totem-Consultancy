@@ -61,7 +61,7 @@ const DigitalMarketingSection = () => {
   return (
     <div className="flex flex-col bg-[#FDF8F3]">
       {/* Hero Section */}
-      <div className="flex flex-col md:flex-row items-center justify-between p-4 md:p-8 bg-[#FAF9F6] md:ml-16">
+      <div className="flex flex-col md:flex-row items-center justify-between p-4 md:p-8 bg-[#FAF9F6] md:ml-16 md:mr-20">
         <div className="w-[250px] md:w-[408.89px] h-auto md:h-[269.97px] mt-8 md:mt-16 md:mr-16 order-first md:order-last">
           <img
             src={digital}
@@ -69,8 +69,8 @@ const DigitalMarketingSection = () => {
             className="w-full h-full object-contain"
           />
         </div>
-        <div className="w-full md:w-[612px] h-auto md:h-[223px] flex flex-col justify-center px-4 md:px-0 mt-8 md:mt-0">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4 text-center md:text-left">Digital Marketing</h2>
+        <div className="w-full md:w-[612px] h-auto md:h-[223px] flex flex-col justify-center px-4 md:px-0 mt-8 md:mt-0 md:ml-20">
+          <h2 className="text-3xl md:text-5xl font-bold mb-4 text-center md:text-left ">Digital Marketing</h2>
           <p className="text-gray-600 leading-relaxed text-center md:text-justify mt-4 md:mt-6 text-sm md:text-base font-sans">
             "Our digital marketing services develop tailored plans to increase
             your online presence and engagement. We employ new approaches to
@@ -82,11 +82,11 @@ const DigitalMarketingSection = () => {
 
       {/* Services Grid - Modified with fixed dimensions */}
       <div className="container mx-auto px-4 md:px-8 lg:px-16 mt-24 md:mt-48 mb-16 md:mb-24">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-x-12 gap-y-24 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-x-20 gap-y-24 max-w-6xl mx-auto">
           {services.map((service, index) => (
             <div
               key={index}
-              className="relative bg-[#FDF8F3] border-2 border-gray-300 rounded-tr-3xl p-4 md:p-6 group hover:bg-white hover:scale-105 transition-transform duration-300 w-full md:w-[378px] h-[442px]"
+              className="relative bg-[#FDF8F3] border-2 border-gray-300 rounded-tr-3xl p-4 md:p-6 group hover:bg-white hover:scale-105 transition-transform duration-300"
             >
               <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-[#F6DCAB] absolute left-1/2 transform -translate-x-1/2 -top-12 md:-top-16 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
                 <img

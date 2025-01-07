@@ -45,7 +45,7 @@ const CoursesSection = () => {
   return (
     <div className="flex flex-col bg-[#FDF8F3]">
       {/* Hero Section */}
-      <div className="flex flex-col md:flex-row items-center justify-between p-4 md:p-8 bg-[#FAF9F6] md:ml-16">
+      <div className="flex flex-col md:flex-row items-center justify-between p-4 md:p-8 bg-[#FAF9F6] md:ml-16 md:mr-20">
         <div className="w-[250px] md:w-[408.89px] h-auto md:h-[269.97px] mt-8 md:mt-16 md:mr-16 order-first md:order-last">
           <img
             src={digital}
@@ -53,7 +53,7 @@ const CoursesSection = () => {
             className="w-full h-full object-contain"
           />
         </div>
-        <div className="w-full md:w-[612px] h-auto md:h-[223px] flex flex-col justify-center px-4 md:px-0 mt-8 md:mt-0">
+        <div className="w-full md:w-[612px] h-auto md:h-[223px] flex flex-col justify-center px-4 md:px-0 mt-8 md:mt-0 md:ml-20">
           <h2 className="text-3xl md:text-5xl font-bold mb-4 text-center md:text-left">
             Customized Courses
           </h2>

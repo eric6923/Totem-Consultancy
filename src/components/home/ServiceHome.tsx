@@ -133,10 +133,10 @@ const Service: React.FC = () => {
                 />
               </div>
               <div className="lg:w-1/2">
-                <h2 className="text-2xl md:text-3xl font-semibold mb-6">
+                <h2 className="text-4xl md:text-4xl font-semibold mb-6">
                   {service.title}
                 </h2>
-                <p className="text-gray-600 mb-8 leading-relaxed">
+                <p className="text-gray-600 mb-8 leading-relaxed text-base text-justify">
                   {service.description}
                 </p>
                 <ul 

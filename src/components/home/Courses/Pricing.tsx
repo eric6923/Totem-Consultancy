@@ -138,8 +138,8 @@ const CourseGrid: React.FC = () => {
       </div>
 
       {/* Animation Services Section */}
-      <div className="container mx-auto px-4 md:px-8 lg:px-16 mt-24 md:mt-48 mb-16 md:mb-24">
-        <h2 className="text-3xl md:text-5xl font-bold text-center mb-16">
+      <div className="container mx-auto px-4 md:px-8 lg:px-16 mt-24 md:mt-36 mb-16 md:mb-36">
+        <h2 className="text-3xl md:text-5xl font-bold text-center mb-24 md:mb-32">
           Why Choose Us !
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-x-12 gap-y-24 max-w-6xl mx-auto">
