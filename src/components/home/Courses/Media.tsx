@@ -6,7 +6,7 @@ import d17 from "../Courses/assets/d17.png";
 import d18 from "../Courses/assets/d18.png";
 import digital from "../Courses/assets/media.png";
 import { useEffect } from "react";
-
+import {Link} from 'react-router-dom'
 const Media = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -106,12 +106,16 @@ const Media = () => {
 
       {/* Action Buttons */}
       <div className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8 px-4 mb-24">
-        <button className="w-60 md:w-48 bg-[#333333] text-[#D4B996] py-3 px-6 rounded">
-          Get In Touch
-        </button>
-        <button className="w-60 md:w-48 bg-[#333333] text-[#D4B996] py-3 px-6 rounded">
-          Link to Work
-        </button>
+        <Link to="/contact">
+          <button className="w-60 md:w-48 bg-[#333333] text-[#F6DCAB] py-3 px-6 rounded transition-colors duration-300 hover:bg-[#F6DCAB] hover:text-[#333333]">
+            Get In Touch
+          </button>
+        </Link>
+        <Link to="/graphicwork">
+          <button className="w-60 md:w-48 bg-[#333333] text-[#F6DCAB] py-3 px-6 rounded transition-colors duration-300 hover:bg-[#F6DCAB] hover:text-[#333333]">
+            Link to Work
+          </button>
+        </Link>
       </div>
     </div>
   );

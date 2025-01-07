@@ -100,7 +100,7 @@ const CoursesSection = () => {
       <div className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8 px-4 mb-24">
         <Link
           to="/pricing"
-          className="w-60 md:w-48 bg-[#333333] text-[#D4B996] py-3 px-6 rounded text-center"
+          className=" text-center w-60 md:w-48 bg-[#333333] text-[#F6DCAB] py-3 px-6 rounded transition-colors duration-300 hover:bg-[#F6DCAB] hover:text-[#333333]"
         >
           View Pricing
         </Link>
