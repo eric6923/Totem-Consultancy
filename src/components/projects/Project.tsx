@@ -79,34 +79,36 @@ const PortfolioShowcase: React.FC = () => {
         </div>
 
         {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 justify-items-center mb-28">
-          {projects.map((project) => (
-            <div
-              key={project.id}
-              className="flex flex-col items-center  md:p-6 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow w-full max-w-[320px]"
-            >
-              {/* Project Image Container */}
-              <div className="w-full aspect-[320/225] mb-6 overflow-hidden">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover"
-                />
-              </div>
+        {/* Projects Grid */}
+<div className="grid grid-cols-1 gap-20 md:grid-cols-2 md:gap-8 lg:grid-cols-3 lg:gap-12 justify-items-center mb-28">
+  {projects.map((project) => (
+    <div
+      key={project.id}
+      className="flex flex-col items-center md:p-6 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow w-full max-w-[320px]"
+    >
+      {/* Project Image Container */}
+      <div className="w-full aspect-[320/225] mb-6 overflow-hidden">
+        <img
+          src={project.image}
+          alt={project.title}
+          className="w-full h-full object-cover"
+        />
+      </div>
 
-              {/* Project Title */}
-              <h2 className="text-2xl font-semibold mb-5">{project.title}</h2>
+      {/* Project Title */}
+      <h2 className="text-2xl font-semibold mb-5">{project.title}</h2>
 
-              {/* View Button */}
-              <button
-                className="w-full max-w-[290px] py-3 border border-black hover:bg-black hover:text-white transition-colors duration-300"
-                onClick={() => handleClick(project.title)}
-              >
-                View
-              </button>
-            </div>
-          ))}
-        </div>
+      {/* View Button */}
+      <button
+        className="w-full max-w-[290px] py-3 border border-black hover:bg-black hover:text-white transition-colors duration-300"
+        onClick={() => handleClick(project.title)}
+      >
+        View
+      </button>
+    </div>
+  ))}
+</div>
+
       </div>
     </div>
   );
