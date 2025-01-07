@@ -33,22 +33,28 @@ export default function Hero() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 w-full">
           <div className="max-w-3xl mt-0 lg:mt-16 text-center lg:text-left">
             <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold mb-6 leading-tight">
-              <span className="lg:hidden block">
+              <span className="block lg:hidden">
                 We<br />
                 Empower<br />
                 Brands<br />
                 and<br />
                 Individuals
               </span>
-              <span className="hidden lg:inline">
+              <span className="hidden lg:block">
                 We Empower Brands and Individuals
               </span>
             </h1>
             <div className="text-base sm:text-lg text-gray-300 mb-8 max-w-2xl mx-auto lg:mx-0">
-              <p className="mb-1 lg:mb-0 lg:inline">A one-stop shop for the solution of </p>
-              <p className="mb-1 lg:mb-0 lg:inline">Digital Marketing, Content Creation, </p>
-              <p className="mb-1 lg:mb-0 lg:inline">Graphics, Animation, and Customized </p>
-              <p className="lg:inline">Courses that demonstrate individuals and brands.</p>
+              <p className="lg:hidden">
+                A one-stop shop for the solution of<br />
+                Digital Marketing, Content Creation,<br />
+                Graphics, Animation, and Customized<br />
+                Courses that demonstrate individuals and brands.
+              </p>
+              <p className="hidden lg:block">
+                A one-stop shop for the solution of Digital Marketing, Content Creation, 
+                Graphics, Animation, and Customized Courses that demonstrate individuals and brands.
+              </p>
             </div>
             <div className="flex justify-center lg:justify-start">
               <button

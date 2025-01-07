@@ -71,7 +71,7 @@ const DigitalMarketingSection = () => {
         </div>
         <div className="w-full md:w-[612px] h-auto md:h-[223px] flex flex-col justify-center px-4 md:px-0 mt-8 md:mt-0">
           <h2 className="text-3xl md:text-5xl font-bold mb-4 text-center md:text-left">Digital Marketing</h2>
-          <p className="text-gray-600 leading-relaxed text-center md:text-justify mt-4 md:mt-6 text-sm md:text-base">
+          <p className="text-gray-600 leading-relaxed text-center md:text-justify mt-4 md:mt-6 text-sm md:text-base font-sans">
             "Our digital marketing services develop tailored plans to increase
             your online presence and engagement. We employ new approaches to
             increase traffic, improve visibility, and generate demonstrable
