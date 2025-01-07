@@ -70,11 +70,14 @@ const MarketingShowcase = () => {
         {/* Right Section */}
         <div className="w-full lg:w-[45%] grid grid-cols-2 gap-4">
           {marketingItems.map((item, index) => (
-            <div key={index} className="h-[220px]">
+            <div 
+              key={index} 
+              className="aspect-square sm:aspect-video lg:h-[220px] relative overflow-hidden rounded-lg"
+            >
               <img
                 src={item.image}
                 alt={item.alt}
-                className="w-full h-full object-cover rounded-lg"
+                className="absolute inset-0 w-full h-full object-cover"
               />
             </div>
           ))}
