@@ -18,7 +18,7 @@ const Testimonials: React.FC = () => {
     </h1>
   </div>
 
-  <div className="flex flex-col sm:flex-row justify-center gap-6 mt-12">
+  <div className="flex flex-col sm:flex-row justify-center gap-8 mt-12">
     <div className="relative bg-[#343434] mt-10 p-6 rounded-xl w-full sm:w-[370px] h-[280px]">
       <div className="absolute -top-12 left-1/2 transform -translate-x-1/2">
         <img

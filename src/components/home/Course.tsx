@@ -3,8 +3,9 @@ import graphicsDesignImg from "../home/assets/graphic.gif";
 import mediaProductionImg from "../home/assets/media.gif";
 import Animate from "../home/assets/animation2.gif";
 import { Link } from "react-router-dom";
-
+import { useEffect } from "react";
 const courses = [
+  
   {
     title: "Digital Marketing",
     description:
@@ -32,6 +33,9 @@ const courses = [
 ];
 
 const Course = () => {
+  useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
   return (
     <div className="bg-[#FDF8F3] min-h-screen py-16">
       <div className="max-w-[1280px] mx-auto px-4">

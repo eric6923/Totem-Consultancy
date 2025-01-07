@@ -1,4 +1,4 @@
-// import React, { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import p1 from '../Courses/assets/p1.png';
 import p2 from '../Courses/assets/p2.png';
 import p3 from '../Courses/assets/p3.png';
@@ -16,7 +16,8 @@ interface CourseCardProps {
 }
 
 const CourseCard: React.FC<CourseCardProps> = ({ title, duration, price, imageUrl }) => (
-  <div className="w-[370px] h-[326px] bg-white p-6 flex flex-col items-center justify-center rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 mx-auto">
+  <div className="w-full max-w-[90%] sm:max-w-[370px] h-[326px] bg-white p-4 sm:p-6 flex flex-col items-center justify-center rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 mx-auto">
+
     <div className="w-[266px] h-[252px] flex flex-col items-center space-y-6">
       <div className="w-[130px] h-[130px] flex items-center justify-center">
         <img
@@ -61,9 +62,9 @@ const AnimationCard: React.FC<AnimationCardProps> = ({ icon, title, description 
 );
 
 const CourseGrid: React.FC = () => {
-  // useEffect(() => {
-  //   window.scrollTo(0, 0);
-  // }, []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const courses = [
     {
@@ -120,7 +121,7 @@ const CourseGrid: React.FC = () => {
   ];
 
   return (
-    <div style={{ backgroundColor: '#FDF8F3' }} className="min-h-screen w-full pb-16 md:pb-36 pt-20 md:pt-20">
+    <div style={{ backgroundColor: '#FDF8F3' }} className="min-h-screen w-full pb-16 md:pb-36 pt-16 md:pt-20">
       {/* Course Cards Section */}
       <div className="max-w-6xl mx-auto p-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-16 justify-items-center">
