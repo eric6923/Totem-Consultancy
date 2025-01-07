@@ -16,6 +16,9 @@ import CourseHome from '../src/components/home/Courses/CourseHome'
 import UI from '../src/components/home/Courses/UI'
 import Pricing from './components/home/Courses/Pricing';
 import GraphicWork from '../src/components/Works/GraphicWork'
+import Video from './components/Works/Video'
+import Eventportfolio from './components/Works/Eventportfolio'
+import VideoEditingPortfolio from './components/Works/VideoEditingPortfolio'
 // Component to conditionally render headers based on the route
 function ConditionalHeader() {
   const location = useLocation(); // Access the current route
@@ -56,6 +59,10 @@ function App() {
             <Route path="/ui" element={<UI />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/graphicwork" element={<GraphicWork/>} />
+            <Route path="/video" element={<Video/>} />
+            <Route path="/eventportfolio" element={<Eventportfolio/>} />
+            <Route path="/videoeditingportfolio" element={<VideoEditingPortfolio/>} />
+
 
           </Routes>
         </main>

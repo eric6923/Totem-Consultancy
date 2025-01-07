@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Img1 from '../projects/assets/project1.png';
 import Img2 from '../projects/assets/project2.png';
-
+import { useEffect } from 'react';
 interface Project {
   id: number;
   title: string;
@@ -10,6 +10,9 @@ interface Project {
 }
 
 const PortfolioShowcase: React.FC = () => {
+  useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
   const navigate = useNavigate();
   const projects: Project[] = [
     {
@@ -47,9 +50,17 @@ const PortfolioShowcase: React.FC = () => {
   const handleClick = (title: string) => {
     if (title === "Graphics Design") {
       navigate('/graphicwork');
-    } else {
-      navigate(`/${title.toLowerCase().replace(' ', '-')}`);
-    }
+    } 
+    if (title === "Video Editing") {
+      navigate('/video');
+    } 
+    if (title === "Animation") {
+      navigate('/eventportfolio');
+    } 
+    if (title === "Gaming") {
+      navigate('/videoeditingportfolio');
+    } 
+    
   };
 
   return (
