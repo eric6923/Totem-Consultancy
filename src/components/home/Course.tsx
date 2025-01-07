@@ -39,8 +39,8 @@ const Course = () => {
         {/* Changed from container to max-w-[1400px] */}
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">Courses</h1>
-          <p className="text-xl text-gray-600">
+          <h1 className="text-5xl font-bold text-gray-800 mb-4">Courses</h1>
+          <p className="text-xl font-bold text-gray-600">
             Enhance your skills with our customized courses
           </p>
         </div>
@@ -67,12 +67,13 @@ const Course = () => {
                 <p className="mt-4 text-gray-700 font-sans">
                   {course.description}
                 </p>
-                <Link
-                  to="/courses"
-                  className="mt-6 bg-[#343434] text-white font-semibold px-6 py-2 rounded-2xl inline-block"
-                >
-                  View Pricing
-                </Link>
+                <div className="mt-8 flex justify-center">
+                  <Link to="/pricing">
+                    <button className="w-64 md:w-72 bg-[#333333] text-[#F6DCAB] py-3 px-6 rounded transition-colors duration-300 hover:bg-[#F6DCAB] hover:text-[#333333]">
+                      View Pricing
+                    </button>
+                  </Link>
+                </div>
               </div>
             </div>
           ))}

@@ -80,13 +80,13 @@ const DigitalMarketingSection = () => {
         </div>
       </div>
 
-      {/* Services Grid - Modified for better responsiveness and card width */}
+      {/* Services Grid - Modified with fixed dimensions */}
       <div className="container mx-auto px-4 md:px-8 lg:px-16 mt-24 md:mt-48 mb-16 md:mb-24">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-x-12 gap-y-24 max-w-6xl mx-auto">
           {services.map((service, index) => (
             <div
               key={index}
-              className="relative bg-[#FDF8F3] border-2 border-gray-300 rounded-tr-3xl p-4 md:p-6 group hover:bg-white hover:scale-105 transition-transform duration-300"
+              className="relative bg-[#FDF8F3] border-2 border-gray-300 rounded-tr-3xl p-4 md:p-6 group hover:bg-white hover:scale-105 transition-transform duration-300 w-full md:w-[378px] h-[442px]"
             >
               <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-[#F6DCAB] absolute left-1/2 transform -translate-x-1/2 -top-12 md:-top-16 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
                 <img
@@ -110,17 +110,17 @@ const DigitalMarketingSection = () => {
 
       {/* Action Buttons */}
       <div className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8 px-4 mb-24">
-  <Link to="/contact">
-    <button className="w-60 md:w-48 bg-[#333333] text-[#F6DCAB] py-3 px-6 rounded transition-colors duration-300 hover:bg-[#F6DCAB] hover:text-[#333333]">
-      Get In Touch
-    </button>
-  </Link>
-  <Link to="/graphicwork">
-    <button className="w-60 md:w-48 bg-[#333333] text-[#F6DCAB] py-3 px-6 rounded transition-colors duration-300 hover:bg-[#F6DCAB] hover:text-[#333333]">
-      Link to Work
-    </button>
-  </Link>
-</div>
+        <Link to="/contact">
+          <button className="w-60 md:w-48 bg-[#333333] text-[#F6DCAB] py-3 px-6 rounded transition-colors duration-300 hover:bg-[#F6DCAB] hover:text-[#333333]">
+            Get In Touch
+          </button>
+        </Link>
+        <Link to="/graphicwork">
+          <button className="w-60 md:w-48 bg-[#333333] text-[#F6DCAB] py-3 px-6 rounded transition-colors duration-300 hover:bg-[#F6DCAB] hover:text-[#333333]">
+            Link to Work
+          </button>
+        </Link>
+      </div>
     </div>
   );
 };

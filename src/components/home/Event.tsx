@@ -6,66 +6,80 @@ import MilestoneIcon from "../home/assets/milestone.svg";
 
 const Event: React.FC = () => {
   return (
-    <div className="py-12 px-6 bg-[#FDF8F3] min-h-screen">
+    <div className="py-12 px-4 md:px-6 bg-[#FDF8F3] min-h-screen">
       {/* Title Section */}
       <div className="text-center space-y-6">
-        <h1 className="text-4xl text-gray-900 md:text-5xl font-bold">Event Management</h1>
+        <h1 className="text-3xl md:text-4xl lg:text-5xl text-gray-900 font-bold">
+          Event Management
+        </h1>
       </div>
 
       {/* Image Section */}
-      <div className="text-center mt-8">
+      <div className="text-center mt-8 md:mt-14 px-4 md:px-0">
         <img
           src={EventImage}
           alt="Event Management"
-          className="w-full object-cover rounded-2xl"
+          className="w-full md:w-[1200px] h-auto md:h-[800px] object-cover rounded-2xl mx-auto"
         />
       </div>
 
       {/* Features Section */}
-      <div className="bg-[#FFEFD2] p-8 text-black w-full flex flex-col md:flex-row justify-between items-start rounded-2xl mt-20 mb-20 space-y-8 md:space-y-0 md:space-x-8">
-        {/* Easy Peasy Pricing */}
-        
-        <div className="flex items-center space-x-6 w-full md:w-1/3">
-          <img
-            src={PricingIcon}
-            alt="Pricing Icon"
-            className="w-20 h-20"
-          />
-          <div>
-            <h3 className="text-2xl font-semibold">Easy Peasy Pricing</h3>
-            <p className="mt-4 text-lg">
-              Stop going cross-eyed over complex pricing tiers. Our pricing plans are so easy, a kindergartener could understand them.
-            </p>
-          </div>
+      <div className="bg-[#FFEFD2] p-6 md:p-8 text-black w-full flex flex-col gap-10  justify-between items-start rounded-2xl mt-12 md:mt-20 mb-12 md:mb-20 space-y-8 md:space-y-0 md:space-x-8">
+        <div className="text-4xl font-bold flex justify-center w-full">
+          <h1>Why We !</h1>
         </div>
-
-        {/* Unique Design */}
-        <div className="flex items-center space-x-6 w-full md:w-1/3">
-          <img
-            src={DesignIcon}
-            alt="Design Icon"
-            className="w-20 h-20"
-          />
-          <div>
-            <h3 className="text-2xl font-semibold">Unique Design</h3>
-            <p className="mt-4 text-lg">
-              There are no cookie-cutter designs here. Your branding, ads, and website will stand out from the competition.
-            </p>
+        <div className="flex gap-4 flex-col md:flex-row">
+          {/* Easy Peasy Pricing */}
+          <div className="flex gap-4 md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-6 w-full md:w-1/3">
+            <img
+              src={PricingIcon}
+              alt="Pricing Icon"
+              className="w-16 h-16 md:w-[120px] md:h-[120px]"
+            />
+            <div className=" md:text-left">
+              <h3 className="text-xl md:text-2xl font-semibold">
+                Easy Peasy Pricing
+              </h3>
+              <p className="mt-2 md:mt-4 text-base md:text-lg">
+                Stop going cross-eyed over complex pricing tiers. Our pricing
+                plans are so easy, a kindergartener could understand them.
+              </p>
+            </div>
           </div>
-        </div>
 
-        {/* Achieve Milestone */}
-        <div className="flex items-center space-x-6 w-full md:w-1/3">
-          <img
-            src={MilestoneIcon}
-            alt="Milestone Icon"
-            className="w-20 h-20"
-          />
-          <div>
-            <h3 className="text-2xl font-semibold">Achieve Milestone</h3>
-            <p className="mt-4 text-lg">
-              Achieve remarkable milestones with us through creativity, and strategic coordination.
-            </p>
+          {/* Unique Design */}
+          <div className="flex gap-4 md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-6 w-full md:w-1/3">
+            <img
+              src={DesignIcon}
+              alt="Design Icon"
+              className="w-16 h-16 md:w-[120px] md:h-[120px]"
+            />
+            <div className=" md:text-left">
+              <h3 className="text-xl md:text-2xl font-semibold">
+                Unique Design
+              </h3>
+              <p className="mt-2 md:mt-4 text-base md:text-lg">
+                There are no cookie-cutter designs here. Your branding, ads, and
+                website will stand out from the competition.
+              </p>
+            </div>
+          </div>
+          {/* Achieve Milestone */}
+          <div className="flex gap-4  md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-6 w-full md:w-1/3">
+            <img
+              src={MilestoneIcon}
+              alt="Milestone Icon"
+              className="w-16 h-16 md:w-[120px] md:h-[120px]"
+            />
+            <div className=" md:text-left">
+              <h3 className="text-xl md:text-2xl font-semibold">
+                Achieve Milestone
+              </h3>
+              <p className="mt-2 md:mt-4 text-base md:text-lg">
+                Achieve remarkable milestones with us through creativity, and
+                strategic coordination.
+              </p>
+            </div>
           </div>
         </div>
       </div>

@@ -83,11 +83,11 @@ const Footer: React.FC = () => {
           <div className="relative flex w-full max-w-sm">
             <input
               placeholder="Enter your email address"
-              className="w-full px-6 py-4 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-900 pr-16 text-gray-800"
+              className="w-full h-16 px-6 py-4 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-900 pr-16 text-gray-800"
               type="email"
             />
             <button 
-              className="absolute right-0 h-full aspect-square bg-[#0072bc] text-white rounded-full flex items-center justify-center hover:bg-blue-700"
+              className="absolute right-3 h-12 mt-2 aspect-square bg-[#0072bc] text-white rounded-full flex items-center justify-center hover:bg-blue-700"
               aria-label="Subscribe"
             >
               <svg 

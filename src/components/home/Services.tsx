@@ -25,12 +25,15 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, image, on
     <div className="p-6 text-white">
       <h3 className="text-2xl font-semibold">{title}</h3>
       <p className="mt-4">{description}</p>
+      <div className="mt-4">
       <button 
-        className="mt-6 bg-white text-black font-semibold px-6 py-2 rounded-2xl"
+        className="w-80 md:w-64  bg-[#FFFF] text-[#333333] py-3 px-6 rounded transition-colors duration-300 hover:bg-[#F6DCAB] hover:text-[#333333]"
         onClick={onClick}
       >
         Explore Now
       </button>
+      </div>
+      
     </div>
   </div>
 );
@@ -38,7 +41,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, image, on
 const services = [
   {
     title: 'Digital Marketing',
-    description: 'Boost your brand\'s online presence with our data-driven digital marketing strategies, including SEO, SMM, etc.',
+    description: 'Boost your brand\'s online presence with our data-driven digital marketing strategies, including SEO, SMM, PPC and more etc.',
     image: digitalMarketingImg,
   },
   {
@@ -58,7 +61,7 @@ const services = [
   },
   {
     title: 'Animation (2D & 3D)',
-    description: 'Bring ideas to life with our Animation Services. Engaging and visually stunning animations that captivate audiences and communicate your message effectively.',
+    description: 'Bring ideas to life with our Animation Services. Engaging and visually stunning animations that captivate audiences and communicate.',
     image: animationImg,
   },
   {
@@ -94,13 +97,13 @@ const Services: React.FC = () => {
   
 
   return (
-    <div className="bg-[#F6DCAB] py-12 px-6">
+    <div className="bg-[#FFEFD2] py-12 px-6 ">
       <div className="text-center space-y-6">
-        <h1 className="text-4xl text-gray-900 md:text-5xl font-bold">
+        <h1 className=" text-4xl text-gray-900 md:text-5xl font-sans font-bold ">
           What We Provide
         </h1>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 max-w-7xl mx-auto">
         {services.slice(0, 3).map((service, index) => (
           <ServiceCard
             key={index}
@@ -111,7 +114,7 @@ const Services: React.FC = () => {
           />
         ))}
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 max-w-7xl mx-auto">
         {services.slice(3).map((service, index) => (
           <ServiceCard
             key={index + 3}

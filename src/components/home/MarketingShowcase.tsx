@@ -34,7 +34,7 @@ const MarketingShowcase = () => {
     <div className="min-h-screen bg-[#FFF8F0] flex items-center justify-center py-12">
       <div className="flex flex-col lg:flex-row items-stretch gap-8 w-full max-w-[1200px] mx-auto px-4">
         {/* Left Section */}
-        <div className="w-full lg:w-[45%] bg-[#F6DCAB] rounded-lg p-8 flex flex-col h-auto">
+        <div className="w-full lg:w-[45%] bg-[#FFEFD2] rounded-lg p-8 flex flex-col h-auto">
           <div className="flex flex-col justify-center h-full py-4">
             <div className="space-y-6">
               <div className="block lg:hidden">
