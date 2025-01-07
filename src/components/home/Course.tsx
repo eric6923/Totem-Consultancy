@@ -62,7 +62,7 @@ const Course = () => {
                 <h3 className="text-2xl font-semibold text-gray-900">
                   {course.title}
                 </h3>
-                <p className="mt-4 text-gray-700 font-sans text-sm sm:text-base">
+                <p className="mt-4 text-gray-700 font-sans text-base sm:text-base ">
                   {course.description}
                 </p>
                 <div className="mt-6 sm:mt-8 flex justify-center">
