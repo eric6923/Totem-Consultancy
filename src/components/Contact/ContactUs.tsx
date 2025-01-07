@@ -1,6 +1,10 @@
-
+import { useEffect } from "react";
 
 const ContactForm = () => {
+  useEffect(() => {
+    // Scroll to the top whenever this component mounts
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className="w-full min-h-screen" style={{
       background: 'radial-gradient(circle at center, #F6DCAB3B 0%, #F6DCAB3B 15%, #3434343B 40%)',

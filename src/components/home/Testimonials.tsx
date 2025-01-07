@@ -12,7 +12,7 @@ const Testimonials: React.FC = () => {
   return (
     <div className="py-12 px-6">
       <div className="text-center space-y-4">
-        <h1 className="text-4xl font-bold mb-24 text-gray-900">Read what others have to say</h1>
+        <h1 className="text-4xl font-bold mb-24 text-gray-900 mt-12">Read what others have to say</h1>
       </div>
       
       <div className="flex flex-col sm:flex-row justify-center gap-6 mt-12">
@@ -47,7 +47,7 @@ const Testimonials: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex flex-col sm:flex-row justify-center items-center lg:justify-evenly gap-6 mt-32">
+      <div className="flex flex-col sm:flex-row justify-center items-center lg:justify-evenly gap-6 mt-32 mb-20">
         <img alt="Image 1" className="h-24 object-cover rounded-lg mt-3" src={i1} />
         <img alt="Image 2" className="w-24 h-24 object-cover rounded-lg mt-3" src={i2} />
         <img alt="Image 3" className="h-24 object-cover rounded-lg mt-3" src={i3} />
