@@ -27,11 +27,12 @@ export default function Header2() {
 
           {/* Hamburger Icon for Mobile */}
           <button
-            className="md:hidden text-gray-900 text-2xl"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            ☰
-          </button>
+  className="md:hidden text-2xl"
+  onClick={() => setIsMenuOpen(!isMenuOpen)}
+  style={{ color: isMenuOpen ? 'red' : '#111827' }}
+>
+  {isMenuOpen ? '✕' : '☰'}
+</button>
 
           {/* Desktop Navigation and Button */}
           <div className="hidden md:flex items-center gap-8">

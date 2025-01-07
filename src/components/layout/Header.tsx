@@ -23,11 +23,12 @@ export default function Header() {
           </Link>
 
           <button
-            className="md:hidden text-gray-900 text-2xl"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            ☰
-          </button>
+  className="md:hidden text-2xl"
+  onClick={() => setIsMenuOpen(!isMenuOpen)}
+  style={{ color: isMenuOpen ? 'red' : '#111827' }}
+>
+  {isMenuOpen ? '✕' : '☰'}
+</button>
 
           <div className="hidden md:flex items-center gap-8">
             <nav className="flex items-center gap-8">
