@@ -35,7 +35,7 @@ const MarketingShowcase = () => {
       <div className="flex flex-col lg:flex-row items-stretch gap-8 w-full max-w-[1200px] mx-auto px-4">
         {/* Left Section */}
         <div className="w-full lg:w-[45%] bg-[#F6DCAB] rounded-lg p-8 flex flex-col h-auto">
-          <div className="flex flex-col justify-center h-full py-4 text-center lg:text-left">
+          <div className="flex flex-col justify-center h-full py-4">
             <div className="space-y-6">
               <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-snug">
                 Empower Your Brand With Our Result-Driven Digital Marketing Agency
@@ -45,7 +45,12 @@ const MarketingShowcase = () => {
               </p>
               <ul className="space-y-4 pt-6">
                 {features.map((feature, index) => (
-                  <li key={index} className="flex items-center gap-3">
+                  <li 
+                    key={index} 
+                    className={`flex items-start sm:items-center gap-3 ${
+                      index === 2 ? 'sm:mt-0 mt-4' : ''
+                    }`}
+                  >
                     <CheckSquare className="h-6 w-6 text-gray-800 flex-shrink-0" />
                     <span className="text-lg text-gray-800">{feature}</span>
                   </li>
