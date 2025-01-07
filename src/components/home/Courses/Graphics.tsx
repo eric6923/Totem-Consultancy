@@ -6,57 +6,53 @@ import d11 from '../Courses/assets/d11.png'
 import d12 from "../Courses/assets/d12.png";
 import digital from "../Courses/assets/graphics.png";
 import { useEffect } from 'react'
-const DigitalMarketingSection = () => {
+
+const Graphics = () => {
   useEffect(() => {
-      window.scrollTo(0, 0);
-    }, []);
+    window.scrollTo(0, 0);
+  }, []);
+
   const services = [
     {
       icon: d7,
-      title: "Visiual Branding",
+      title: "Visual Branding",
       description:
-        "Our visual branding services create distinctive and cohesive identities that resonate with your target audience. We build features that improve your brand's visibility and leave a lasting impression."
-,
-      iconSize: "w-24 h-24",
-    }, 
+        "Our visual branding services create distinctive and cohesive identities that resonate with your target audience. We build features that improve your brand's visibility and leave a lasting impression.",
+      iconSize: "w-14 h-14",
+    },
     {
       icon: d8,
       title: "Content Creation",
       description:
-        "Our content production services create compelling and unique products that are suited to your needs. We create captivating stories and images that pique your audience's attention and strengthen your brand's voice."
-,
+        "Our content production services create compelling and unique products that are suited to your needs. We create captivating stories and images that pique your audience's attention and strengthen your brand's voice.",
       iconSize: "w-14 h-14",
     },
     {
       icon: d9,
       title: "Social Media Design",
       description:
-        "Our social media design services provide eye-catching and effective visuals adapted to numerous platforms. We create engaging content that draws attention and increases your internet visibility."
-,
+        "Our social media design services provide eye-catching and effective visuals adapted to numerous platforms. We create engaging content that draws attention and increases your internet visibility.",
       iconSize: "w-14 h-14",
     },
     {
       icon: d10,
       title: "Advertising Design",
       description:
-        "Our advertising design services generate appealing images that increase engagement and magnify your message. We provide innovative concepts that attract attention and boost your promotional efforts."
-,
+        "Our advertising design services generate appealing images that increase engagement and magnify your message. We provide innovative concepts that attract attention and boost your promotional efforts.",
       iconSize: "w-14 h-14",
     },
     {
       icon: d11,
-      title: "Broachers Design",
+      title: "Brochures Design",
       description:
-        "Our brochure design services provide visually appealing and useful documents that successfully communicate your message. We create layouts and images that draw attention and convey your brand's essence."
-,
+        "Our brochure design services provide visually appealing and useful documents that successfully communicate your message. We create layouts and images that draw attention and convey your brand's essence.",
       iconSize: "w-14 h-14",
     },
     {
       icon: d12,
       title: "Printing",
       description:
-        "We offer high-quality, colourful prints that bring your designs to life. We guarantee accurate colour reproduction and quality finishes for all of your printing needs."
-,
+        "We offer high-quality, colourful prints that bring your designs to life. We guarantee accurate colour reproduction and quality finishes for all of your printing needs.",
       iconSize: "w-14 h-14",
     },
   ];
@@ -65,11 +61,10 @@ const DigitalMarketingSection = () => {
     <div className="flex flex-col bg-[#FDF8F3]">
       {/* Hero Section */}
       <div className="flex flex-col md:flex-row items-center justify-between p-4 md:p-8 bg-[#FAF9F6] md:ml-16">
-        {/* Image now comes first on mobile */}
         <div className="w-[250px] md:w-[408.89px] h-auto md:h-[269.97px] mt-8 md:mt-16 md:mr-16 order-first md:order-last">
           <img
             src={digital}
-            alt="Digital Marketing Illustration"
+            alt="Graphics Design Illustration"
             className="w-full h-full object-contain"
           />
         </div>
@@ -82,27 +77,31 @@ const DigitalMarketingSection = () => {
       </div>
 
       {/* Services Grid */}
-      <div className="container px-4 md:px-20 grid grid-cols-1 md:grid-cols-2 gap-y-16 md:gap-y-32 mt-24 md:mt-48 mb-16 md:mb-24">
-        {services.map((service, index) => (
-          <div
-            key={index}
-            className="w-full md:w-[595px] h-auto md:h-[340px] bg-[#FDF8F3] border-2 border-gray-300 rounded-tr-3xl p-4 md:p-6 relative group hover:bg-white hover:scale-105 transition-transform duration-300 mt-12 md:mt-5"
-          >
-            <div className="w-24 h-24 md:w-36 md:h-36 rounded-full bg-[#F6DCAB] absolute top-0 left-1/2 transform -translate-x-1/2 -mt-12 md:-mt-20 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
-              <img
-                alt={`${service.title} Icon`}
-                className={`${service.iconSize} object-cover transform transition-transform duration-300`}
-                src={service.icon}
-              />
+      <div className="container mx-auto px-4 md:px-8 lg:px-16 mt-24 md:mt-48 mb-16 md:mb-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-x-12 gap-y-24 max-w-6xl mx-auto">
+          {services.map((service, index) => (
+            <div
+              key={index}
+              className="relative bg-[#FDF8F3] border-2 border-gray-300 rounded-tr-3xl p-4 md:p-6 group hover:bg-white hover:scale-105 transition-transform duration-300"
+            >
+              <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-[#F6DCAB] absolute left-1/2 transform -translate-x-1/2 -top-12 md:-top-16 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+                <img
+                  alt={`${service.title} Icon`}
+                  className={`${service.iconSize} object-cover transform transition-transform duration-300`}
+                  src={service.icon}
+                />
+              </div>
+              <div className="pt-16 md:pt-20">
+                <h3 className="text-xl md:text-2xl font-semibold text-center">
+                  {service.title}
+                </h3>
+                <p className="text-sm md:text-base text-gray-800 text-center mt-4">
+                  {service.description}
+                </p>
+              </div>
             </div>
-            <h3 className="text-2xl md:text-4xl font-semibold text-center mt-16">
-              {service.title}
-            </h3>
-            <p className="text-base md:text-lg text-gray-800 text-center mt-4 md:mt-8">
-              {service.description}
-            </p>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       {/* Action Buttons */}
@@ -118,4 +117,4 @@ const DigitalMarketingSection = () => {
   );
 };
 
-export default DigitalMarketingSection;
+export default Graphics;

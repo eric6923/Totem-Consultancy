@@ -41,20 +41,22 @@ interface AnimationCardProps {
 }
 
 const AnimationCard: React.FC<AnimationCardProps> = ({ icon, title, description }) => (
-  <div className="w-full md:w-[595px] h-auto md:h-[340px] bg-[#FDF8F3] border-2 border-gray-300 rounded-tr-3xl p-4 md:p-6 relative group hover:bg-white hover:scale-105 transition-transform duration-300 mt-12 md:mt-5">
-    <div className="w-24 h-24 md:w-36 md:h-36 rounded-full bg-[#F6DCAB] absolute top-0 left-1/2 transform -translate-x-1/2 -mt-12 md:-mt-20 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+  <div className="relative bg-[#FDF8F3] border-2 border-gray-300 rounded-tr-3xl p-4 md:p-6 group hover:bg-white hover:scale-105 transition-transform duration-300">
+    <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-[#F6DCAB] absolute left-1/2 transform -translate-x-1/2 -top-12 md:-top-16 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
       <img
         alt={`${title} Icon`}
         className="w-14 h-14 object-cover transform transition-transform duration-300"
         src={icon}
       />
     </div>
-    <h3 className="text-2xl md:text-4xl font-semibold text-center mt-16">
-      {title}
-    </h3>
-    <p className="text-base md:text-lg text-gray-800 text-center mt-4 md:mt-8">
-      {description}
-    </p>
+    <div className="pt-16 md:pt-20">
+      <h3 className="text-xl md:text-2xl font-semibold text-center">
+        {title}
+      </h3>
+      <p className="text-sm md:text-base text-gray-800 text-center mt-4">
+        {description}
+      </p>
+    </div>
   </div>
 );
 
@@ -134,11 +136,11 @@ const CourseGrid: React.FC = () => {
       </div>
 
       {/* Animation Services Section */}
-      <div className="container px-4 md:px-20 mt-24">
+      <div className="container mx-auto px-4 md:px-8 lg:px-16 mt-24 md:mt-48 mb-16 md:mb-24">
         <h2 className="text-3xl md:text-5xl font-bold text-center mb-16">
           Why Choose Us !
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-y-16 md:gap-y-32 mb-16 ">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-x-12 gap-y-24 max-w-6xl mx-auto">
           {animationServices.map((service, index) => (
             <AnimationCard key={index} {...service} />
           ))}
