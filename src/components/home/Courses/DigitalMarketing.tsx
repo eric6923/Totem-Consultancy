@@ -15,7 +15,7 @@ const DigitalMarketingSection = () => {
   const services = [
     {
       icon: d1,
-      title: "Branding and Logo Design",
+      title: "Branding and Logo",
       description:
         "Our branding and logo design services create distinctive identities that leave a lasting impact. We create logos and brand elements that effectively communicate your values and set your company out in the marketplace.",
       iconSize: "w-24 h-24",
