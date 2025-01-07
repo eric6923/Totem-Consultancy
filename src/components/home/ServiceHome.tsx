@@ -36,8 +36,79 @@ const Service: React.FC = () => {
       image: marketingImg,
       path: "/digital",
     },
-    // ... rest of the services array remains the same
+    {
+      title: "Graphics Design",
+      description:
+        "Explore the world of digital marketing, graphic design, and UX/UI development to create visually attractive content that keeps the eye of the target audience.",
+      items: [
+        "Visual Branding",
+        "Content Creation",
+        "Social Media Design",
+        "Marketing Design",
+        "Web Design",
+      ],
+      image: graphicsDesignImg,
+      path: "/graphics",
+    },
+    {
+      title: "Media Production",
+      description:
+        "Throughout media advertising, video production is the process to produce enjoyable, informative, and interactive videos for business.",
+      items: [
+        "Scriptwriting",
+        "Pre-production",
+        "Filming",
+        "Editing",
+        "Animation",
+      ],
+      image: videoImg,
+      path: "/media",
+    },
+    {
+      title: "UI/UX Design",
+      description:
+        "A user-friendly and attractive interface ensures that your product looks more professional and is easy to navigate. UI/UX design ensures that the user's journey is smooth, relaxing, and satisfying.",
+      items: [
+        "Research",
+        "Flowchart",
+        "Wireframes",
+        "Prototype",
+        "Development",
+      ],
+      image: planningImg,
+      path: "/ui",
+    },
+    {
+      title: "Animation (2D & 3D)",
+      description:
+        "Animation has become an increasingly powerful tool for bringing your online marketing efforts to the cutting edge. Our 2D and 3D animation services are designed to create visually stunning content by crafting smooth, visually appealing, and highly effective animations.",
+      items: [
+        "Script Storyboarding",
+        "Modeling & Rigging",
+        "Plugin & Animation",
+        "Rendering",
+        "Architectural Visualization",
+        "Product Visualization",
+      ],
+      image: animationImg,
+      path: "/animation",
+    },
+    {
+      title: "Customized Courses",
+      description:
+        "Our customized courses are designed to provide you with specialized training in key areas of digital and creative industries. Each course is crafted by experts with years of experience.",
+      items: [
+        "Digital Marketing",
+        "Graphics Design",
+        "Web Design",
+        "Video Editing",
+      ],
+      image: empathizeImg,
+      path: "/courses",
+    },
   ];
+
+  
 
   const handleExplore = (path: string) => {
     navigate(path);
