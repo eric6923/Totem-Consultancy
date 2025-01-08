@@ -21,6 +21,7 @@ import Eventportfolio from './components/Works/Eventportfolio'
 import VideoEditingPortfolio from './components/Works/VideoEditingPortfolio'
 import PrivacyPolicy from './components/about/PrivacyPolicy';
 import Team from './components/about/Team'
+import WhatsAppButton from './components/home/WhatsAppButton';
 // Component to conditionally render headers based on the route
 function ConditionalHeader() {
   const location = useLocation(); // Access the current route
@@ -73,6 +74,7 @@ function App() {
         </main>
         {/* Conditionally render Footer */}
         <ConditionalFooter />
+        <WhatsAppButton/>
       </div>
     </Router>
   );
