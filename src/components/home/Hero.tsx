@@ -69,7 +69,8 @@ export default function Hero() {
 
       {/* Contact Form */}
       {showForm && (
-        <div className="fixed top-1/2 right-0 -translate-y-1/2 h-[550px] w-full lg:w-[400px] bg-white z-20 overflow-y-auto transition-transform duration-300 transform rounded-l-lg">
+        <div className="">
+          <div className=" top-1/2 m-auto right-[20px] -translate-y-1/2 h-[550px] w-[90%] lg:w-[400px] bg-white z-[999] overflow-y-auto transition-transform duration-300 transform rounded-l-lg absolute ">
           <button 
             onClick={() => setShowForm(false)}
             className="absolute top-4 right-4 text-black hover:text-gray-600"
@@ -134,6 +135,7 @@ export default function Hero() {
               </button>
             </div>
           </form>
+        </div>
         </div>
       )}
     </div>

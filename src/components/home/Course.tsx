@@ -41,7 +41,7 @@ const Course = () => {
       <div className="max-w-[1280px] mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-7xl font-semibold font-open-sans text-[60px] leading-[72px] text-gray-800 mb-4">Courses</h1>
+          <h1 className="text-7xl font-semibold font-open-sans text-[50px] leading-[72px] text-gray-800 mb-4">Courses</h1>
           <p className="text-base font-bold text-gray-600">
             Enhance your skills with our customized courses
           </p>

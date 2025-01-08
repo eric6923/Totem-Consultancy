@@ -31,7 +31,7 @@ const MarketingShowcase = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#FFF8F0] flex items-center justify-center py-12">
+    <div className="min-h-screen bg-[#FFF8F0] flex items-center justify-center py-12 -z-20">
       <div className="flex flex-col lg:flex-row items-stretch gap-8 w-full max-w-[1200px] mx-auto px-4">
         {/* Left Section */}
         <div className="w-full lg:w-[45%] bg-[#FFEFD2] rounded-lg p-8 flex flex-col h-auto">
