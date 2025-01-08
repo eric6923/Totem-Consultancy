@@ -42,7 +42,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, image, on
 const services = [
   {
     title: 'Digital Marketing',
-    description: 'Boost your brand\'s online presence with our data-driven digital marketing strategies, including SEO, SMM, PPC and more etc.',
+    description: 'Boost your brand\'s online presence with our data-driven digital marketing strategies, including SEO, SMM, PPC, etc.',
     image: digitalMarketingImg,
   },
   {
