@@ -21,23 +21,29 @@ const Footer: React.FC = () => {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbzih9R2STGT8AYFfquQIOgaxPkJzxc18UQzGX2w-mo4tZeCp4UOtNGWhBiWnuD0Px24fg/exec",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ name: "Test", email: "test@example.com" }),
-        }
-      );
+      setEmail(""); // Clear email immediately to indicate submission
+      
+      const response = await Promise.race([
+        fetch(
+          "https://script.google.com/macros/s/AKfycbxX0oTvmlmK9O5hfCGlS-6P_9WWmZf3WLFMR8KQVeeoXrEm9XzLENL0alIx2l5M0f5c9Q/exec",
+          {
+            method: "POST",
+            mode: 'no-cors',
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ 
+              name: "Newsletter Subscriber", 
+              email: email
+            }),
+          }
+        ),
+        new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Timeout')), 5000)
+        )
+      ]);
   
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-  
-      const data = await response.json();
-      console.log("Success:", data);
+      console.log("Form submitted successfully");
     } catch (error) {
       console.error("Error sending email:", error);
     }
