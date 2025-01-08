@@ -1,14 +1,52 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import LogoDesktop from "../home/assets/logo2.png";
 import LogoMobile from "../home/assets/logo.png";
 import emailjs from "@emailjs/browser";
+
+// Add type definition at the top
+declare global {
+  interface Window {
+    fbq: any;
+    _fbq: any;
+  }
+}
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showForm, setShowForm] = useState(false);
 
-  const handleSubmit = (e:any) => {
+  // Modified Meta Pixel initialization
+  useEffect(() => {
+    // Create fbq function if it doesn't exist
+    const fbq = function() {
+      // @ts-ignore
+      fbq.callMethod ? fbq.callMethod.apply(fbq, arguments) : fbq.queue.push(arguments);
+    };
+    
+    if (!window.fbq) {
+      window.fbq = fbq;
+      fbq.push = fbq;
+      fbq.loaded = true;
+      fbq.version = '2.0';
+      fbq.queue = [] as any[];
+    }
+
+    // Load the script
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://connect.facebook.net/en_US/fbevents.js';
+    const firstScript = document.getElementsByTagName('script')[0];
+    if (firstScript?.parentNode) {
+      firstScript.parentNode.insertBefore(script, firstScript);
+    }
+
+    // Initialize and track
+    window.fbq('init', '2412627795746465');
+    window.fbq('track', 'PageView');
+  }, []);
+
+  const handleSubmit = (e: any) => {
     e.preventDefault();
 
     const form = e.target;
@@ -26,16 +64,18 @@ export default function Header() {
 
     emailjs
       .send(
-        "service_1c60pxb", // Replace with your EmailJS service ID
-        "template_8poo3to", // Replace with your EmailJS template ID
+        "service_1c60pxb",
+        "template_8poo3to",
         templateParams,
-        "JgXqTuSD6d7Mf6-Li" // Replace with your EmailJS public key
+        "JgXqTuSD6d7Mf6-Li"
       )
       .then(
         (result) => {
           console.log("Email successfully sent!", result.text);
           alert("Message sent successfully!");
-          form.reset(); // Clear the form fields
+          form.reset();
+          // Track form submission
+          window.fbq('track', 'Lead');
         },
         (error) => {
           console.error("Error sending email:", error.text);
@@ -47,6 +87,16 @@ export default function Header() {
   return (
     <>
       <header className="absolute w-full z-40 py-4 px-6 bg-white md:bg-transparent">
+        <noscript>
+          <img
+            height="1"
+            width="1"
+            style={{ display: 'none' }}
+            src="https://www.facebook.com/tr?id=2412627795746465&ev=PageView&noscript=1"
+            alt=""
+          />
+        </noscript>
+
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
             <picture>
@@ -184,10 +234,7 @@ export default function Header() {
               </div>
 
               <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm text-black mb-1"
-                >
+                <label htmlFor="email" className="block text-sm text-black mb-1">
                   Email Address
                 </label>
                 <input
@@ -199,10 +246,7 @@ export default function Header() {
               </div>
 
               <div>
-                <label
-                  htmlFor="service"
-                  className="block text-sm text-black mb-1"
-                >
+                <label htmlFor="service" className="block text-sm text-black mb-1">
                   Service you are Interested in
                 </label>
                 <input
@@ -214,10 +258,7 @@ export default function Header() {
               </div>
 
               <div>
-                <label
-                  htmlFor="message"
-                  className="block text-sm text-black mb-1"
-                >
+                <label htmlFor="message" className="block text-sm text-black mb-1">
                   Message
                 </label>
                 <textarea

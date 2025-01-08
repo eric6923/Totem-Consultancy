@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
-import LogoDesktop from '../home/assets/logo.png';
-import LogoMobile from '../home/assets/logo.png';
+import { Link } from "react-router-dom";
+import { useState } from "react";
+import LogoDesktop from "../home/assets/logo.png";
+import LogoMobile from "../home/assets/logo.png";
 
 export default function Header2() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -17,48 +17,62 @@ export default function Header2() {
               {/* Mobile Logo */}
               <source media="(max-width: 768px)" srcSet={LogoMobile} />
               {/* Desktop Logo */}
-              <img
-                src={LogoDesktop}
-                alt="Totem Logo"
-                className="h-12 w-auto"
-              />
+              <img src={LogoDesktop} alt="Totem Logo" className="h-12 w-auto" />
             </picture>
           </Link>
 
           {/* Hamburger Icon for Mobile */}
           <button
-  className="md:hidden text-2xl"
-  onClick={() => setIsMenuOpen(!isMenuOpen)}
-  style={{ color: isMenuOpen ? 'red' : '#111827' }}
->
-  {isMenuOpen ? '✕' : '☰'}
-</button>
+            className="md:hidden text-2xl"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            style={{ color: isMenuOpen ? "red" : "#111827" }}
+          >
+            {isMenuOpen ? "✕" : "☰"}
+          </button>
 
           {/* Desktop Navigation and Button */}
           <div className="hidden md:flex items-center gap-8">
             <nav className="flex items-center gap-8">
-              <Link to="/" className="text-black hover:text-[#eac9a7] hover:underline font-medium">
+              <Link
+                to="/"
+                className="text-black hover:text-[#eac9a7] hover:underline font-medium"
+              >
                 Home
               </Link>
-              <Link to="/about" className="text-black hover:text-[#eac9a7] hover:underline font-medium">
+              <Link
+                to="/about"
+                className="text-black hover:text-[#eac9a7] hover:underline font-medium"
+              >
                 About
               </Link>
-              <Link to="/services" className="text-black hover:text-[#eac9a7] hover:underline font-medium">
+              <Link
+                to="/services"
+                className="text-black hover:text-[#eac9a7] hover:underline font-medium"
+              >
                 Services
               </Link>
-              <Link to="/projects" className="text-black hover:text-[#eac9a7] hover:underline font-medium">
+              <Link
+                to="/projects"
+                className="text-black hover:text-[#eac9a7] hover:underline font-medium"
+              >
                 Projects
               </Link>
-              <Link to="/gallery" className="text-black hover:text-[#eac9a7] hover:underline font-medium">
+              <Link
+                to="/gallery"
+                className="text-black hover:text-[#eac9a7] hover:underline font-medium"
+              >
                 Gallery
               </Link>
-              <Link to="/contact" className="text-black hover:text-[#eac9a7] hover:underline font-medium">
+              <Link
+                to="/contact"
+                className="text-black hover:text-[#eac9a7] hover:underline font-medium"
+              >
                 Contact
               </Link>
             </nav>
-            
+
             {/* Desktop-only Get Started Button */}
-            <button 
+            <button
               onClick={() => setShowForm(true)}
               className="bg-gray-900 text-white px-6 py-2.5 rounded hover:bg-gray-700 transition-colors font-medium"
             >
@@ -119,7 +133,7 @@ export default function Header2() {
       {/* Contact Form */}
       {showForm && (
         <div className="fixed top-1/2 right-0 -translate-y-1/2 h-[550px] w-full lg:w-[400px] bg-white z-50 overflow-y-auto transition-transform duration-300 transform rounded-l-lg">
-          <button 
+          <button
             onClick={() => setShowForm(false)}
             className="absolute top-4 right-4 text-black hover:text-gray-600"
           >
@@ -140,7 +154,10 @@ export default function Header2() {
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm text-black mb-1">
+                <label
+                  htmlFor="email"
+                  className="block text-sm text-black mb-1"
+                >
                   Email Address
                 </label>
                 <input
@@ -152,7 +169,10 @@ export default function Header2() {
               </div>
 
               <div>
-                <label htmlFor="service" className="block text-sm text-black mb-1">
+                <label
+                  htmlFor="service"
+                  className="block text-sm text-black mb-1"
+                >
                   Service you are Interested in
                 </label>
                 <input
@@ -164,7 +184,10 @@ export default function Header2() {
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-sm text-black mb-1">
+                <label
+                  htmlFor="message"
+                  className="block text-sm text-black mb-1"
+                >
                   Message
                 </label>
                 <textarea
