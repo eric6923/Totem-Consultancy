@@ -37,11 +37,10 @@ const MarketingShowcase = () => {
         <div className="w-full lg:w-[45%] bg-[#FFEFD2] rounded-lg p-8 flex flex-col h-auto">
           <div className="flex flex-col justify-center h-full py-4">
             <div className="space-y-6">
-              {/* Single h1 with responsive styling */}
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-snug">
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-snug text-center lg:text-center">
                 Empower Your Brand With Our Result-Driven Digital Marketing Agency
               </h1>
-              <p className="text-base md:text-lg text-gray-700">
+              <p className="text-base md:text-lg text-gray-700 text-center lg:text-center">
                 Strategies that can empower your brand and reach the maximum audience.
               </p>
               <ul className="space-y-4 pt-6">
@@ -61,13 +60,13 @@ const MarketingShowcase = () => {
 
         {/* Right Section */}
         <div className="w-full lg:w-[45%]">
-          <div className="grid grid-cols-2 gap-4 h-full">
+          <div className="grid grid-cols-2 gap-4">
             {marketingItems.map((item, index) => (
               <div 
                 key={index} 
                 className="relative overflow-hidden rounded-lg"
               >
-                <div className="aspect-square lg:aspect-auto lg:h-[220px]">
+                <div className="aspect-square">
                   <img
                     src={item.image}
                     alt={item.alt}
