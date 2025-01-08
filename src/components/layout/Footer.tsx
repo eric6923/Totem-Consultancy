@@ -31,7 +31,7 @@ const Footer: React.FC = () => {
   const bottomRoutes: RouteType[] = [
     { name: "Home", path: "/" },
     { name: "Team", path: "/team" },
-    { name: "Privacy & Policy", path: "/privacy-policy" },
+    { name: "Privacy & Policy", path: "/privacy" },
     { name: "Contact", path: "/contact" },
   ];
 

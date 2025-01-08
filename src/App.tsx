@@ -19,6 +19,8 @@ import GraphicWork from '../src/components/Works/GraphicWork'
 import Video from './components/Works/Video'
 import Eventportfolio from './components/Works/Eventportfolio'
 import VideoEditingPortfolio from './components/Works/VideoEditingPortfolio'
+import PrivacyPolicy from './components/about/PrivacyPolicy';
+import Team from './components/about/Team'
 // Component to conditionally render headers based on the route
 function ConditionalHeader() {
   const location = useLocation(); // Access the current route
@@ -62,6 +64,9 @@ function App() {
             <Route path="/video" element={<Video/>} />
             <Route path="/eventportfolio" element={<Eventportfolio/>} />
             <Route path="/videoeditingportfolio" element={<VideoEditingPortfolio/>} />
+            <Route path="/privacy" element={<PrivacyPolicy/>} />
+            <Route path="/team" element={<Team/>} />
+
 
 
           </Routes>
