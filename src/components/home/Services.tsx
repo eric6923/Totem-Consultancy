@@ -108,9 +108,10 @@ const Services: React.FC = () => {
   return (
     <div className="bg-[#FFEFD2] py-12 px-6  ">
       <div className="text-center space-y-6">
-        <h1 className="font-open-sans font-semibold text-[50px] leading-[72px] tracking-[0.01em] text-gray-800 md:mb-8">
-          What We Provide
-        </h1>
+      <h1 className="font-open-sans font-semibold text-[32px] leading-[38px] tracking-[0.01em] text-gray-800 md:text-[50px] md:leading-[72px] md:mb-8">
+  What We Provide
+</h1>
+
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 max-w-7xl mx-auto">
         {services.slice(0, 3).map((service, index) => (

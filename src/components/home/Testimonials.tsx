@@ -12,10 +12,11 @@ const Testimonials: React.FC = () => {
   return (
     <div className="py-12 px-6">
   <div className="text-center space-y-4">
-    <h1 className="text-5xl font-semibold font-open-sans mb-24 text-gray-800 mt-12">
-      Read what others <br />
-      <span>have to say</span>
-    </h1>
+  <h1 className="text-3xl font-semibold font-open-sans leading-[38px] text-gray-800 md:text-5xl md:leading-[56px] mb-20 mt-12">
+  Read what others <br />
+  <span>have to say</span>
+</h1>
+
   </div>
 
   <div className="flex flex-col sm:flex-row justify-center gap-8 mt-12">

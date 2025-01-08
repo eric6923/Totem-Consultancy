@@ -9,10 +9,10 @@ const Event: React.FC = () => {
     <div className="py-12 px-4 md:px-6 bg-[#FDF8F3] min-h-screen">
       {/* Title Section */}
       <div className="text-center space-y-6">
-        <h1 className="text-4xl md:text-4xl lg:text-5xl text-[50px] leading-[58px] text-gray-800 font-semibold font-open-sans sm:mb-4">
-          Event Management
-        </h1>
-      </div>
+  <h1 className="text-3xl font-semibold font-open-sans text-[32px] leading-[40px] text-gray-800 md:text-[50px] md:leading-[58px] sm:mb-4">
+    Event Management
+  </h1>
+</div>
 
       {/* Image Section */}
       <div className="text-center mt-8 md:mt-14 px-4 md:px-0">
@@ -24,10 +24,11 @@ const Event: React.FC = () => {
       </div>
 
       {/* Features Section */}
-      <div className="bg-[#FFEFD2] p-6 md:p-8 text-black w-full flex flex-col gap-10  justify-between items-start rounded-2xl mt-12 md:mt-20 mb-12 md:mb-20 space-y-8 md:space-y-0 md:space-x-8">
-        <div className="text-4xl font-semibold font-open-sans text-[50px] text-gray-800 flex justify-center w-full">
-          <h1>Why We !</h1>
-        </div>
+      <div className="bg-[#FFEFD2] p-6 md:p-8 text-black w-full flex flex-col gap-10  justify-between items-start rounded-2xl mt-12 md:mt-20 mb-12 md:mb-20 space-y-0 md:space-y-4 md:space-x-8">
+      <div className="text-4xl font-semibold font-open-sans text-[32px] leading-[40px] text-gray-800 md:text-[50px] md:leading-[58px] flex justify-center w-full">
+  <h1>Why We !</h1>
+</div>
+
         <div className="flex gap-4 flex-col md:flex-row">
           {/* Easy Peasy Pricing */}
           <div className="flex gap-4 md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-6 w-full md:w-1/3">
