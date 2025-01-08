@@ -61,7 +61,7 @@ export default function Hero() {
         loop
         playsInline
       >
-        <source src="https://asset.cloudinary.com/dgagkq1cs/56d0d3c28aca647e06b6c723202d0993" type="video/mp4" />
+        <source src="https://res.cloudinary.com/dgagkq1cs/video/upload/v1736333395/loading_hfjoq1.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
 
