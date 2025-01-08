@@ -7,6 +7,7 @@ import Course from '../components/home/Course';
 import Event from '../components/home/Event';
 import Activities from '../components/home/Activities';
 import Testimonials from '../components/home/Testimonials';
+import WhatsAppButton from '../components/home/WhatsAppButton';
 // import loadingVideo from '../components/home/assets/loading.mp4';
 
 export default function Home() {
@@ -27,6 +28,7 @@ export default function Home() {
         <Activities />
         <Testimonials />
       </div>
+      <WhatsAppButton/>
     </div>
   );
 }

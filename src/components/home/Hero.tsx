@@ -34,10 +34,8 @@ export default function Hero() {
           <div className="max-w-3xl mt-0 lg:mt-16 text-center lg:text-left">
             <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold mb-6 leading-tight">
               <span className="block lg:hidden">
-                We<br />
-                Empower<br />
-                Brands<br />
-                and<br />
+                We Empower<br />
+                Brands and<br />
                 Individuals
               </span>
               <span className="hidden lg:block">
