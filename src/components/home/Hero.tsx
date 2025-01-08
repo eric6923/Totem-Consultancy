@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-import video from "../home/assets/loading.mp4";
+
 import emailjs from "@emailjs/browser";
 
 export default function Hero() {
@@ -61,7 +61,7 @@ export default function Hero() {
         loop
         playsInline
       >
-        <source src={video} type="video/mp4" />
+        <source src="https://asset.cloudinary.com/dgagkq1cs/56d0d3c28aca647e06b6c723202d0993" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
 
