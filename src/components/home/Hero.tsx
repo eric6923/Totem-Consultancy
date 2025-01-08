@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 import video from "../home/assets/loading.mp4";
+import emailjs from "@emailjs/browser";
 
 export default function Hero() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -12,6 +13,42 @@ export default function Hero() {
       });
     }
   }, []);
+
+  const handleSubmit = (e:any) => {
+    e.preventDefault();
+
+    const form = e.target;
+    const name = form.name.value;
+    const email = form.email.value;
+    const service = form.service.value;
+    const message = form.message.value;
+
+    const templateParams = {
+      name,
+      email,
+      service,
+      message,
+    };
+
+    emailjs
+      .send(
+        "service_1c60pxb", // Replace with your EmailJS service ID
+        "template_8poo3to", // Replace with your EmailJS template ID
+        templateParams,
+        "JgXqTuSD6d7Mf6-Li" // Replace with your EmailJS public key
+      )
+      .then(
+        (result) => {
+          console.log("Email successfully sent!", result.text);
+          alert("Message sent successfully!");
+          form.reset(); // Clear the form fields
+        },
+        (error) => {
+          console.error("Error sending email:", error.text);
+          alert("Failed to send the message. Please try again.");
+        }
+      );
+  };
 
   return (
     <div className="relative bg-black text-white min-h-screen flex items-center">
@@ -77,7 +114,7 @@ export default function Hero() {
           >
             ✕
           </button>
-          <form className="p-4 mt-10">
+          <form className="p-4 mt-10" onSubmit={handleSubmit}>
             <div className="space-y-4">
               <div>
                 <label htmlFor="name" className="block text-sm text-black mb-1">
