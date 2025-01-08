@@ -31,12 +31,12 @@ export default function Hero() {
     };
 
     emailjs
-      .send(
-        "service_1c60pxb", // Replace with your EmailJS service ID
-        "template_8poo3to", // Replace with your EmailJS template ID
-        templateParams,
-        "JgXqTuSD6d7Mf6-Li" // Replace with your EmailJS public key
-      )
+    .send(
+      "service_52wf8so", // Replace with your EmailJS service ID
+      "template_l889yux", // Replace with your EmailJS template ID
+      templateParams,
+      "4uNPbbh4mrwY7kIYa" // Replace with your EmailJS public key
+    )
       .then(
         (result) => {
           console.log("Email successfully sent!", result.text);
