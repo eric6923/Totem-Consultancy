@@ -67,9 +67,6 @@ function App() {
             <Route path="/videoeditingportfolio" element={<VideoEditingPortfolio/>} />
             <Route path="/privacy" element={<PrivacyPolicy/>} />
             <Route path="/team" element={<Team/>} />
-
-
-
           </Routes>
         </main>
         {/* Conditionally render Footer */}
