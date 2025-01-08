@@ -126,11 +126,21 @@ const Footer: React.FC = () => {
               <div className="space-y-2">
                 <div className="flex items-center space-x-2">
                   <Mail size={20} className="text-gray-900" />
-                  <p className="text-lg font-bold">totemmangement@gmail.com</p>
+                  <a
+                    href="mailto:totemmangement@gmail.com"
+                    className="text-lg font-bold hover:underline"
+                  >
+                    totemmangement@gmail.com
+                  </a>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Mail size={20} className="text-gray-900" />
-                  <p className="text-lg font-bold">info@totemservices.org</p>
+                  <a
+                    href="mailto:info@totemservices.org"
+                    className="text-lg font-bold hover:underline"
+                  >
+                    info@totemservices.org
+                  </a>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Phone size={20} className="text-gray-900" />
@@ -192,41 +202,41 @@ const Footer: React.FC = () => {
         {/* Bottom Section */}
         {/* Bottom Section */}
         <div className="my-8 border-t border-gray-500" />
-<div className="flex flex-col sm:flex-row text-sm">
-  {/* Copyright - First on mobile, second on desktop */}
-  <div className="text-center sm:flex-1 order-1 sm:order-2 mb-4 sm:mb-0">
-    <p>&copy; 2025 - Totem Management &amp; Consultancy</p>
-  </div>
+        <div className="flex flex-col sm:flex-row text-sm">
+          {/* Copyright - First on mobile, second on desktop */}
+          <div className="text-center sm:flex-1 order-1 sm:order-2 mb-4 sm:mb-0">
+            <p>&copy; 2025 - Totem Management &amp; Consultancy</p>
+          </div>
 
-  {/* Navigation Links - Second on mobile, first on desktop */}
-  <div className="space-x-4 text-center sm:flex-1 order-2 sm:order-1 mb-4 sm:mb-0">
-    {bottomRoutes.map((route) => (
-      <Link
-        key={route.name}
-        to={route.path}
-        className="hover:underline cursor-pointer"
-        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      >
-        {route.name}
-      </Link>
-    ))}
-  </div>
+          {/* Navigation Links - Second on mobile, first on desktop */}
+          <div className="space-x-4 text-center sm:flex-1 order-2 sm:order-1 mb-4 sm:mb-0">
+            {bottomRoutes.map((route) => (
+              <Link
+                key={route.name}
+                to={route.path}
+                className="hover:underline cursor-pointer"
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              >
+                {route.name}
+              </Link>
+            ))}
+          </div>
 
-  {/* Developed by - Last on both mobile and desktop */}
-  <div className="text-center sm:flex-1 order-3 mb-4 sm:mb-0">
-    <p>
-      Developed with ❤ By{" "}
-      <a
-        href="https://wa.me/917992193730"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="font-bold hover:text-blue-600 transition-colors"
-      >
-        ANOVAS
-      </a>
-    </p>
-  </div>
-</div>
+          {/* Developed by - Last on both mobile and desktop */}
+          <div className="text-center sm:flex-1 order-3 mb-4 sm:mb-0">
+            <p>
+              Developed with ❤ By{" "}
+              <a
+                href="https://wa.me/917992193730"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-bold hover:text-blue-600 transition-colors"
+              >
+                ANOVAS
+              </a>
+            </p>
+          </div>
+        </div>
       </footer>
     </>
   );

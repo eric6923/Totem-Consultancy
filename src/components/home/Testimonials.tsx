@@ -12,7 +12,7 @@ const Testimonials: React.FC = () => {
   return (
     <div className="py-12 px-6">
   <div className="text-center space-y-4">
-    <h1 className="text-4xl font-bold mb-24 text-gray-900 mt-12">
+    <h1 className="text-5xl font-semibold font-open-sans mb-24 text-gray-800 mt-12">
       Read what others <br />
       <span>have to say</span>
     </h1>
