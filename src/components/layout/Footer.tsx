@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import { Mail, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import Logo from "../home/assets/logo.png";
@@ -17,6 +17,32 @@ interface SocialType {
 
 const Footer: React.FC = () => {
   // const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch(
+        "https://script.google.com/macros/s/AKfycbzih9R2STGT8AYFfquQIOgaxPkJzxc18UQzGX2w-mo4tZeCp4UOtNGWhBiWnuD0Px24fg/exec",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name: "Test", email: "test@example.com" }),
+        }
+      );
+  
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+  
+      const data = await response.json();
+      console.log("Success:", data);
+    } catch (error) {
+      console.error("Error sending email:", error);
+    }
+  };
+  
 
   // Define routes configuration
   const mainRoutes: RouteType[] = [
@@ -85,30 +111,33 @@ const Footer: React.FC = () => {
           </p>
         </div>
         <div className="flex justify-center mt-8">
-          <div className="relative flex w-full max-w-sm">
-            <input
-              placeholder="Enter your email address"
-              className="w-full h-16 px-6 py-4 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-900 pr-16 text-gray-800"
-              type="email"
-            />
-            <button
-              className="absolute right-3 h-12 mt-2 aspect-square bg-[#0072bc] text-white rounded-full flex items-center justify-center hover:bg-blue-700"
-              aria-label="Subscribe"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <polyline points="9 18 15 12 9 6" />
-              </svg>
-            </button>
-          </div>
+        <div className="relative flex w-full max-w-sm">
+        <input
+          placeholder="Enter your email address"
+          className="w-full h-16 px-6 py-4 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-900 pr-16 text-gray-800"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <button
+          className="absolute right-3 h-12 mt-2 aspect-square bg-[#0072bc] text-white rounded-full flex items-center justify-center hover:bg-blue-700"
+          aria-label="Subscribe"
+          onClick={handleSubmit}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </button>
+      </div>
         </div>
       </div>
 
