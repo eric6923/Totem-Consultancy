@@ -23,6 +23,7 @@ import PrivacyPolicy from './components/about/PrivacyPolicy';
 import Team from './components/about/Team'
 import WhatsAppButton from './components/home/WhatsAppButton';
 import Chatbot from './components/Chatbot/Chatbot';
+// import Chatbot from './components/Chatbot/Chatbot';
 // Component to conditionally render headers based on the route
 function ConditionalHeader() {
   const location = useLocation(); // Access the current route
@@ -68,12 +69,13 @@ function App() {
             <Route path="/videoeditingportfolio" element={<VideoEditingPortfolio/>} />
             <Route path="/privacy" element={<PrivacyPolicy/>} />
             <Route path="/team" element={<Team/>} />
-            <Route path="/chat" element={<Chatbot/>} />
+            {/* <Route path="/chat" element={<Chatbot/>} /> */}
           </Routes>
         </main>
         {/* Conditionally render Footer */}
         <ConditionalFooter />
         <WhatsAppButton/>
+        <Chatbot/>
       </div>
     </Router>
   );
