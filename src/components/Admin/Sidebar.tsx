@@ -146,17 +146,21 @@ export default function Sidebar({
 
         {/* Website Preview */}
         <Link
-          to="/admin/website-preview"
-          className={`flex items-center w-full p-3 rounded-lg transition-colors ${
-            currentPath === "/website-preview"
-              ? "bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400"
-              : "text-gray-600 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700"
-          }`}
-          onClick={() => setSidebarOpen(false)}
-        >
-          <LayoutDashboard size={20} />
-          <span className="ml-3">Website Preview</span>
-        </Link>
+  to="#"
+  className={`flex items-center w-full p-3 rounded-lg transition-colors ${
+    currentPath === "/admin/website-preview"
+      ? "bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400"
+      : "text-gray-600 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700"
+  }`}
+  onClick={(e) => {
+    e.preventDefault();
+    setSidebarOpen(false);
+    window.open('https://totem-consultancy.vercel.app/', '_blank');
+  }}
+>
+  <LayoutDashboard size={20} />
+  <span className="ml-3">Website Preview</span>
+</Link>
 
         {/* Bottom Actions */}
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 dark:border-gray-700">
