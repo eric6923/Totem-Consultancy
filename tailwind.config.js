@@ -4,6 +4,7 @@ export default {
   theme: {
     extend: {},
   },
+  darkMode:'class',
   plugins: [],
   animation: {
     fadeIn: 'fadeIn 0.3s ease-in-out',
