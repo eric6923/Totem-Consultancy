@@ -162,7 +162,7 @@ export default function Sidebar({
         </Link>
 
         {/* Bottom Actions */}
-        <div className="fixed bottom-0 left-0 w-[280px] p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+        <div className="fixed bottom-0 left-0 w-[280px] p-4  border-gray-200  bg-white dark:bg-gray-800">
           <button
             onClick={() => navigate("/admin/settings")}
             className="flex items-center w-full p-3 text-gray-600 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg"
