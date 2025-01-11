@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Globe, UserPlus, KeyRound, ChevronDown } from 'lucide-react';
 
 const SettingsPage = () => {
