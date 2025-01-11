@@ -12,6 +12,7 @@ import {
   LogOut,
   X,
 } from "lucide-react";
+import { History } from "lucide-react";
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -131,14 +132,14 @@ export default function Sidebar({
         {/* Recent Activity */}
         <Link
           to="/admin/recent-activity"
-          className={`flex items-center w-full p-3 rounded-lg transition-colors mt-6 ${
+          className={`flex items-center w-full p-3 rounded-lg transition-colors  ${
             currentPath === "/recent-activity"
               ? "bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400"
               : "text-gray-600 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700"
           }`}
           onClick={() => setSidebarOpen(false)}
         >
-          <Award size={20} />
+          <History size={20} />
           <span className="ml-3">Recent Activity</span>
         </Link>
 

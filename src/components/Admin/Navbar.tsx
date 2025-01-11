@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from "react";
 import { Menu, Bell, Sun, Moon, Settings, LogOut } from "lucide-react";
-import profile from './assets/assets/profile.png'
+import profile from "./assets/assets/profile.png";
 
 interface NavbarProps {
   sidebarOpen: boolean;
@@ -30,13 +30,16 @@ export default function Navbar({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsDropdownOpen(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
@@ -50,14 +53,12 @@ export default function Navbar({
           >
             <Menu size={24} />
           </button>
-          
+
           {/* Brand/Logo - Visible in desktop */}
           <div className="hidden lg:block text-xl font-semibold text-gray-800 dark:text-white">
             Your Brand
           </div>
         </div>
-
-        
 
         {/* Right side - Icons and Profile */}
         <div className="flex items-center gap-2 lg:gap-4">
@@ -71,28 +72,27 @@ export default function Navbar({
               <Moon className="h-6 w-6 text-gray-800 dark:text-gray-200" />
             )}
           </button>
-          
+
           <button className="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg relative">
             <Bell size={20} />
             <span className="absolute top-0 right-0 h-5 w-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
               1
             </span>
           </button>
-          
+
           {/* Profile Dropdown */}
           <div className="relative" ref={dropdownRef}>
-            <button 
+            <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               className="flex items-center gap-2 focus:outline-none"
             >
-              <img 
-                src={profile} 
+              <img
+                src={profile}
                 alt="Profile"
-                className="h-7 w-7 rounded-full cursor-pointer hover:ring-2 hover:ring-gray-300 transition-all object-cover" 
+                className="h-7 w-7 rounded-full cursor-pointer hover:ring-2 hover:ring-gray-300 transition-all object-cover"
               />
-              
             </button>
-            
+
             {isDropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-1 z-50 border border-gray-200 dark:border-gray-700">
                 <button
