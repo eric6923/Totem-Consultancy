@@ -90,7 +90,7 @@ export default function Sidebar({
         </button>
       </div>
 
-      <nav className="mt-8 px-4 pb-28 overflow-y-auto">
+      <nav className="mt-3 px-4 pb-28 overflow-y-auto">
         {/* Dashboard */}
         <Link
           to="/admin/dashboard"
@@ -106,12 +106,12 @@ export default function Sidebar({
         </Link>
 
         {/* Quick Actions Section */}
-        <div className="mb-3 px-3">
+        <div className="mb-1 md:mb-3 px-3">
           <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
             Quick Actions
           </h2>
         </div>
-        <div className="space-y-1">
+        <div className="">
           {quickActions.map((action) => (
             <Link
               key={action.path}
