@@ -1,17 +1,19 @@
 import { useState } from "react";
 import { Pencil, Trash2, Plus, X } from "lucide-react";
-import { useDropzone } from 'react-dropzone';
+import { useDropzone } from "react-dropzone";
 
 interface TeamMember {
   id: number;
   name: string;
   role: string;
+  price: string;
   imageUrl: string;
 }
 
 interface NewMember {
   name: string;
   role: string;
+  price: string;
   imageUrl: string;
 }
 
@@ -19,8 +21,9 @@ const TeamMemberComponent = () => {
   const [members, setMembers] = useState<TeamMember[]>([
     {
       id: 1,
-      name: "John Doe",
-      role: "Software Engineer",
+      name: "Animation",
+      role: "(6 Months Duration)",
+      price: "₹ 25000",
       imageUrl: "/api/placeholder/128/128",
     },
   ]);
@@ -30,6 +33,7 @@ const TeamMemberComponent = () => {
   const [newMember, setNewMember] = useState<NewMember>({
     name: "",
     role: "",
+    price: "",
     imageUrl: "/api/placeholder/128/128",
   });
 
@@ -42,6 +46,7 @@ const TeamMemberComponent = () => {
     setNewMember({
       name: member.name,
       role: member.role,
+      price: member.price,
       imageUrl: member.imageUrl,
     });
     setIsModalOpen(true);
@@ -52,6 +57,7 @@ const TeamMemberComponent = () => {
     setNewMember({
       name: "",
       role: "",
+      price: "",
       imageUrl: "/api/placeholder/128/128",
     });
     setIsModalOpen(true);
@@ -75,6 +81,7 @@ const TeamMemberComponent = () => {
     setNewMember({
       name: "",
       role: "",
+      price: "",
       imageUrl: "/api/placeholder/128/128",
     });
     setEditingMember(null);
@@ -88,11 +95,11 @@ const TeamMemberComponent = () => {
     };
     reader.readAsDataURL(file);
   };
-  
-  const { getRootProps, getInputProps } = useDropzone({ 
+
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: {
-      'image/*': ['.jpeg', '.jpg', '.png', '.gif']
+      "image/*": [".jpeg", ".jpg", ".png", ".gif"],
     },
     maxSize: 5242880, // 5MB
   });
@@ -113,7 +120,7 @@ const TeamMemberComponent = () => {
           className="w-full sm:w-auto flex items-center justify-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-blue-500/20"
         >
           <Plus className="w-5 h-5" />
-          Add Catalogue
+          Add Logs
         </button>
       </div>
 
@@ -153,8 +160,11 @@ const TeamMemberComponent = () => {
               <h3 className="text-lg sm:text-xl font-semibold uppercase text-blue-400">
                 {member.name}
               </h3>
-              <p className="mt-4 text-sm sm:text-base text-gray-300 leading-relaxed">
+              <p className="mt-2 text-sm sm:text-base text-gray-300 leading-relaxed">
                 {member.role}
+              </p>
+              <p className="mt-2 text-sm sm:text-base text-gray-300 leading-relaxed">
+                {member.price}
               </p>
             </div>
           </div>
@@ -171,7 +181,7 @@ const TeamMemberComponent = () => {
               <X className="w-6 h-6" />
             </button>
             <h2 className="text-2xl font-bold text-blue-400 mb-6">
-              {editingMember ? "Edit Member" : "Add New Member"}
+              {editingMember ? "Edit Pricing" : "Add New pricing"}
             </h2>
             <div className="space-y-6">
               <div>
@@ -210,19 +220,19 @@ const TeamMemberComponent = () => {
               </div>
               <div>
                 <label
-                  htmlFor="imageUrl"
+                  htmlFor="price"
                   className="block text-sm font-medium text-blue-300 mb-2"
                 >
                   Price
                 </label>
                 <input
-                  id="imageUrl"
+                  id="price"
                   className="w-full px-4 py-3 bg-black/50 text-white rounded-lg border border-blue-900 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all duration-200"
-                  
+                  value={newMember.price}
                   onChange={(e) =>
-                    setNewMember({ ...newMember, imageUrl: e.target.value })
+                    setNewMember({ ...newMember, price: e.target.value })
                   }
-                  placeholder="Enter Price Amount"
+                  placeholder="Enter Price"
                 />
               </div>
               <div>
@@ -235,7 +245,10 @@ const TeamMemberComponent = () => {
                 >
                   <input {...getInputProps()} />
                   <p className="text-sm text-blue-300">
-                    Drag & drop an image here, or <span className="text-blue-500 underline">click to select</span>
+                    Drag & drop an image here, or{" "}
+                    <span className="text-blue-500 underline">
+                      click to select
+                    </span>
                   </p>
                 </div>
               </div>

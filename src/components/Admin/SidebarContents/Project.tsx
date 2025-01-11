@@ -5,13 +5,11 @@ import { useDropzone } from "react-dropzone";
 interface TeamMember {
   id: number;
   name: string;
-  role: string;
   imageUrl: string;
 }
 
 interface NewMember {
   name: string;
-  role: string;
   imageUrl: string;
 }
 
@@ -19,8 +17,7 @@ const TeamMemberComponent = () => {
   const [members, setMembers] = useState<TeamMember[]>([
     {
       id: 1,
-      name: "John Doe",
-      role: "Software Engineer",
+      name: "Graphics Design",
       imageUrl: "/api/placeholder/128/128",
     },
   ]);
@@ -29,7 +26,6 @@ const TeamMemberComponent = () => {
   const [editingMember, setEditingMember] = useState<TeamMember | null>(null);
   const [newMember, setNewMember] = useState<NewMember>({
     name: "",
-    role: "",
     imageUrl: "/api/placeholder/128/128",
   });
 
@@ -41,7 +37,6 @@ const TeamMemberComponent = () => {
     setEditingMember(member);
     setNewMember({
       name: member.name,
-      role: member.role,
       imageUrl: member.imageUrl,
     });
     setIsModalOpen(true);
@@ -51,7 +46,6 @@ const TeamMemberComponent = () => {
     setEditingMember(null);
     setNewMember({
       name: "",
-      role: "",
       imageUrl: "/api/placeholder/128/128",
     });
     setIsModalOpen(true);
@@ -74,7 +68,6 @@ const TeamMemberComponent = () => {
     setIsModalOpen(false);
     setNewMember({
       name: "",
-      role: "",
       imageUrl: "/api/placeholder/128/128",
     });
     setEditingMember(null);
@@ -102,10 +95,10 @@ const TeamMemberComponent = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0 mb-16">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold text-blue-600">
-            Manage Team
+            Manage Projects
           </h1>
           <p className="text-sm sm:text-base text-gray-600 mt-2">
-            Add, edit, or remove team members
+            Add, edit, or remove projects
           </p>
         </div>
         <button
@@ -113,7 +106,7 @@ const TeamMemberComponent = () => {
           className="w-full sm:w-auto flex items-center justify-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-blue-500/20"
         >
           <Plus className="w-5 h-5" />
-          Add Member
+          Add Project
         </button>
       </div>
 
@@ -153,9 +146,6 @@ const TeamMemberComponent = () => {
               <h3 className="text-lg sm:text-xl font-semibold uppercase text-blue-400">
                 {member.name}
               </h3>
-              <p className="mt-4 text-sm sm:text-base text-gray-300 leading-relaxed">
-                {member.role}
-              </p>
             </div>
           </div>
         ))}
@@ -171,7 +161,7 @@ const TeamMemberComponent = () => {
               <X className="w-6 h-6" />
             </button>
             <h2 className="text-2xl font-bold text-blue-400 mb-6">
-              {editingMember ? "Edit Member" : "Add New Member"}
+              {editingMember ? "Edit Project" : "Add New Project"}
             </h2>
             <div className="space-y-6">
               <div>
@@ -188,24 +178,7 @@ const TeamMemberComponent = () => {
                   onChange={(e) =>
                     setNewMember({ ...newMember, name: e.target.value })
                   }
-                  placeholder="Enter member's name"
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="role"
-                  className="block text-sm font-medium text-blue-300 mb-2"
-                >
-                  Role
-                </label>
-                <input
-                  id="role"
-                  className="w-full px-4 py-3 bg-black/50 text-white rounded-lg border border-blue-900 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all duration-200"
-                  value={newMember.role}
-                  onChange={(e) =>
-                    setNewMember({ ...newMember, role: e.target.value })
-                  }
-                  placeholder="Enter member's role"
+                  placeholder="Enter project name"
                 />
               </div>
               <div>

@@ -10,7 +10,7 @@ import Project from './components/Admin/SidebarContents/Project';
 import Certificate from './components/Admin/SidebarContents/Certificate';
 import RecentActivity from './components/Admin/SidebarContents/RecentActivity';
 import Login from './components/Admin/Login';
-
+import Settings from './components/Admin/SidebarContents/Settings'
 interface LayoutProps {
   darkMode: boolean;
   setDarkMode: (dark: boolean) => void;
@@ -64,6 +64,7 @@ const AdminRoutes = ({ darkMode, setDarkMode }: LayoutProps) => {
               <Route path="/new-project" element={<Project />} />
               <Route path="/certificate" element={<Certificate />} />
               <Route path="/recent-activity" element={<RecentActivity />} />
+              <Route path="/settings" element={<Settings />} />
             </Routes>
           </div>
         </main>
