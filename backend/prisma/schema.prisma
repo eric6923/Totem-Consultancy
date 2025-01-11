@@ -67,7 +67,6 @@ model ProjectCategory {
 model Project {
   id             String            @id @default(uuid())
   mediaUrl       String            // URL of the media (image or video)
-  mediaType      String            // Type of media: "image" or "video"
   categoryId     String
   category       ProjectCategory   @relation("CategoryProjects", fields: [categoryId], references: [id])
   createdAt      DateTime          @default(now())

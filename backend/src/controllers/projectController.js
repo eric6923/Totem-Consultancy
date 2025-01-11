@@ -2,13 +2,12 @@ import prisma from "../../prisma/client.js";
 
 
 export const createProject = async (req, res) => {
-    const { mediaUrl, mediaType, categoryId } = req.body;
+    const { mediaUrl, categoryId } = req.body;
   
     try {
       const newProject = await prisma.project.create({
         data: {
           mediaUrl,
-          mediaType,
           categoryId,
         },
       });
