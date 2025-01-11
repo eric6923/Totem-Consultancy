@@ -8,28 +8,59 @@ import img6 from './assets/Group 9099.png'
 import img7 from './assets/Group 9099 (1).png'
 import img8 from './assets/Group 9099 (2).png'
 import img9 from './assets/Group 9099 (3).png'
-import img10 from './assets/Rectangle 182.png'
-import img11 from './assets/Rectangle 183.png'
-import img12 from './assets/Rectangle 184.png'
-import img13 from './assets/Rectangle 185.png'
-import img14 from './assets/Mask group.png'
-import img15 from './assets/Mask group (1).png'
-import img16 from './assets/Mask group (2).png'
-import img17 from './assets/Mask group (3).png'
+import { useState, useEffect } from 'react'
 import vid from './assets/-c828-4e00-a8e4-183c9a79137c.mp4'
 import img18 from  './assets/brain.png'
 
+interface TeamMember {
+  profileUrl: string;
+  name: string;
+  designation: string;
+}
+
 const About = () => {
-  const team = [
-    { name: "Parveen Sharma", role: "CEO", img: img13 },
-    { name: "Arupama Rana", role: "Designer", img: img12 },
-    { name: "Chandan Nain", role: "Developer", img: img14 },
-    { name: "Ashok", role: "Digital Manager", img: img10 },
-    { name: "Rinku Bhargava", role: "Video Editor", img: img11 },
-    { name: "Khushi Parashar", role: "Digital Marketer", img: img15 },
-    { name: "Shubham", role: "Graphics Designer", img: img16 },
-    { name: "Taryn Sagar", role: "Photographer", img: img17 },
-  ];
+  const [team, setTeam] = useState<TeamMember[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+  
+    useEffect(() => {
+      const fetchTeam = async () => {
+        try {
+          const response = await fetch('https://totem-consultancy-alpha.vercel.app/api/team');
+          if (!response.ok) {
+            throw new Error('Failed to fetch team data');
+          }
+          const data: TeamMember[] = await response.json();
+          setTeam(data);
+          setIsLoading(false);
+        } catch (err) {
+          setError(err instanceof Error ? err.message : 'An error occurred');
+          setIsLoading(false);
+        }
+      };
+  
+      fetchTeam();
+    }, []);
+  
+    if (isLoading) {
+      return (
+        <section className="py-8 md:py-16 bg-[#faf9f6]">
+          <div className="container mx-auto px-4 max-w-[824px]">
+            <p className="text-center">Loading team members...</p>
+          </div>
+        </section>
+      );
+    }
+  
+    if (error) {
+      return (
+        <section className="py-8 md:py-16 bg-[#faf9f6]">
+          <div className="container mx-auto px-4 max-w-[824px]">
+            <p className="text-center text-red-500">Error: {error}</p>
+          </div>
+        </section>
+      );
+    }
 
   return (
     <div className="w-full min-h-screen bg-[#faf9f6] ">
@@ -244,28 +275,28 @@ const About = () => {
 </div>
 
 
-      <section className="py-8 md:py-16 bg-[#faf9f6]">
-        <div className="container mx-auto px-4 max-w-[824px] bg-[#faf9f6]">
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12">
-            Meet Our Team
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {team.map((member, index) => (
-              <div key={index} className="text-center">
-                <img
-                  src={member.img}
-                  alt={member.name}
-                  className="w-[140px] md:w-[191px] h-[140px] md:h-[191px] mx-auto mb-4 object-cover"
-                />
-                <h3 className="font-semibold w-full md:w-[191px] h-auto md:h-[29px]">
-                  {member.name}
-                </h3>
-                <p className="text-gray-600">{member.role}</p>
-              </div>
-            ))}
-          </div>
+<section className="py-8 md:py-16 bg-[#faf9f6]">
+      <div className="container mx-auto px-4 max-w-[824px] bg-[#faf9f6]">
+        <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12">
+          Meet Our Team
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {team.map((member, index) => (
+            <div key={index} className="text-center">
+              <img
+                src={member.profileUrl}
+                alt={member.name}
+                className="w-[140px] md:w-[191px] h-[140px] md:h-[191px] mx-auto mb-4 object-cover rounded-lg"
+              />
+              <h3 className="font-semibold w-full md:w-[191px] h-auto md:h-[29px]">
+                {member.name}
+              </h3>
+              <p className="text-gray-600">{member.designation}</p>
+            </div>
+          ))}
         </div>
-      </section>
+      </div>
+    </section>
     </div>
   );
 };

@@ -1,17 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Lock, Mail, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/admin/login');
+    }
+  }, [navigate]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic here
+
+    try {
+      const response = await fetch('https://totem-consultancy-alpha.vercel.app/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('token', data.token); // Save token to localStorage
+        navigate('/admin/dashboard'); // Navigate to dashboard on success
+      } else {
+        const error = await response.json();
+        alert(`Login failed: ${error.message}`);
+      }
+    } catch (err) {
+      console.error('Error during login:', err);
+      alert('An unexpected error occurred. Please try again.');
+    }
   };
 
-  const navigate = useNavigate();
+  
+  
 
   const handleTempLogin = () => {
     // Temporarily store authentication

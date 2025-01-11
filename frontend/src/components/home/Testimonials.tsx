@@ -1,104 +1,82 @@
-import React from "react";
-import r1 from "../home/assets/r1.png";
-import r2 from "../home/assets/r2.png";
-import r3 from "../home/assets/r3.png";
-
+import { useState, useEffect } from "react";
 import i1 from "../home/assets/i1.png";
 import i2 from "../home/assets/i2.png";
 import i3 from "../home/assets/i3.png";
 import i4 from "../home/assets/i4.png";
 
-const Testimonials: React.FC = () => {
+// Define the interface for a review
+interface Review {
+  profileUrl: string;
+  name: string;
+  description: string;
+}
+
+const Testimonials = () => {
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await fetch('https://totem-consultancy-alpha.vercel.app/api/reviews');
+        if (!response.ok) {
+          throw new Error('Failed to fetch reviews');
+        }
+        const data: Review[] = await response.json();
+        setReviews(data);
+        setLoading(false);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An error occurred');
+        setLoading(false);
+      }
+    };
+
+    fetchReviews();
+  }, []);
+
   return (
     <div className="py-12 px-6">
-  <div className="text-center space-y-4">
-  <h1 className="text-3xl font-semibold font-open-sans leading-[38px] text-gray-800 md:text-5xl md:leading-[56px] mb-20 mt-12">
-  Read what others <br />
-  <span>have to say</span>
-</h1>
-
-  </div>
-
-  <div className="flex flex-col sm:flex-row justify-center gap-8 mt-12">
-    <div className="relative bg-[#343434] mt-10 p-6 rounded-xl w-full sm:w-[370px] h-[280px]">
-      <div className="absolute -top-12 left-1/2 transform -translate-x-1/2">
-        <img
-          alt="Khushi"
-          className="w-32 h-32 rounded-full object-cover grayscale"
-          src={r3}
-        />
+      <div className="text-center space-y-4">
+        <h1 className="text-3xl font-semibold font-open-sans leading-[38px] text-gray-800 md:text-5xl md:leading-[56px] mb-20 mt-12">
+          Read what others <br />
+          <span>have to say</span>
+        </h1>
       </div>
-      <div className="mt-16 text-center text-white">
-        <h3 className="text-xl font-semibold uppercase">Khushi</h3>
-        <p className="mt-4 text-sm">
-          Learning digital marketing here was a game-changer for my career.
-          The practical approach and expert guidance helped me land a great
-          job in the industry.
-        </p>
-      </div>
-    </div>
 
-    <div className="relative bg-[#343434] mt-10 p-6 rounded-xl w-full sm:w-[370px] h-[280px]">
-      <div className="absolute -top-12 left-1/2 transform -translate-x-1/2">
-        <img
-          alt="Aemporter"
-          className="w-28 h-28 rounded-full object-cover grayscale"
-          src={r2}
-        />
+      {loading && (
+        <div className="text-center">Loading reviews...</div>
+      )}
+
+      {error && (
+        <div className="text-center text-red-500">Error: {error}</div>
+      )}
+
+      <div className="flex flex-wrap justify-center gap-8 mt-12">
+        {reviews.map((review, index) => (
+          <div key={index} className="relative bg-[#343434] mt-10 p-6 rounded-xl w-full sm:w-[370px] h-[280px]">
+            <div className="absolute -top-12 left-1/2 transform -translate-x-1/2">
+              <img
+                alt={review.name}
+                className="w-32 h-32 rounded-full object-cover grayscale"
+                src={review.profileUrl}
+              />
+            </div>
+            <div className="mt-16 text-center text-white">
+              <h3 className="text-xl font-semibold uppercase">{review.name}</h3>
+              <p className="mt-4 text-sm">{review.description}</p>
+            </div>
+          </div>
+        ))}
       </div>
-      <div className="mt-16 text-center text-white">
-        <h3 className="text-xl font-semibold uppercase">Aemporter</h3>
-        <p className="mt-4 text-sm">
-          Their digital marketing strategies have significantly boosted our
-          online presence and customer engagement. We’re thrilled with the
-          measurable results and growth they’ve delivered.
-        </p>
+
+      <div className="flex flex-col sm:flex-row justify-center items-center lg:justify-evenly gap-6 mt-32 mb-20">
+        <img alt="Image 1" className="h-24 object-cover rounded-lg mt-3" src={i1} />
+        <img alt="Image 2" className="w-24 h-24 object-cover rounded-lg mt-3" src={i2} />
+        <img alt="Image 3" className="h-24 object-cover rounded-lg mt-3" src={i3} />
+        <img alt="Image 4" className="h-24 object-cover rounded-lg mt-3" src={i4} />
       </div>
     </div>
-
-    <div className="relative bg-[#343434] mt-10 p-6 rounded-xl w-full sm:w-[370px] h-[280px]">
-      <div className="absolute -top-12 left-1/2 transform -translate-x-1/2">
-        <img
-          alt="Matrix"
-          className="w-28 h-28 rounded-full object-cover grayscale"
-          src={r1}
-        />
-      </div>
-      <div className="mt-16 text-center text-white">
-        <h3 className="text-xl font-semibold uppercase">Matrix</h3>
-        <p className="mt-4 text-sm">
-          Working with their team has been an incredible experience. They
-          understood our needs perfectly and executed campaigns that
-          exceeded our expectations.
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <div className="flex flex-col sm:flex-row justify-center items-center lg:justify-evenly gap-6 mt-32 mb-20">
-    <img
-      alt="Image 1"
-      className="h-24 object-cover rounded-lg mt-3"
-      src={i1}
-    />
-    <img
-      alt="Image 2"
-      className="w-24 h-24 object-cover rounded-lg mt-3"
-      src={i2}
-    />
-    <img
-      alt="Image 3"
-      className="h-24 object-cover rounded-lg mt-3"
-      src={i3}
-    />
-    <img
-      alt="Image 4"
-      className="h-24 object-cover rounded-lg mt-3"
-      src={i4}
-    />
-  </div>
-</div>
-
   );
 };
 
