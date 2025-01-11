@@ -9,6 +9,7 @@ import {
   DollarSign,
   FolderPlus,
   Award,
+  History,
   Settings,
   LogOut,
   X,
@@ -131,7 +132,7 @@ export default function Sidebar({
         </div>
 
         {/* Recent Activity */}
-        {/* <Link
+        <Link
           to="/admin/recent-activity"
           className={`flex items-center w-full p-3 rounded-lg transition-colors  ${
             currentPath === "/recent-activity"
@@ -142,7 +143,7 @@ export default function Sidebar({
         >
           <History size={20} />
           <span className="ml-3">Recent Activity</span>
-        </Link> */}
+        </Link>
 
         {/* Website Preview */}
         <Link

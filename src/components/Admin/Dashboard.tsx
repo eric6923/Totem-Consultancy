@@ -107,7 +107,7 @@ export default function Dashboard() {
             <h2 className="text-2xl font-bold text-gray-800 dark:text-white">Quick Actions</h2>
           </div>
           <div className="p-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-8">
               {quickActions.map((action, index) => (
                 <div 
                   key={index}
