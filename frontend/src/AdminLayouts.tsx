@@ -1,16 +1,16 @@
-import { useState } from 'react';
-import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
-import Sidebar from './components/Admin/Sidebar';
-import Navbar from './components/Admin/Navbar';
-import Dashboard from './components/Admin/Dashboard';
-import EditReview from './components/Admin/SidebarContents/EditReview';
-import TeamMember from './components/Admin/SidebarContents/TeamMember';
-import Pricing from './components/Admin/SidebarContents/Pricing';
-import Project from './components/Admin/SidebarContents/Project';
-import Certificate from './components/Admin/SidebarContents/Certificate';
-import RecentActivity from './components/Admin/SidebarContents/RecentActivity';
-import Login from './components/Admin/Login';
-import Settings from './components/Admin/SidebarContents/Settings';
+import { useState } from "react";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
+import Sidebar from "./components/Admin/Sidebar";
+import Navbar from "./components/Admin/Navbar";
+import Dashboard from "./components/Admin/Dashboard";
+import EditReview from "./components/Admin/SidebarContents/EditReview";
+import TeamMember from "./components/Admin/SidebarContents/TeamMember";
+import Pricing from "./components/Admin/SidebarContents/Pricing";
+import Project from "./components/Admin/SidebarContents/Project";
+import Certificate from "./components/Admin/SidebarContents/Certificate";
+import RecentActivity from "./components/Admin/SidebarContents/RecentActivity";
+import Login from "./components/Admin/Login";
+import Settings from "./components/Admin/SidebarContents/Settings";
 
 interface LayoutProps {
   darkMode: boolean;
@@ -19,16 +19,15 @@ interface LayoutProps {
 
 // Protected Route wrapper component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+  const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
 
   // Avoid unnecessary re-renders by checking the current path
-  if (!isAuthenticated && window.location.pathname !== '/admin/login') {
+  if (!isAuthenticated && window.location.pathname !== "/admin/login") {
     return <Navigate to="/admin/login" replace />;
   }
 
   return <>{children}</>;
 };
-
 
 const AdminRoutes = ({ darkMode, setDarkMode }: LayoutProps) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -77,7 +76,7 @@ const AdminRoutes = ({ darkMode, setDarkMode }: LayoutProps) => {
 };
 
 export default function Layout({ darkMode, setDarkMode }: LayoutProps) {
-  const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+  const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
 
   return (
     <Routes>
@@ -95,12 +94,15 @@ export default function Layout({ darkMode, setDarkMode }: LayoutProps) {
 
       {/* Login route */}
       <Route
-  path="/login"
-  element={
-    !isAuthenticated ? <Login /> : <Navigate to="/admin/dashboard" replace />
-  }
-/>
-
+        path="/login"
+        element={
+          !isAuthenticated ? (
+            <Login />
+          ) : (
+            <Navigate to="/admin/dashboard" replace />
+          )
+        }
+      />
 
       {/* Protected admin routes with sidebar and navbar */}
       <Route
