@@ -19,28 +19,26 @@ interface SidebarProps {
   currentPath: string;
 }
 
-
-
 export default function Sidebar({
-    sidebarOpen,
-    setSidebarOpen,
-    currentPath,
-  }: SidebarProps) {
-    const navigate = useNavigate();
-  
-    // Add effect to control body scroll
-    useEffect(() => {
-      if (sidebarOpen) {
-        document.body.style.overflow = 'hidden';
-      } else {
-        document.body.style.overflow = 'auto';
-      }
-  
-      // Cleanup function to restore scroll when component unmounts
-      return () => {
-        document.body.style.overflow = 'auto';
-      };
-    }, [sidebarOpen]);
+  sidebarOpen,
+  setSidebarOpen,
+  currentPath,
+}: SidebarProps) {
+  const navigate = useNavigate();
+
+  // Add effect to control body scroll
+  useEffect(() => {
+    if (sidebarOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    // Cleanup function to restore scroll when component unmounts
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [sidebarOpen]);
 
   const quickActions = [
     {
@@ -91,7 +89,7 @@ export default function Sidebar({
         </button>
       </div>
 
-      <nav className="mt-8 px-4">
+      <nav className="mt-8 px-4 pb-28 overflow-y-auto">
         {/* Dashboard */}
         <Link
           to="/admin/dashboard"
@@ -146,24 +144,24 @@ export default function Sidebar({
 
         {/* Website Preview */}
         <Link
-  to="#"
-  className={`flex items-center w-full p-3 rounded-lg transition-colors ${
-    currentPath === "/admin/website-preview"
-      ? "bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400"
-      : "text-gray-600 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700"
-  }`}
-  onClick={(e) => {
-    e.preventDefault();
-    setSidebarOpen(false);
-    window.open('https://totem-consultancy.vercel.app/', '_blank');
-  }}
->
-  <LayoutDashboard size={20} />
-  <span className="ml-3">Website Preview</span>
-</Link>
+          to="#"
+          className={`flex items-center w-full p-3 rounded-lg transition-colors ${
+            currentPath === "/admin/website-preview"
+              ? "bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400"
+              : "text-gray-600 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700"
+          }`}
+          onClick={(e) => {
+            e.preventDefault();
+            setSidebarOpen(false);
+            window.open("https://totem-consultancy.vercel.app/", "_blank");
+          }}
+        >
+          <LayoutDashboard size={20} />
+          <span className="ml-3">Website Preview</span>
+        </Link>
 
         {/* Bottom Actions */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 dark:border-gray-700">
+        <div className="fixed bottom-0 left-0 w-[280px] p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
           <button
             onClick={() => navigate("/admin/settings")}
             className="flex items-center w-full p-3 text-gray-600 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg"
