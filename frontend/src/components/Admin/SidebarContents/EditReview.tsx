@@ -95,14 +95,34 @@ const EditReview: React.FC = () => {
     });
     setEditingReview(null);
   };
-  const onDrop = (acceptedFiles: File[]) => {
+  const onDrop = async (acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
-    const reader = new FileReader();
-    reader.onload = () => {
-      setNewReview({ ...newReview, image: reader.result as string });
-    };
-    reader.readAsDataURL(file);
+    console.log('Selected File:', file); // Debugging log
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'ml_default'); // Replace with your Cloudinary upload preset
+  
+    try {
+      const response = await fetch('https://api.cloudinary.com/v1_1/dgagkq1cs/image/upload', {
+        method: 'POST',
+        body: formData,
+      });
+  
+      console.log('Response Status:', response.status, response.statusText); // Debugging log
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Cloudinary URL:', data.secure_url); // Console log the Cloudinary link
+        setNewReview({ ...newReview, image: data.secure_url });
+      } else {
+        console.error('Error uploading file to Cloudinary. Response:', await response.text());
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
+  
+  
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
 

@@ -10,7 +10,8 @@ import Project from './components/Admin/SidebarContents/Project';
 import Certificate from './components/Admin/SidebarContents/Certificate';
 import RecentActivity from './components/Admin/SidebarContents/RecentActivity';
 import Login from './components/Admin/Login';
-import Settings from './components/Admin/SidebarContents/Settings'
+import Settings from './components/Admin/SidebarContents/Settings';
+
 interface LayoutProps {
   darkMode: boolean;
   setDarkMode: (dark: boolean) => void;
@@ -19,13 +20,15 @@ interface LayoutProps {
 // Protected Route wrapper component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-  
-  if (!isAuthenticated) {
+
+  // Avoid unnecessary re-renders by checking the current path
+  if (!isAuthenticated && window.location.pathname !== '/admin/login') {
     return <Navigate to="/admin/login" replace />;
   }
 
   return <>{children}</>;
 };
+
 
 const AdminRoutes = ({ darkMode, setDarkMode }: LayoutProps) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -34,7 +37,7 @@ const AdminRoutes = ({ darkMode, setDarkMode }: LayoutProps) => {
   return (
     <>
       {sidebarOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-gray-800/50 z-40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
@@ -79,24 +82,25 @@ export default function Layout({ darkMode, setDarkMode }: LayoutProps) {
   return (
     <Routes>
       {/* Root admin route - redirects to login or dashboard */}
-      <Route 
-        path="/" 
+      <Route
+        path="/"
         element={
-          isAuthenticated ? 
-            <Navigate to="/admin/dashboard" replace /> : 
+          isAuthenticated ? (
+            <Navigate to="/admin/dashboard" replace />
+          ) : (
             <Navigate to="/admin/login" replace />
-        } 
+          )
+        }
       />
 
       {/* Login route */}
-      <Route 
-        path="/login" 
-        element={
-          isAuthenticated ? 
-            <Navigate to="/admin/dashboard" replace /> : 
-            <Login />
-        } 
-      />
+      <Route
+  path="/login"
+  element={
+    !isAuthenticated ? <Login /> : <Navigate to="/admin/dashboard" replace />
+  }
+/>
+
 
       {/* Protected admin routes with sidebar and navbar */}
       <Route

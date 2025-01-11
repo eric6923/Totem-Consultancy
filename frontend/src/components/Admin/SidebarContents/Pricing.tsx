@@ -5,14 +5,14 @@ import { useDropzone } from "react-dropzone";
 interface TeamMember {
   id: number;
   name: string;
-  role: string;
+  timePeriod: string;
   price: string;
   imageUrl: string;
 }
 
-interface NewMember {
+interface newReview {
   name: string;
-  role: string;
+  timePeriod: string;
   price: string;
   imageUrl: string;
 }
@@ -22,7 +22,7 @@ const TeamMemberComponent = () => {
     {
       id: 1,
       name: "Animation",
-      role: "(6 Months Duration)",
+      timePeriod: "(6 Months Duration)",
       price: "₹ 25000",
       imageUrl: "/api/placeholder/128/128",
     },
@@ -30,9 +30,9 @@ const TeamMemberComponent = () => {
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [editingMember, setEditingMember] = useState<TeamMember | null>(null);
-  const [newMember, setNewMember] = useState<NewMember>({
+  const [newReview, setNewReview] = useState<newReview>({
     name: "",
-    role: "",
+    timePeriod: "",
     price: "",
     imageUrl: "/api/placeholder/128/128",
   });
@@ -43,9 +43,9 @@ const TeamMemberComponent = () => {
 
   const handleEdit = (member: TeamMember): void => {
     setEditingMember(member);
-    setNewMember({
+    setNewReview({
       name: member.name,
-      role: member.role,
+      timePeriod: member.timePeriod,
       price: member.price,
       imageUrl: member.imageUrl,
     });
@@ -54,55 +54,104 @@ const TeamMemberComponent = () => {
 
   const handleAdd = (): void => {
     setEditingMember(null);
-    setNewMember({
+    setNewReview({
       name: "",
-      role: "",
+      timePeriod: "",
       price: "",
       imageUrl: "/api/placeholder/128/128",
     });
     setIsModalOpen(true);
   };
 
-  const handleSave = (): void => {
-    if (editingMember) {
-      setMembers(
-        members.map((member) =>
-          member.id === editingMember.id ? { ...member, ...newMember } : member
-        )
-      );
-    } else {
-      const newMemberWithId: TeamMember = {
-        ...newMember,
-        id: Date.now(),
+  const handleSave = async (): Promise<void> => {
+    try {
+      // Log the data being sent for debugging
+      console.log('Sending data:', {
+        courseName: newReview.name,
+        duration: newReview.timePeriod,
+        price: newReview.price,
+        imageUrl: newReview.imageUrl
+      });
+  
+      const response = await fetch('https://totem-consultancy-alpha.vercel.app/api/courses', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          courseName: newReview.name,
+          duration: newReview.timePeriod,
+          price: newReview.price,
+          imageUrl: newReview.imageUrl
+        })
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.text();
+        console.error('Server response error:', errorData);
+        throw new Error(`Server responded with status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      console.log('Response from server:', data);
+  
+      // Update local state with the new member
+      const newReviewWithId: TeamMember = {
+        id: data.id || Date.now(),
+        name: newReview.name,
+        timePeriod: newReview.timePeriod,
+        price: newReview.price,
+        imageUrl: newReview.imageUrl
       };
-      setMembers([...members, newMemberWithId]);
+  
+      setMembers(prevMembers => [...prevMembers, newReviewWithId]);
+      setIsModalOpen(false);
+      
+      // Reset the form
+      setNewReview({
+        name: "",
+        timePeriod: "",
+        price: "",
+        imageUrl: "/api/placeholder/128/128",
+      });
+      setEditingMember(null);
+  
+    } catch (error) {
+      console.error('Error saving course:', error);
+      // You might want to add some error handling UI here
+      alert('Failed to save course. Please try again.');
     }
-    setIsModalOpen(false);
-    setNewMember({
-      name: "",
-      role: "",
-      price: "",
-      imageUrl: "/api/placeholder/128/128",
-    });
-    setEditingMember(null);
   };
 
-  const onDrop = (acceptedFiles: File[]) => {
+  const onDrop = async (acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
-    const reader = new FileReader();
-    reader.onload = () => {
-      setNewMember({ ...newMember, imageUrl: reader.result as string });
-    };
-    reader.readAsDataURL(file);
+    console.log('Selected File:', file); // Debugging log
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'ml_default'); // Replace with your Cloudinary upload preset
+  
+    try {
+      const response = await fetch('https://api.cloudinary.com/v1_1/dgagkq1cs/image/upload', {
+        method: 'POST',
+        body: formData,
+      });
+  
+      console.log('Response Status:', response.status, response.statusText); // Debugging log
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Cloudinary URL:', data.secure_url); // Console log the Cloudinary link
+        setNewReview({ ...newReview, imageUrl: data.secure_url });
+      } else {
+        console.error('Error uploading file to Cloudinary. Response:', await response.text());
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
-  const { getRootProps, getInputProps } = useDropzone({
-    onDrop,
-    accept: {
-      "image/*": [".jpeg", ".jpg", ".png", ".gif"],
-    },
-    maxSize: 5242880, // 5MB
-  });
+  
 
   return (
     <div className="p-4 sm:p-6 max-w-7xl mx-auto bg-black/5">
@@ -161,7 +210,7 @@ const TeamMemberComponent = () => {
                 {member.name}
               </h3>
               <p className="mt-2 text-sm sm:text-base text-gray-300 leading-relaxed">
-                {member.role}
+                {member.timePeriod}
               </p>
               <p className="mt-2 text-sm sm:text-base text-gray-300 leading-relaxed">
                 {member.price}
@@ -194,26 +243,26 @@ const TeamMemberComponent = () => {
                 <input
                   id="name"
                   className="w-full px-4 py-3 bg-black/50 text-white rounded-lg border border-blue-900 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all duration-200"
-                  value={newMember.name}
+                  value={newReview.name}
                   onChange={(e) =>
-                    setNewMember({ ...newMember, name: e.target.value })
+                    setNewReview({ ...newReview, name: e.target.value })
                   }
                   placeholder="Enter Course name"
                 />
               </div>
               <div>
                 <label
-                  htmlFor="role"
+                  htmlFor="timePeriod"
                   className="block text-sm font-medium text-blue-300 mb-2"
                 >
                   Duration
                 </label>
                 <input
-                  id="role"
+                  id="timePeriod"
                   className="w-full px-4 py-3 bg-black/50 text-white rounded-lg border border-blue-900 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all duration-200"
-                  value={newMember.role}
+                  value={newReview.timePeriod}
                   onChange={(e) =>
-                    setNewMember({ ...newMember, role: e.target.value })
+                    setNewReview({ ...newReview, timePeriod: e.target.value })
                   }
                   placeholder="Enter Duration"
                 />
@@ -228,9 +277,9 @@ const TeamMemberComponent = () => {
                 <input
                   id="price"
                   className="w-full px-4 py-3 bg-black/50 text-white rounded-lg border border-blue-900 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all duration-200"
-                  value={newMember.price}
+                  value={newReview.price}
                   onChange={(e) =>
-                    setNewMember({ ...newMember, price: e.target.value })
+                    setNewReview({ ...newReview, price: e.target.value })
                   }
                   placeholder="Enter Price"
                 />
