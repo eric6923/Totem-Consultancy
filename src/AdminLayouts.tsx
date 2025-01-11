@@ -9,13 +9,25 @@ import Pricing from './components/Admin/SidebarContents/Pricing';
 import Project from './components/Admin/SidebarContents/Project';
 import Certificate from './components/Admin/SidebarContents/Certificate';
 import RecentActivity from './components/Admin/SidebarContents/RecentActivity';
+import Login from './components/Admin/Login';
 
 interface LayoutProps {
   darkMode: boolean;
   setDarkMode: (dark: boolean) => void;
 }
 
-export default function Layout({ darkMode, setDarkMode }: LayoutProps) {
+// Protected Route wrapper component
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/admin/login" replace />;
+  }
+
+  return <>{children}</>;
+};
+
+const AdminRoutes = ({ darkMode, setDarkMode }: LayoutProps) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
 
@@ -45,10 +57,6 @@ export default function Layout({ darkMode, setDarkMode }: LayoutProps) {
         <main className="pt-16 min-h-screen bg-gray-50 dark:bg-gray-900">
           <div className="p-4 lg:p-6">
             <Routes>
-              {/* Default Route for Admin */}
-              <Route path="/" element={<Navigate to="/admin/dashboard" replace />} />
-
-              {/* Admin Routes */}
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/edit-reviews" element={<EditReview />} />
               <Route path="/add-team" element={<TeamMember />} />
@@ -61,5 +69,43 @@ export default function Layout({ darkMode, setDarkMode }: LayoutProps) {
         </main>
       </div>
     </>
+  );
+};
+
+export default function Layout({ darkMode, setDarkMode }: LayoutProps) {
+  const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+
+  return (
+    <Routes>
+      {/* Root admin route - redirects to login or dashboard */}
+      <Route 
+        path="/" 
+        element={
+          isAuthenticated ? 
+            <Navigate to="/admin/dashboard" replace /> : 
+            <Navigate to="/admin/login" replace />
+        } 
+      />
+
+      {/* Login route */}
+      <Route 
+        path="/login" 
+        element={
+          isAuthenticated ? 
+            <Navigate to="/admin/dashboard" replace /> : 
+            <Login />
+        } 
+      />
+
+      {/* Protected admin routes with sidebar and navbar */}
+      <Route
+        path="/*"
+        element={
+          <ProtectedRoute>
+            <AdminRoutes darkMode={darkMode} setDarkMode={setDarkMode} />
+          </ProtectedRoute>
+        }
+      />
+    </Routes>
   );
 }
