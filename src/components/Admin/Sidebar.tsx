@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import profile from "../Admin/assets/assets/profile.png";
+
 import {
   LayoutDashboard,
   Edit,
@@ -12,8 +13,8 @@ import {
   LogOut,
   X,
 } from "lucide-react";
-import { History } from "lucide-react";
-
+// import { History } from "lucide-react";
+const navigate = useNavigate();
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (open: boolean) => void;
@@ -25,7 +26,7 @@ export default function Sidebar({
   setSidebarOpen,
   currentPath,
 }: SidebarProps) {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // Add effect to control body scroll
   useEffect(() => {
@@ -130,7 +131,7 @@ export default function Sidebar({
         </div>
 
         {/* Recent Activity */}
-        <Link
+        {/* <Link
           to="/admin/recent-activity"
           className={`flex items-center w-full p-3 rounded-lg transition-colors  ${
             currentPath === "/recent-activity"
@@ -141,7 +142,7 @@ export default function Sidebar({
         >
           <History size={20} />
           <span className="ml-3">Recent Activity</span>
-        </Link>
+        </Link> */}
 
         {/* Website Preview */}
         <Link
