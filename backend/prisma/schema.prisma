@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Authentication: User Table
+model Admin {
+  id        String      @id @default(uuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+}
+
+model Review {
+  id          String   @id @default(uuid())
+  profileUrl  String   // URL of the reviewer's profile picture
+  name        String   // Name of the reviewer
+  description String   // The review text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Team Section
+model Team {
+  id          String   @id @default(uuid())
+  profileUrl  String   // URL of the team member's profile picture
+  name        String   // Name of the team member
+  designation String   // Designation or role in the team
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Course Section
+model Course {
+  id         String   @id @default(uuid())
+  imageUrl   String   // URL of the course image
+  name       String   // Name of the course
+  timePeriod String   // Time duration for the course (e.g., "3 months")
+  price      Float    // Price of the course
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+// Project Category Section
+model ProjectCategory {
+  id        String   @id @default(uuid())
+  name      String   // Name of the category
+  imageUrl  String   // URL of the category image
+  projects  Project[] @relation("CategoryProjects") // List of associated projects
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+// Projects under Categories
+model Project {
+  id             String            @id @default(uuid())
+  mediaUrl       String            // URL of the media (image or video)
+  mediaType      String            // Type of media: "image" or "video"
+  categoryId     String
+  category       ProjectCategory   @relation("CategoryProjects", fields: [categoryId], references: [id])
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+}
