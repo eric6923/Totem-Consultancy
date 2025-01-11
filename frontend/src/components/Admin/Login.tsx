@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Lock, Mail, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,10 +9,11 @@ function Login() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (!token) {
-      navigate('/admin/login');
+    if (token && window.location.pathname === '/admin/login') {
+      navigate('/admin/dashboard');
     }
-  }, [navigate]);
+  }, []);
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,9 +29,11 @@ function Login() {
 
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem('token', data.token); // Save token to localStorage
-        navigate('/admin/dashboard'); // Navigate to dashboard on success
-      } else {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('isAuthenticated', 'true'); // Add this
+        navigate('/admin/dashboard');
+      }
+       else {
         const error = await response.json();
         alert(`Login failed: ${error.message}`);
       }
@@ -39,17 +42,6 @@ function Login() {
       alert('An unexpected error occurred. Please try again.');
     }
   };
-
-  
-  
-
-  const handleTempLogin = () => {
-    // Temporarily store authentication
-    localStorage.setItem('isAuthenticated', 'true');
-    // Navigate to dashboard
-    navigate('/admin/dashboard');
-  };
-
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex items-center justify-center p-4">
@@ -60,7 +52,7 @@ function Login() {
             <Lock className="w-8 h-8" />
           </div>
           <h2 className="text-3xl font-bold text-gray-900">Welcome back</h2>
-          <p className="text-gray-600 mt-2">Please enter your details to login in</p>
+          <p className="text-gray-600 mt-2">Please enter your details to log in</p>
         </div>
 
         {/* Form Section */}
@@ -128,10 +120,9 @@ function Login() {
             {/* Submit Button */}
             <button
               type="submit"
-              onClick={handleTempLogin}
               className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors flex items-center justify-center space-x-2 font-medium"
             >
-              <span>Temporary Login</span>
+              <span>Login</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
