@@ -14,20 +14,20 @@ import {
   X,
 } from "lucide-react";
 // import { History } from "lucide-react";
-const navigate = useNavigate();
+
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (open: boolean) => void;
   currentPath: string;
 }
-
+//changes
 export default function Sidebar({
   sidebarOpen,
   setSidebarOpen,
   currentPath,
 }: SidebarProps) {
   // const navigate = useNavigate();
-
+  const navigate = useNavigate();
   // Add effect to control body scroll
   useEffect(() => {
     if (sidebarOpen) {
