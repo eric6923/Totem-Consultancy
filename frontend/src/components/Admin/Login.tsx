@@ -10,9 +10,9 @@ function Login() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token && window.location.pathname === '/admin/login') {
-      navigate('/admin/dashboard');
+      navigate('/admin/dashboard',{replace:true});
     }
-  }, []);
+  }, [navigate]);
   
 
   const handleSubmit = async (e: React.FormEvent) => {

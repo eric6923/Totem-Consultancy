@@ -40,6 +40,7 @@ const ProjectManagement = () => {
     return null;
   };
   const fetchProjects = async () => {
+    setIsLoading(true)
     try {
       const token = getToken();
       const response = await fetch('https://totem-consultancy-alpha.vercel.app/api/categories', {
@@ -241,11 +242,14 @@ const ProjectManagement = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {projects.map((project) => (
-          <div
-            key={project.id}
-            className="relative bg-gradient-to-b from-black to-blue-900 mt-16 p-6 rounded-2xl w-full sm:w-[290px] h-[210px] shadow-xl hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300 border border-blue-900/20"
-          >
+  {isLoading ? (
+    <p className="text-blue-600 text-center w-full col-span-3">Loading projects...</p>
+  ) : (
+    projects.map((project) => (
+      <div
+        key={project.id}
+        className="relative bg-gradient-to-b from-black to-blue-900 mt-16 p-6 rounded-2xl w-full sm:w-[290px] h-[210px] shadow-xl hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300 border border-blue-900/20"
+      >
             <div className="absolute -top-12 left-1/2 transform -translate-x-1/2">
               <div className="w-32 h-32 rounded-full border-4 border-blue-600 p-1 bg-black">
                 <img
@@ -293,7 +297,7 @@ const ProjectManagement = () => {
               )}
             </div>
           </div>
-        ))}
+        )))}
       </div>
 
       {/* Project Modal */}
