@@ -1,43 +1,49 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
-interface CategoryImage {
-  imageUrl: string;
-  name: string;
+interface Project {
+  id: string;
+  mediaUrl: string;
+  categoryId: string;
+  category: {
+    id: string;
+    name: string;
+    imageUrl: string;
+  };
 }
 
 const ProjectDetail = () => {
   const { id } = useParams();
-  const [categoryData, setCategoryData] = useState<CategoryImage | null>(null);
+  const navigate = useNavigate();
+  const [project, setProject] = useState<Project | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log('Current ID:', id);
-    fetchCategoryData();
-  }, [id]);
+    const fetchProject = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch(`https://totem-consultancy-alpha.vercel.app/api/projects/${id}`);
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch project');
+        }
 
-  const fetchCategoryData = async () => {
-    try {
-      // Simple GET request without any headers
-      const response = await fetch(`https://totem-consultancy-alpha.vercel.app/api/projects/${id}`);
-      console.log('Response status:', response.status);
-      
-      if (!response.ok) {
-        throw new Error(`Failed to fetch category data: ${response.statusText}`);
+        const data = await response.json();
+        setProject(data);
+      } catch (err) {
+        setError('Failed to load project');
+        console.error('Error:', err);
+      } finally {
+        setIsLoading(false);
       }
+    };
 
-      const data = await response.json();
-      console.log('API Response:', data);
-
-      setCategoryData(data);
-    } catch (err) {
-      console.error('Fetch error:', err);
-      setError(err instanceof Error ? err.message : 'Failed to load category data');
-    } finally {
-      setIsLoading(false);
+    if (id) {
+      console.log('Fetching project with ID:', id);
+      fetchProject();
     }
-  };
+  }, [id]);
 
   if (isLoading) {
     return (
@@ -47,28 +53,17 @@ const ProjectDetail = () => {
     );
   }
 
-  if (error) {
+  if (error || !project) {
     return (
       <div className="w-full min-h-screen bg-[#FDF8F3] flex items-center justify-center">
-        <div className="text-red-600 text-center p-4">
-          <p className="text-xl">{error}</p>
+        <div className="text-center">
+          <p className="text-red-600 mb-4">{error || 'Project not found'}</p>
           <button 
-            onClick={fetchCategoryData}
-            className="mt-4 px-6 py-2 border border-black hover:bg-black hover:text-white transition-colors duration-300"
+            onClick={() => navigate('/projects')}
+            className="px-6 py-2 bg-black text-white hover:bg-gray-800 transition-colors duration-300"
           >
-            Try Again
+            Back to Projects
           </button>
-        </div>
-      </div>
-    );
-  }
-
-  if (!categoryData) {
-    return (
-      <div className="w-full min-h-screen bg-[#FDF8F3] flex items-center justify-center">
-        <div className="text-center text-gray-600">
-          <p>No category data found.</p>
-          <p className="mt-2 text-sm">Category ID: {id}</p>
         </div>
       </div>
     );
@@ -77,20 +72,27 @@ const ProjectDetail = () => {
   return (
     <div className="w-full min-h-screen bg-[#FDF8F3] py-16">
       <div className="max-w-[1200px] mx-auto px-4">
-        <div className="bg-white rounded-lg overflow-hidden shadow-md">
-          <div className="aspect-[16/9] overflow-hidden">
+        <div className="mb-6">
+          <button 
+            onClick={() => navigate('/projects')}
+            className="px-6 py-2 border border-black hover:bg-black hover:text-white transition-colors duration-300"
+          >
+            ← Back to Projects
+          </button>
+        </div>
+
+        <div className="bg-white rounded-lg overflow-hidden shadow-lg">
+          <div className="aspect-[16/9] relative overflow-hidden">
             <img
-              src={categoryData.imageUrl}
-              alt={categoryData.name}
+              src={project.mediaUrl}
+              alt={`Project by ${project.category.name}`}
               className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-              onError={(e) => {
-                console.error('Image failed to load:', categoryData.imageUrl);
-                e.currentTarget.src = '/placeholder-image.jpg';
-              }}
             />
           </div>
-          <div className="p-4">
-            <h2 className="text-xl font-semibold">{categoryData.name}</h2>
+          
+          <div className="p-6">
+            <h1 className="text-2xl font-bold mb-2">{project.category.name}</h1>
+            <p className="text-gray-600">Category: {project.category.name}</p>
           </div>
         </div>
       </div>
