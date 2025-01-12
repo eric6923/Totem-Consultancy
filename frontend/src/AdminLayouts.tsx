@@ -20,10 +20,10 @@ interface LayoutProps {
 // Protected Route wrapper component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+  const location = useLocation();
 
-  // Avoid unnecessary re-renders by checking the current path
-  if (!isAuthenticated && window.location.pathname !== "/admin/login") {
-    return <Navigate to="/admin/login" replace />;
+  if (!isAuthenticated) {
+    return <Navigate to="/admin/login" state={{ from: location }} replace />;
   }
 
   return <>{children}</>;
@@ -76,19 +76,15 @@ const AdminRoutes = ({ darkMode, setDarkMode }: LayoutProps) => {
 };
 
 export default function Layout({ darkMode, setDarkMode }: LayoutProps) {
-  const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
-
   return (
     <Routes>
-      {/* Root admin route - redirects to login or dashboard */}
+      {/* Root admin route - redirects to dashboard if authenticated */}
       <Route
         path="/"
         element={
-          isAuthenticated ? (
+          <ProtectedRoute>
             <Navigate to="/admin/dashboard" replace />
-          ) : (
-            <Navigate to="/admin/login" replace />
-          )
+          </ProtectedRoute>
         }
       />
 
@@ -96,10 +92,10 @@ export default function Layout({ darkMode, setDarkMode }: LayoutProps) {
       <Route
         path="/login"
         element={
-          !isAuthenticated ? (
-            <Login />
-          ) : (
+          localStorage.getItem("isAuthenticated") === "true" ? (
             <Navigate to="/admin/dashboard" replace />
+          ) : (
+            <Login />
           )
         }
       />

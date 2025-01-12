@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Lock, Mail, ArrowRight } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token && window.location.pathname === '/admin/login') {
-      navigate('/admin/dashboard',{replace:true});
+    const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+    if (isAuthenticated) {
+      const from = location.state?.from?.pathname || '/admin/dashboard';
+      navigate(from, { replace: true });
     }
-  }, [navigate]);
-  
+  }, [navigate, location]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,10 +31,11 @@ function Login() {
       if (response.ok) {
         const data = await response.json();
         localStorage.setItem('token', data.token);
-        localStorage.setItem('isAuthenticated', 'true'); // Add this
-        navigate('/admin/dashboard');
-      }
-       else {
+        localStorage.setItem('isAuthenticated', 'true');
+        
+        const from = location.state?.from?.pathname || '/admin/dashboard';
+        navigate(from, { replace: true });
+      } else {
         const error = await response.json();
         alert(`Login failed: ${error.message}`);
       }
