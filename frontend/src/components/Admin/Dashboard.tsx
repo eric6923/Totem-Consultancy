@@ -1,4 +1,3 @@
-
 import {
   Book,
   Users,
@@ -7,34 +6,49 @@ import {
   Star,
 } from "lucide-react";
 
-export default function Dashboard() {
-  const quickActions = [
+interface QuickAction {
+  title: string;
+  icon: JSX.Element;
+  bgColor: string;
+  description: string;
+  route: string;
+}
+
+export default function Dashboard(): JSX.Element {
+  const quickActions: QuickAction[] = [
     { 
       title: "Edit Reviews", 
       icon: <Star className="h-8 w-8 text-purple-600" />,
       bgColor: "bg-purple-100 dark:bg-purple-900",
-      description: "Manage course reviews and student feedback"
+      description: "Manage course reviews and student feedback",
+      route: "/admin/edit-reviews"
     },
     { 
       title: "Manage Team", 
       icon: <Users className="h-8 w-8 text-yellow-600" />,
       bgColor: "bg-yellow-100 dark:bg-yellow-900",
-      description: "Manage team member information and roles"
+      description: "Manage team member information and roles",
+      route: "/admin/add-team"
     },
     { 
       title: "Update Pricing", 
       icon: <Settings className="h-8 w-8 text-green-600" />,
       bgColor: "bg-green-100 dark:bg-green-900",
-      description: "Update course pricing and special offers"
+      description: "Update course pricing and special offers",
+      route: "/admin/pricing"
     },
     { 
       title: "Generate Certificate", 
       icon: <Award className="h-8 w-8 text-blue-600" />,
       bgColor: "bg-blue-100 dark:bg-blue-900",
-      description: "Create and issue course completion certificates"
+      description: "Create and issue course completion certificates",
+      route: "/admin/certificate"
     }
-    
   ];
+
+  const handleActionClick = (route: string): void => {
+    window.location.href = route;
+  };
 
   return (
     <main className="px-4 md:px-6 lg:px-8 xl:px-12 pb-12 bg-gray-50 dark:bg-gray-900 min-h-screen lg:h-screen">
@@ -111,6 +125,7 @@ export default function Dashboard() {
               {quickActions.map((action, index) => (
                 <div 
                   key={index}
+                  onClick={() => handleActionClick(action.route)}
                   className="p-6 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition-all cursor-pointer hover:shadow-lg"
                 >
                   <div className={`w-16 h-16 ${action.bgColor} rounded-xl flex items-center justify-center mb-6`}>
