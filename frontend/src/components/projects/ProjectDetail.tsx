@@ -20,7 +20,7 @@ const ProjectDetail = () => {
   const fetchCategoryData = async () => {
     try {
       // Simple GET request without any headers
-      const response = await fetch(`https://totem-consultancy-alpha.vercel.app/api/categories/${id}`);
+      const response = await fetch(`https://totem-consultancy-alpha.vercel.app/api/projects/${id}`);
       console.log('Response status:', response.status);
       
       if (!response.ok) {
