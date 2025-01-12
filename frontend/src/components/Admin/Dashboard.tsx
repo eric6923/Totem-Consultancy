@@ -61,10 +61,10 @@ export default function Dashboard() {
               </div>
               <div className="ml-6">
                 <h3 className="text-3xl xl:text-4xl font-bold text-gray-800 dark:text-white">
-                  1,234
+                  6
                 </h3>
                 <p className="text-lg text-gray-500 dark:text-gray-400 mt-1">
-                  Total Courses
+                  Total Projects
                 </p>
               </div>
             </div>
@@ -76,7 +76,7 @@ export default function Dashboard() {
               </div>
               <div className="ml-6">
                 <h3 className="text-3xl xl:text-4xl font-bold text-gray-800 dark:text-white">
-                  2,834
+                  8
                 </h3>
                 <p className="text-lg text-gray-500 dark:text-gray-400 mt-1">
                   Team Members
@@ -91,7 +91,7 @@ export default function Dashboard() {
               </div>
               <div className="ml-6">
                 <h3 className="text-3xl xl:text-4xl font-bold text-gray-800 dark:text-white">
-                  987
+                  0
                 </h3>
                 <p className="text-lg text-gray-500 dark:text-gray-400 mt-1">
                   Certificates Issued

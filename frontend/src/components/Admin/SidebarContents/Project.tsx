@@ -96,6 +96,49 @@ const ProjectManagement = () => {
     }
   };
 
+  const handleDeleteMedia = async (mediaId: string) => {
+    if (!confirm('Are you sure you want to delete this image?')) {
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const token = getToken();
+      const response = await fetch(`https://totem-consultancy-alpha.vercel.app/api/projects/${mediaId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        throw new Error(errorData?.message || 'Failed to delete image');
+      }
+
+      // Update the local state to remove the deleted image
+      if (selectedProject) {
+        const updatedProjects = projects.map(project => {
+          if (project.id === selectedProject.id) {
+            return {
+              ...project,
+              projects: project.projects?.filter(media => media.id !== mediaId) || []
+            };
+          }
+          return project;
+        });
+        setProjects(updatedProjects);
+      }
+    } catch (error: any) {
+      console.error('Error deleting image:', error);
+      alert(error.message || 'Failed to delete image');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleEdit = (project: Project) => {
     setSelectedProject(project);
     setFormData({
@@ -358,7 +401,7 @@ const ProjectManagement = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-blue-300 mb-2">
+              <label className="block text-sm font-medium text-blue-300 mb-2">
                   Project Image
                 </label>
                 <div
@@ -394,8 +437,6 @@ const ProjectManagement = () => {
                   className="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-blue-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isLoading ? "Saving..." : "Save Changes"}
-        
-
                 </button>
               </div>
             </div>
@@ -455,12 +496,19 @@ const ProjectManagement = () => {
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {selectedProject.projects?.map((media) => (
-                <div key={media.id} className="relative aspect-square">
+                <div key={media.id} className="relative aspect-square group">
                   <img
                     src={media.mediaUrl}
                     alt={`Media ${media.id}`}
                     className="w-full h-full object-cover rounded-lg"
                   />
+                  <button
+                    onClick={() => handleDeleteMedia(media.id)}
+                    className="absolute top-2 right-2 p-2 bg-red-600/80 text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-red-700"
+                    title="Delete image"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
                 </div>
               ))}
             </div>

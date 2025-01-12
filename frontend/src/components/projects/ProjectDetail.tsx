@@ -16,21 +16,46 @@ const ProjectDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [project, setProject] = useState<Project | null>(null);
+  const [categoryProjects, setCategoryProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [carouselImages, setCarouselImages] = useState<string[]>([]);
 
   useEffect(() => {
-    const fetchProject = async () => {
+    const fetchProjectAndRelated = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch(`https://totem-consultancy-alpha.vercel.app/api/projects/${id}`);
         
-        if (!response.ok) {
+        // First fetch the current project
+        const projectResponse = await fetch(`https://totem-consultancy-alpha.vercel.app/api/projects/${id}`);
+        
+        if (!projectResponse.ok) {
           throw new Error('Failed to fetch project');
         }
 
-        const data = await response.json();
-        setProject(data);
+        const projectData = await projectResponse.json();
+        setProject(projectData);
+
+        // Then fetch all projects
+        const allProjectsResponse = await fetch('https://totem-consultancy-alpha.vercel.app/api/projects');
+        
+        if (!allProjectsResponse.ok) {
+          throw new Error('Failed to fetch related projects');
+        }
+
+        const allProjects = await allProjectsResponse.json();
+        
+        // Filter projects with the same categoryId
+        const relatedProjects = allProjects.filter(
+          (p: Project) => p.categoryId === projectData.categoryId
+        );
+        
+        setCategoryProjects(relatedProjects);
+
+        // Get all mediaUrls from related projects
+        const images = relatedProjects.map((p: Project) => p.mediaUrl);
+        setCarouselImages(images);
+
       } catch (err) {
         setError('Failed to load project');
         console.error('Error:', err);
@@ -40,10 +65,24 @@ const ProjectDetail = () => {
     };
 
     if (id) {
-      console.log('Fetching project with ID:', id);
-      fetchProject();
+      fetchProjectAndRelated();
     }
   }, [id]);
+
+  useEffect(() => {
+    if (carouselImages.length >= 1) {
+      const interval = setInterval(() => {
+        setCarouselImages(prev => {
+          const newImages = [...prev];
+          const firstImage = newImages.shift();
+          if (firstImage) newImages.push(firstImage);
+          return newImages;
+        });
+      }, 3000);
+      
+      return () => clearInterval(interval);
+    }
+  }, [carouselImages.length]);
 
   if (isLoading) {
     return (
@@ -71,7 +110,7 @@ const ProjectDetail = () => {
 
   return (
     <div className="w-full min-h-screen bg-[#FDF8F3] py-16">
-      <div className="max-w-[1200px] mx-auto px-4">
+      <div className="max-w-[1400px] mx-auto px-4">
         <div className="mb-6">
           <button 
             onClick={() => navigate('/projects')}
@@ -81,19 +120,44 @@ const ProjectDetail = () => {
           </button>
         </div>
 
-        <div className="bg-white rounded-lg overflow-hidden shadow-lg">
-          <div className="aspect-[16/9] relative overflow-hidden">
-            <img
-              src={project.mediaUrl}
-              alt={`Project by ${project.category.name}`}
-              className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-            />
+        {/* Carousel Section */}
+        <div className="relative w-full h-[400px] md:h-[600px] overflow-hidden mb-8">
+          <div className="absolute w-full top-1/2 -translate-y-1/2 flex justify-center items-center">
+            {carouselImages.map((imageUrl, index) => {
+              let className = "absolute transition-all duration-700 ease-in-out ";
+              let style: React.CSSProperties = { opacity: 0 };
+
+              if (index === 0) {
+                className += "w-[200px] h-[200px] md:w-[318px] md:h-[318px]";
+                style = { transform: 'translateX(-120%)', opacity: 0.7 };
+              } else if (index === 1) {
+                className += "w-[300px] h-[300px] md:w-[531px] md:h-[531px] z-10";
+                style = { transform: 'translateX(0)', opacity: 1 };
+              } else if (index === 2) {
+                className += "w-[200px] h-[200px] md:w-[318px] md:h-[318px]";
+                style = { transform: 'translateX(120%)', opacity: 0.7 };
+              }
+
+              return (
+                <div
+                  key={index}
+                  className={className}
+                  style={style}
+                >
+                  <img
+                    src={imageUrl}
+                    alt={`Project image ${index + 1}`}
+                    className="w-full h-full rounded-lg shadow-xl object-cover"
+                  />
+                </div>
+              );
+            })}
           </div>
-          
-          <div className="p-6">
-            <h1 className="text-2xl font-bold mb-2">{project.category.name}</h1>
-            <p className="text-gray-600">Category: {project.category.name}</p>
-          </div>
+        </div>
+
+        <div className="bg-white rounded-lg overflow-hidden shadow-lg p-6">
+          <h1 className="text-2xl font-bold mb-2">{project.category.name}</h1>
+          <p className="text-gray-600">Category: {project.category.name}</p>
         </div>
       </div>
     </div>
