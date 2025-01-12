@@ -22,7 +22,7 @@ const PortfolioShowcase = () => {
 
   const fetchProjects = async () => {
     try {
-      const response = await fetch('https://totem-consultancy-alpha.vercel.app/api/courses');
+      const response = await fetch('https://totem-consultancy-alpha.vercel.app/api/categories');
       if (!response.ok) {
         throw new Error('Failed to fetch projects');
       }

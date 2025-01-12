@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Pencil, Trash2, Plus, X, Upload } from "lucide-react";
+import { Pencil, Trash2, Plus, X, Upload, Image } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 
 interface Project {
@@ -8,7 +8,7 @@ interface Project {
   imageUrl: string;
   createdAt: string;
   updatedAt: string;
-  media?: ProjectMedia[];
+  projects?: ProjectMedia[];
 }
 
 interface ProjectMedia {
@@ -27,20 +27,23 @@ const ProjectManagement = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMediaModalOpen, setIsMediaModalOpen] = useState(false);
+  const [isGalleryModalOpen, setIsGalleryModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [formData, setFormData] = useState<ProjectFormData>({
     name: "",
     imageUrl: "/api/placeholder/128/128",
   });
   const [isLoading, setIsLoading] = useState(false);
+
   const getToken = () => {
     if (typeof window !== 'undefined') {
       return localStorage.getItem('token');
     }
     return null;
   };
+
   const fetchProjects = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       const token = getToken();
       const response = await fetch('https://totem-consultancy-alpha.vercel.app/api/categories', {
@@ -53,33 +56,46 @@ const ProjectManagement = () => {
       setProjects(data);
     } catch (error) {
       console.error('Error fetching projects:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
-  
 
   useEffect(() => {
     fetchProjects();
   }, []);
 
   const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this project?')) {
+      return;
+    }
+  
+    setIsLoading(true);
     try {
       const token = getToken();
       const response = await fetch(`https://totem-consultancy-alpha.vercel.app/api/categories/${id}`, {
         method: 'DELETE',
         headers: {
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
         }
       });
-      if (response.ok) {
-        setProjects(projects.filter(project => project.id !== id));
-      } else {
-        throw new Error('Failed to delete project');
+  
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        throw new Error(errorData?.message || 'Failed to delete project');
       }
-    } catch (error) {
+  
+      setProjects(projects.filter(project => project.id !== id));
+    } catch (error: any) {
       console.error('Error deleting project:', error);
+      alert(error.message || 'Failed to delete project');
+    } finally {
+      setIsLoading(false);
     }
   };
-  
+
   const handleEdit = (project: Project) => {
     setSelectedProject(project);
     setFormData({
@@ -120,7 +136,7 @@ const ProjectManagement = () => {
           imageUrl: formData.imageUrl,
         }),
       });
-  
+
       if (!response.ok) {
         const errorData = await response.json().catch(() => null);
         console.error('Server response:', errorData);
@@ -144,12 +160,12 @@ const ProjectManagement = () => {
       setIsLoading(false);
     }
   };
-  
+
   const uploadToCloudinary = async (file: File) => {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", "ml_default");
-  
+
     try {
       const response = await fetch(
         "https://api.cloudinary.com/v1_1/dgagkq1cs/image/upload",
@@ -158,7 +174,7 @@ const ProjectManagement = () => {
           body: formData,
         }
       );
-  
+
       if (!response.ok) throw new Error("Failed to upload image");
       
       const data = await response.json();
@@ -193,6 +209,11 @@ const ProjectManagement = () => {
     } catch (error) {
       console.error('Error adding media:', error);
     }
+  };
+
+  const handleViewImages = (project: Project) => {
+    setSelectedProject(project);
+    setIsGalleryModalOpen(true);
   };
 
   const onProjectImageDrop = async (acceptedFiles: File[]) => {
@@ -242,62 +263,72 @@ const ProjectManagement = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-  {isLoading ? (
-    <p className="text-blue-600 text-center w-full col-span-3">Loading projects...</p>
-  ) : (
-    projects.map((project) => (
-      <div
-        key={project.id}
-        className="relative bg-gradient-to-b from-black to-blue-900 mt-16 p-6 rounded-2xl w-full sm:w-[290px] h-[210px] shadow-xl hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300 border border-blue-900/20"
-      >
-            <div className="absolute -top-12 left-1/2 transform -translate-x-1/2">
-              <div className="w-32 h-32 rounded-full border-4 border-blue-600 p-1 bg-black">
-                <img
-                  alt={project.name}
-                  className="w-full h-full rounded-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-                  src={project.imageUrl}
-                />
+        {isLoading ? (
+          <p className="text-blue-600 text-center w-full col-span-3">Loading projects...</p>
+        ) : (
+          projects.map((project) => (
+            <div
+              key={project.id}
+              className="relative bg-gradient-to-b from-black to-blue-900 mt-16 p-6 rounded-2xl w-full sm:w-[290px] h-[210px] shadow-xl hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300 border border-blue-900/20"
+            >
+              <div className="absolute -top-12 left-1/2 transform -translate-x-1/2">
+                <div className="w-32 h-32 rounded-full border-4 border-blue-600 p-1 bg-black">
+                  <img
+                    alt={project.name}
+                    className="w-full h-full rounded-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                    src={project.imageUrl}
+                  />
+                </div>
+              </div>
+              <div className="absolute top-2 sm:top-4 right-3 sm:right-1 flex gap-2">
+                <button
+                  onClick={() => handleEdit(project)}
+                  className="p-1.5 sm:p-2 text-blue-400 hover:text-blue-300 transition-colors"
+                  title="Edit project"
+                >
+                  <Pencil className="w-4 h-4 sm:w-5 sm:h-5" />
+                </button>
+                <button
+                  onClick={() => handleDelete(project.id)}
+                  className="p-1.5 sm:p-2 text-blue-400 hover:text-red-400 transition-colors"
+                  title="Delete project"
+                >
+                  <Trash2 className="w-4 h-4 sm:w-5 sm:h-5" />
+                </button>
+                <button
+                  onClick={() => {
+                    setSelectedProject(project);
+                    setIsMediaModalOpen(true);
+                  }}
+                  className="p-1.5 sm:p-2 text-blue-400 hover:text-green-400 transition-colors"
+                  title="Add media"
+                >
+                  <Upload className="w-4 h-4 sm:w-5 sm:h-5" />
+                </button>
+              </div>
+
+              <div className="mt-16 text-center">
+                <h3 className="text-lg sm:text-xl font-semibold uppercase text-blue-400">
+                  {project.name}
+                </h3>
+                {project.projects && (
+                  <div className="mt-2 flex flex-col items-center gap-2">
+                    <p className="text-sm text-blue-300">
+                      {project.projects.length} media items
+                    </p>
+                    <button
+                      onClick={() => handleViewImages(project)}
+                      className="flex items-center gap-2 text-sm bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 px-4 py-1.5 rounded-lg transition-all duration-300"
+                    >
+                      <Image className="w-4 h-4" />
+                      View Images
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
-            <div className="absolute top-2 sm:top-4 right-3 sm:right-1 flex gap-2">
-              <button
-                onClick={() => handleEdit(project)}
-                className="p-1.5 sm:p-2 text-blue-400 hover:text-blue-300 transition-colors"
-                title="Edit project"
-              >
-                <Pencil className="w-4 h-4 sm:w-5 sm:h-5" />
-              </button>
-              <button
-                onClick={() => handleDelete(project.id)}
-                className="p-1.5 sm:p-2 text-blue-400 hover:text-red-400 transition-colors"
-                title="Delete project"
-              >
-                <Trash2 className="w-4 h-4 sm:w-5 sm:h-5" />
-              </button>
-              <button
-                onClick={() => {
-                  setSelectedProject(project);
-                  setIsMediaModalOpen(true);
-                }}
-                className="p-1.5 sm:p-2 text-blue-400 hover:text-green-400 transition-colors"
-                title="Add media"
-              >
-                <Upload className="w-4 h-4 sm:w-5 sm:h-5" />
-              </button>
-            </div>
-
-            <div className="mt-16 text-center">
-              <h3 className="text-lg sm:text-xl font-semibold uppercase text-blue-400">
-                {project.name}
-              </h3>
-              {project.media && (
-                <p className="text-sm text-blue-300 mt-2">
-                  {project.media.length} media items
-                </p>
-              )}
-            </div>
-          </div>
-        )))}
+          ))
+        )}
       </div>
 
       {/* Project Modal */}
@@ -363,6 +394,8 @@ const ProjectManagement = () => {
                   className="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-blue-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isLoading ? "Saving..." : "Save Changes"}
+        
+
                 </button>
               </div>
             </div>
@@ -395,13 +428,45 @@ const ProjectManagement = () => {
                 </p>
               </div>
               <div className="flex justify-end gap-4 mt-8">
-                <button    onClick={() => setIsMediaModalOpen(false)}
+                <button
+                  onClick={() => setIsMediaModalOpen(false)}
                   className="px-6 py-2.5 text-blue-400 hover:text-blue-300 transition-colors"
                 >
                   Close
                 </button>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Gallery Modal */}
+      {isGalleryModalOpen && selectedProject && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-gradient-to-b from-black to-blue-900 rounded-2xl p-8 w-full max-w-4xl max-h-[80vh] overflow-y-auto relative border border-blue-900/20">
+            <button
+              onClick={() => setIsGalleryModalOpen(false)}
+              className="absolute top-4 right-4 text-blue-400 hover:text-blue-300 transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
+            <h2 className="text-2xl font-bold text-blue-400 mb-6">
+              {selectedProject.name} - Gallery
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              {selectedProject.projects?.map((media) => (
+                <div key={media.id} className="relative aspect-square">
+                  <img
+                    src={media.mediaUrl}
+                    alt={`Media ${media.id}`}
+                    className="w-full h-full object-cover rounded-lg"
+                  />
+                </div>
+              ))}
+            </div>
+            {(!selectedProject.projects || selectedProject.projects.length === 0) && (
+              <p className="text-center text-blue-300">No images available</p>
+            )}
           </div>
         </div>
       )}
