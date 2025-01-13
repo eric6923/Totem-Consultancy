@@ -20,13 +20,13 @@ const ProjectDetail = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [carouselImages, setCarouselImages] = useState<string[]>([]);
+  const [staticImages, setStaticImages] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchProjectAndRelated = async () => {
       try {
         setIsLoading(true);
         
-        // First fetch the current project
         const projectResponse = await fetch(`https://totem-consultancy-alpha.vercel.app/api/projects/${id}`);
         
         if (!projectResponse.ok) {
@@ -36,7 +36,6 @@ const ProjectDetail = () => {
         const projectData = await projectResponse.json();
         setProject(projectData);
 
-        // Then fetch all projects
         const allProjectsResponse = await fetch('https://totem-consultancy-alpha.vercel.app/api/projects');
         
         if (!allProjectsResponse.ok) {
@@ -44,17 +43,16 @@ const ProjectDetail = () => {
         }
 
         const allProjects = await allProjectsResponse.json();
-        
-        // Filter projects with the same categoryId
         const relatedProjects = allProjects.filter(
           (p: Project) => p.categoryId === projectData.categoryId
         );
         
         setCategoryProjects(relatedProjects);
 
-        // Get all mediaUrls from related projects
-        const images = relatedProjects.map((p: Project) => p.mediaUrl);
-        setCarouselImages(images);
+        // Split images into carousel and static
+        const allImages = relatedProjects.map((p: Project) => p.mediaUrl);
+        setCarouselImages(allImages.slice(0, 3));  // Only first 3 for carousel
+        setStaticImages(allImages.slice(3));       // Rest are static
 
       } catch (err) {
         setError('Failed to load project');
@@ -70,7 +68,7 @@ const ProjectDetail = () => {
   }, [id]);
 
   useEffect(() => {
-    if (carouselImages.length >= 1) {
+    if (carouselImages.length === 3) {  // Only run carousel if we have exactly 3 images
       const interval = setInterval(() => {
         setCarouselImages(prev => {
           const newImages = [...prev];
@@ -121,44 +119,71 @@ const ProjectDetail = () => {
         </div>
 
         {/* Carousel Section */}
-        <div className="relative w-full h-[400px] md:h-[600px] overflow-hidden mb-8">
-          <div className="absolute w-full top-1/2 -translate-y-1/2 flex justify-center items-center">
-            {carouselImages.map((imageUrl, index) => {
-              let className = "absolute transition-all duration-700 ease-in-out ";
-              let style: React.CSSProperties = { opacity: 0 };
+        <div className="relative w-full h-[400px] md:h-[600px] overflow-visible mb-8">
+  <div className="absolute w-full top-1/3 -translate-y-1/2 flex justify-center items-center">
+    {carouselImages.map((imageUrl, index) => {
+      let className = "absolute transition-all duration-1000 ease-in-out ";
+      let style: React.CSSProperties = { opacity: 0 };
 
-              if (index === 0) {
-                className += "w-[200px] h-[200px] md:w-[318px] md:h-[318px]";
-                style = { transform: 'translateX(-120%)', opacity: 0.7 };
-              } else if (index === 1) {
-                className += "w-[300px] h-[300px] md:w-[531px] md:h-[531px] z-10";
-                style = { transform: 'translateX(0)', opacity: 1 };
-              } else if (index === 2) {
-                className += "w-[200px] h-[200px] md:w-[318px] md:h-[318px]";
-                style = { transform: 'translateX(120%)', opacity: 0.7 };
-              }
+      if (index === 0) {
+        className += "w-[160px] h-[160px] md:w-[318px] md:h-[318px]";
+        style = { 
+          transform: 'translateX(-110%)', 
+          opacity: 0.7,
+          filter: 'brightness(0.7)'
+        };
+      } else if (index === 1) {
+        className += "w-[240px] h-[240px] md:w-[531px] md:h-[531px] z-10";
+        style = { 
+          transform: 'translateX(0)', 
+          opacity: 1,
+          filter: 'brightness(1)'
+        };
+      } else if (index === 2) {
+        className += "w-[160px] h-[160px] md:w-[318px] md:h-[318px]";
+        style = { 
+          transform: 'translateX(110%)', 
+          opacity: 0.7,
+          filter: 'brightness(0.7)'
+        };
+      }
 
-              return (
-                <div
-                  key={index}
-                  className={className}
-                  style={style}
-                >
-                  <img
-                    src={imageUrl}
-                    alt={`Project image ${index + 1}`}
-                    className="w-full h-full rounded-lg shadow-xl object-cover"
-                  />
-                </div>
-              );
-            })}
+      return (
+        <div
+          key={index}
+          className={className}
+          style={{
+            ...style,
+            transition: 'all 1000ms cubic-bezier(0.4, 0, 0.2, 1)'
+          }}
+        >
+          <img
+            src={imageUrl}
+            alt={`Project image ${index + 1}`}
+            className="w-full h-full rounded-lg shadow-xl object-cover"
+          />
+        </div>
+      );
+    })}
+  </div>
+</div>
+        {staticImages.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            {staticImages.map((imageUrl, index) => (
+              <div 
+                key={index}
+                className="aspect-square w-full overflow-hidden rounded-lg shadow-lg"
+              >
+                <img
+                  src={imageUrl}
+                  alt={`Project image ${index + 4}`}
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+            ))}
           </div>
-        </div>
+        )}
 
-        <div className="bg-white rounded-lg overflow-hidden shadow-lg p-6">
-          <h1 className="text-2xl font-bold mb-2">{project.category.name}</h1>
-          <p className="text-gray-600">Category: {project.category.name}</p>
-        </div>
       </div>
     </div>
   );
