@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Menu, Bell, Sun, Moon, Settings, LogOut } from "lucide-react";
 import profile from "./assets/assets/profile.png";
-
+import { useNavigate } from "react-router-dom";
 interface NavbarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (open: boolean) => void;
@@ -15,16 +15,17 @@ export default function Navbar({
   darkMode,
   setDarkMode,
 }: NavbarProps) {
+  const navigate = useNavigate(); // Move useNavigate hook inside the component
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const handleLogout = () => {
-    console.log("Logging out...");
+  const handleSettings = () => {
+    navigate('/admin/settings');
     setIsDropdownOpen(false);
   };
 
-  const handleSettings = () => {
-    console.log("Navigating to settings...");
+  const handleLogout = () => {
+    console.log("Logging out...");
     setIsDropdownOpen(false);
   };
 

@@ -1,64 +1,104 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Pencil, Trash2, Plus, X } from 'lucide-react';
-import r1 from '../assets/assets/r1.png'
-import r2 from '../assets/assets/r2.png'
-import r3 from '../assets/assets/r3.png'
 import { useDropzone } from 'react-dropzone';
 
 interface Review {
-  id: number;
+  id: string;
   name: string;
-  content: string;
-  image: string;
+  description: string;
+  profileUrl: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface NewReview {
   name: string;
-  content: string;
-  image: string;
+  description: string;
+  profileUrl: string;
 }
 
 const EditReview: React.FC = () => {
-  const [reviews, setReviews] = useState<Review[]>([
-    {
-      id: 1,
-      name: "Khushi",
-      content: "Learning digital marketing here was a game-changer for my career. The practical approach and expert guidance helped me land a great job in the industry.",
-      image: r3
-    },
-    {
-      id: 2,
-      name: "Aemporter",
-      content: "Their digital marketing strategies have significantly boosted our online presence and customer engagement. We’re thrilled with themeasurable results and growth they’ve delivered.",
-      image: r2
-    },
-    {
-      id: 3,
-      name: "Matrix",
-      content: "Working with their team has been an incredible experience. They understood our needs perfectly and executed campaigns thatexceeded our expectations",
-      image: r1
-    },
-    
-  ]);
-
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [editingReview, setEditingReview] = useState<Review | null>(null);
   const [newReview, setNewReview] = useState<NewReview>({
     name: "",
-    content: "",
-    image: "/api/placeholder/128/128"
+    description: "",
+    profileUrl: "/api/placeholder/128/128"
   });
 
-  const handleDelete = (id: number): void => {
-    setReviews(reviews.filter(review => review.id !== id));
+  useEffect(() => {
+    fetchReviews();
+  }, []);
+
+  const fetchReviews = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("Authentication token is missing. Please log in again.");
+        return;
+      }
+
+      const response = await fetch(
+        "https://totem-consultancy-alpha.vercel.app/api/reviews",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch reviews");
+      }
+
+      const data = await response.json();
+      setReviews(data);
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+      alert("Failed to fetch reviews. Please try again later.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("Authentication token is missing. Please log in again.");
+        return;
+      }
+
+      const response = await fetch(
+        `https://totem-consultancy-alpha.vercel.app/api/reviews/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to delete review");
+      }
+
+      setReviews(reviews.filter(review => review.id !== id));
+      alert("Review deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting review:", error);
+      alert("Failed to delete review. Please try again later.");
+    }
   };
 
   const handleEdit = (review: Review): void => {
     setEditingReview(review);
     setNewReview({
       name: review.name,
-      content: review.content,
-      image: review.image
+      description: review.description,
+      profileUrl: review.profileUrl
     });
     setIsModalOpen(true);
   };
@@ -67,44 +107,102 @@ const EditReview: React.FC = () => {
     setEditingReview(null);
     setNewReview({
       name: "",
-      content: "",
-      image: "/api/placeholder/128/128"
+      description: "",
+      profileUrl: "/api/placeholder/128/128"
     });
     setIsModalOpen(true);
   };
 
-  const handleSave = (): void => {
-    if (editingReview) {
-      setReviews(reviews.map(review =>
-        review.id === editingReview.id 
-          ? { ...review, ...newReview }
-          : review
-      ));
-    } else {
-      const newReviewWithId: Review = {
-        ...newReview,
-        id: Date.now()
-      };
-      setReviews([...reviews, newReviewWithId]);
-    }
-    setIsModalOpen(false);
-    setNewReview({
-      name: "",
-      content: "",
-      image: "/api/placeholder/128/128"
-    });
-    setEditingReview(null);
-  };
-  const onDrop = (acceptedFiles: File[]) => {
-    const file = acceptedFiles[0];
-    const reader = new FileReader();
-    reader.onload = () => {
-      setNewReview({ ...newReview, image: reader.result as string });
-    };
-    reader.readAsDataURL(file);
-  };
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+  const handleSave = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("Authentication token is missing. Please log in again.");
+        return;
+      }
 
+      if (!newReview.profileUrl || newReview.profileUrl === "/api/placeholder/128/128") {
+        alert("Please upload an image before saving.");
+        return;
+      }
+
+      const url = editingReview 
+        ? `https://totem-consultancy-alpha.vercel.app/api/reviews/${editingReview.id}`
+        : "https://totem-consultancy-alpha.vercel.app/api/reviews";
+
+      const response = await fetch(url, {
+        method: editingReview ? "PUT" : "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          name: newReview.name,
+          description: newReview.description,
+          profileUrl: newReview.profileUrl
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `Failed to ${editingReview ? 'update' : 'create'} review`);
+      }
+
+      const savedReview = await response.json();
+      
+      if (editingReview) {
+        setReviews(reviews.map(review =>
+          review.id === editingReview.id ? savedReview.review : review
+        ));
+      } else {
+        setReviews([...reviews, savedReview.review]);
+      }
+
+      setIsModalOpen(false);
+      setNewReview({
+        name: "",
+        description: "",
+        profileUrl: "/api/placeholder/128/128"
+      });
+      setEditingReview(null);
+      alert(`Review ${editingReview ? 'updated' : 'created'} successfully!`);
+    } catch (error) {
+      console.error(`Error ${editingReview ? 'updating' : 'saving'} review:`, error);
+      alert(`Failed to ${editingReview ? 'update' : 'save'} review. Please check the data and try again.`);
+    }
+  };
+
+  const onDrop = async (acceptedFiles: File[]) => {
+    const file = acceptedFiles[0];
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "ml_default");
+  
+    try {
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/dgagkq1cs/image/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+  
+      if (response.ok) {
+        const data = await response.json();
+        setNewReview(prevReview => ({
+          ...prevReview,
+          profileUrl: data.secure_url
+        }));
+      } else {
+        throw new Error("Failed to upload image");
+      }
+    } catch (error) {
+      console.error("Cloudinary upload error:", error);
+      alert("Failed to upload image. Please try again.");
+    }
+  };
+
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   return (
     <div className="p-4 sm:p-6 max-w-7xl mx-auto bg-black/5">
@@ -123,39 +221,45 @@ const EditReview: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {reviews.map(review => (
-          <div key={review.id} className="relative bg-gradient-to-b from-black to-blue-900 mt-16 p-6 rounded-2xl w-full sm:w-[370px] h-[280px] shadow-xl hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300 border border-blue-900/20">
-            <div className="absolute -top-12 left-1/2 transform -translate-x-1/2">
-              <div className="w-32 h-32 rounded-full border-4 border-blue-600 p-1 bg-black">
-                <img
-                  alt={review.name}
-                  className="w-full h-full rounded-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-                  src={review.image}
-                />
+        {isLoading ? (
+          <div className="col-span-3 text-center text-blue-400">Loading reviews...</div>
+        ) : reviews.length === 0 ? (
+          <div className="col-span-3 text-center text-blue-400">No reviews found. Add your first review!</div>
+        ) : (
+          reviews.map(review => (
+            <div key={review.id} className="relative bg-gradient-to-b from-black to-blue-900 mt-16 p-6 rounded-2xl w-full sm:w-[370px] h-[280px] shadow-xl hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300 border border-blue-900/20">
+              <div className="absolute -top-12 left-1/2 transform -translate-x-1/2">
+                <div className="w-32 h-32 rounded-full border-4 border-blue-600 p-1 bg-black">
+                  <img
+                    alt={review.name}
+                    className="w-full h-full rounded-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                    src={review.profileUrl}
+                  />
+                </div>
+              </div>
+              <div className="absolute top-2 sm:top-4 right-2 sm:right-4 flex gap-1 sm:gap-2">
+                <button
+                  onClick={() => handleEdit(review)}
+                  className="p-1.5 sm:p-2 text-blue-400 hover:text-blue-300 transition-colors"
+                  title="Edit review"
+                >
+                  <Pencil className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                </button>
+                <button
+                  onClick={() => handleDelete(review.id)}
+                  className="p-1.5 sm:p-2 text-blue-400 hover:text-red-400 transition-colors"
+                  title="Delete review"
+                >
+                  <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                </button>
+              </div>
+              <div className="mt-16 text-center">
+                <h3 className="text-lg sm:text-xl font-semibold uppercase text-blue-400">{review.name}</h3>
+                <p className="mt-4 text-sm sm:text-sm text-gray-300 leading-relaxed">{review.description}</p>
               </div>
             </div>
-            <div className="absolute top-2 sm:top-4 right-2 sm:right-4 flex gap-1 sm:gap-2">
-              <button
-                onClick={() => handleEdit(review)}
-                className="p-1.5 sm:p-2 text-blue-400 hover:text-blue-300 transition-colors"
-                title="Edit review"
-              >
-                <Pencil className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              </button>
-              <button
-                onClick={() => handleDelete(review.id)}
-                className="p-1.5 sm:p-2 text-blue-400 hover:text-red-400 transition-colors"
-                title="Delete review"
-              >
-                <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              </button>
-            </div>
-            <div className="mt-16 text-center">
-              <h3 className="text-lg sm:text-xl font-semibold uppercase text-blue-400">{review.name}</h3>
-              <p className="mt-4 text-sm sm:text-sm text-gray-300 leading-relaxed">{review.content}</p>
-            </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
 
       {isModalOpen && (
@@ -184,31 +288,31 @@ const EditReview: React.FC = () => {
                 />
               </div>
               <div>
-                <label htmlFor="content" className="block text-sm font-medium text-blue-300 mb-2">
+                <label htmlFor="description" className="block text-sm font-medium text-blue-300 mb-2">
                   Review Content
                 </label>
                 <textarea
-                  id="content"
+                  id="description"
                   className="w-full px-4 py-3 bg-black/50 text-white rounded-lg border border-blue-900 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all duration-200 min-h-[120px]"
-                  value={newReview.content}
-                  onChange={(e) => setNewReview({ ...newReview, content: e.target.value })}
+                  value={newReview.description}
+                  onChange={(e) => setNewReview({ ...newReview, description: e.target.value })}
                   placeholder="Enter review content"
                 />
               </div>
               <div>
-      <label className="block text-sm font-medium text-blue-300 mb-2">
-        Upload Image
-      </label>
-      <div
-        {...getRootProps()}
-        className="w-full px-4 py-6 bg-black/50 text-white rounded-lg border border-dashed border-blue-900 hover:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all duration-200 flex items-center justify-center cursor-pointer"
-      >
-        <input {...getInputProps()} />
-        <p className="text-sm text-blue-300">
-          Drag & drop an image here, or <span className="text-blue-500 underline">click to select</span>
-        </p>
-      </div>
-    </div>
+                <label className="block text-sm font-medium text-blue-300 mb-2">
+                  Upload Image
+                </label>
+                <div
+                  {...getRootProps()}
+                  className="w-full px-4 py-6 bg-black/50 text-white rounded-lg border border-dashed border-blue-900 hover:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all duration-200 flex items-center justify-center cursor-pointer"
+                >
+                  <input {...getInputProps()} />
+                  <p className="text-sm text-blue-300">
+                    Drag & drop an image here, or <span className="text-blue-500 underline">click to select</span>
+                  </p>
+                </div>
+              </div>
               <div className="flex justify-end gap-4 mt-8">
                 <button
                   onClick={() => setIsModalOpen(false)}

@@ -58,7 +58,7 @@ router.delete('/categories/:id', verifyRole,deleteCategory);
 
 router.post('/projects',verifyRole, createProject);
 router.get('/projects', getAllProjects);
-router.get('/projects/:id', verifyRole,getProjectById);
+router.get('/projects/:id',getProjectById);
 router.delete('/projects/:id',verifyRole, deleteProject);
 
 

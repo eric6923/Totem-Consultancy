@@ -1,108 +1,241 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Pencil, Trash2, Plus, X } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 
 interface TeamMember {
   id: number;
   name: string;
-  role: string;
+  timePeriod: string;
   price: string;
   imageUrl: string;
 }
 
-interface NewMember {
+interface NewReview {
   name: string;
-  role: string;
+  timePeriod: string;
   price: string;
   imageUrl: string;
 }
 
 const TeamMemberComponent = () => {
-  const [members, setMembers] = useState<TeamMember[]>([
-    {
-      id: 1,
-      name: "Animation",
-      role: "(6 Months Duration)",
-      price: "₹ 25000",
-      imageUrl: "/api/placeholder/128/128",
-    },
-  ]);
-
+  const [members, setMembers] = useState<TeamMember[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [editingMember, setEditingMember] = useState<TeamMember | null>(null);
-  const [newMember, setNewMember] = useState<NewMember>({
+  const [newReview, setNewReview] = useState<NewReview>({
     name: "",
-    role: "",
+    timePeriod: "",
     price: "",
     imageUrl: "/api/placeholder/128/128",
   });
 
-  const handleDelete = (id: number): void => {
-    setMembers(members.filter((member) => member.id !== id));
+  useEffect(() => {
+    fetchCourses();
+  }, []);
+
+  const fetchCourses = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("Authentication token is missing. Please log in again.");
+        return;
+      }
+
+      const response = await fetch(
+        "https://totem-consultancy-alpha.vercel.app/api/courses",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch courses");
+      }
+
+      const data = await response.json();
+      
+      const transformedData = data.map((course: any) => ({
+        id: course.id,
+        name: course.name,
+        timePeriod: course.timePeriod,
+        price: `₹ ${course.price}`,
+        imageUrl: course.imageUrl,
+      }));
+
+      setMembers(transformedData);
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+      alert("Failed to fetch courses. Please try again later.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleEdit = (member: TeamMember): void => {
+  const handleEdit = (member: TeamMember) => {
     setEditingMember(member);
-    setNewMember({
+    // Remove the '₹ ' prefix from price when editing
+    const priceWithoutSymbol = member.price.replace('₹ ', '');
+    setNewReview({
       name: member.name,
-      role: member.role,
-      price: member.price,
+      timePeriod: member.timePeriod,
+      price: priceWithoutSymbol,
       imageUrl: member.imageUrl,
     });
     setIsModalOpen(true);
   };
 
-  const handleAdd = (): void => {
+  const handleAdd = () => {
     setEditingMember(null);
-    setNewMember({
+    setNewReview({
       name: "",
-      role: "",
+      timePeriod: "",
       price: "",
       imageUrl: "/api/placeholder/128/128",
     });
     setIsModalOpen(true);
   };
 
-  const handleSave = (): void => {
-    if (editingMember) {
-      setMembers(
-        members.map((member) =>
-          member.id === editingMember.id ? { ...member, ...newMember } : member
-        )
+  const handleDelete = async (id: number) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("Authentication token is missing. Please log in again.");
+        return;
+      }
+  
+      const response = await fetch(
+        `https://totem-consultancy-alpha.vercel.app/api/courses/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
-    } else {
-      const newMemberWithId: TeamMember = {
-        ...newMember,
-        id: Date.now(),
-      };
-      setMembers([...members, newMemberWithId]);
+  
+      if (!response.ok) {
+        throw new Error("Failed to delete course");
+      }
+  
+      setMembers(members.filter(member => member.id !== id));
+      alert("Course deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting course:", error);
+      alert("Failed to delete course. Please try again later.");
     }
-    setIsModalOpen(false);
-    setNewMember({
-      name: "",
-      role: "",
-      price: "",
-      imageUrl: "/api/placeholder/128/128",
-    });
-    setEditingMember(null);
   };
 
-  const onDrop = (acceptedFiles: File[]) => {
+  const handleSave = async () => {
+    try {
+      if (!newReview.imageUrl || newReview.imageUrl === "/api/placeholder/128/128") {
+        alert("Please upload an image before saving.");
+        return;
+      }
+  
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("Authentication token is missing. Please log in again.");
+        return;
+      }
+  
+      // Remove any existing '₹ ' prefix from the price
+      const cleanPrice = newReview.price.replace('₹ ', '');
+      
+      const courseData = {
+        name: newReview.name,
+        timePeriod: newReview.timePeriod,
+        price: parseFloat(cleanPrice),
+        imageUrl: newReview.imageUrl,
+      };
+  
+      const url = editingMember 
+        ? `https://totem-consultancy-alpha.vercel.app/api/courses/${editingMember.id}`
+        : "https://totem-consultancy-alpha.vercel.app/api/courses";
+  
+      const response = await fetch(url, {
+        method: editingMember ? "PUT" : "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(courseData),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `Failed to ${editingMember ? 'update' : 'create'} course`);
+      }
+      
+      const updatedData = await response.json();
+      
+      if (editingMember) {
+        // Update the existing member in the state
+        setMembers(members.map(member => 
+          member.id === editingMember.id 
+            ? {
+                ...member,
+                name: updatedData.name,
+                timePeriod: updatedData.timePeriod,
+                price: `₹ ${updatedData.price}`,
+                imageUrl: updatedData.imageUrl,
+              }
+            : member
+        ));
+      } else {
+        // Add the new member to the state
+        setMembers([...members, {
+          id: updatedData.id,
+          name: updatedData.name,
+          timePeriod: updatedData.timePeriod,
+          price: `₹ ${updatedData.price}`,
+          imageUrl: updatedData.imageUrl,
+        }]);
+      }
+  
+      setIsModalOpen(false);
+      alert(`Course ${editingMember ? 'updated' : 'created'} successfully!`);
+  
+    } catch (error) {
+      console.error(`Error ${editingMember ? 'updating' : 'saving'} course:`, error);
+      alert(`Failed to ${editingMember ? 'update' : 'save'} course. Please check the data and try again.`);
+    }
+  };
+
+  const onDrop = async (acceptedFiles: File[]) => {
     const file = acceptedFiles[0];
-    const reader = new FileReader();
-    reader.onload = () => {
-      setNewMember({ ...newMember, imageUrl: reader.result as string });
-    };
-    reader.readAsDataURL(file);
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "ml_default");
+  
+    try {
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/dgagkq1cs/image/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+  
+      if (response.ok) {
+        const data = await response.json();
+        setNewReview((prevReview) => ({
+          ...prevReview,
+          imageUrl: data.secure_url,
+        }));
+        return data.secure_url;
+      } else {
+        throw new Error("Failed to upload image");
+      }
+    } catch (error) {
+      console.error("Cloudinary upload error:", error);
+      throw error;
+    }
   };
-
-  const { getRootProps, getInputProps } = useDropzone({
-    onDrop,
-    accept: {
-      "image/*": [".jpeg", ".jpg", ".png", ".gif"],
-    },
-    maxSize: 5242880, // 5MB
-  });
+  
+  
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   return (
     <div className="p-4 sm:p-6 max-w-7xl mx-auto bg-black/5">
@@ -125,50 +258,56 @@ const TeamMemberComponent = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {members.map((member) => (
-          <div
-            key={member.id}
-            className="relative bg-gradient-to-b from-black to-blue-900 mt-16 p-6 rounded-2xl w-full sm:w-[290px] h-[210px] shadow-xl hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300 border border-blue-900/20"
-          >
-            <div className="absolute -top-12 left-1/2 transform -translate-x-1/2">
-              <div className="w-32 h-32 rounded-full border-4 border-blue-600 p-1 bg-black">
-                <img
-                  alt={member.name}
-                  className="w-full h-full rounded-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-                  src={member.imageUrl}
-                />
+        {isLoading ? (
+          <div className="col-span-3 text-center text-blue-400">Loading courses...</div>
+        ) : members.length === 0 ? (
+          <div className="col-span-3 text-center text-blue-400">No courses found. Add your first course!</div>
+        ) : (
+          members.map((member) => (
+            <div
+              key={member.id}
+              className="relative bg-gradient-to-b from-black to-blue-900 mt-16 p-6 rounded-2xl w-full sm:w-[290px] h-[210px] shadow-xl hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300 border border-blue-900/20"
+            >
+              <div className="absolute -top-12 left-1/2 transform -translate-x-1/2">
+                <div className="w-32 h-32 rounded-full border-4 border-blue-600 p-1 bg-black">
+                  <img
+                    alt={member.name}
+                    className="w-full h-full rounded-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                    src={member.imageUrl}
+                  />
+                </div>
+              </div>
+              <div className="absolute top-2 sm:top-4 right-3 sm:right-1 flex gap-2">
+                <button
+                  onClick={() => handleEdit(member)}
+                  className="p-1.5 sm:p-2 text-blue-400 hover:text-blue-300 transition-colors"
+                  title="Edit member"
+                >
+                  <Pencil className="w-4 h-4 sm:w-5 sm:h-5" />
+                </button>
+                <button
+                  onClick={() => handleDelete(member.id)}
+                  className="p-1.5 sm:p-2 text-blue-400 hover:text-red-400 transition-colors"
+                  title="Delete member"
+                >
+                  <Trash2 className="w-4 h-4 sm:w-5 sm:h-5" />
+                </button>
+              </div>
+
+              <div className="mt-16 text-center">
+                <h3 className="text-lg sm:text-xl font-semibold uppercase text-blue-400">
+                  {member.name}
+                </h3>
+                <p className="mt-2 text-sm sm:text-base text-gray-300 leading-relaxed">
+                  {member.timePeriod}
+                </p>
+                <p className="mt-2 text-sm sm:text-base text-gray-300 leading-relaxed">
+                  {member.price}
+                </p>
               </div>
             </div>
-            <div className="absolute top-2 sm:top-4 right-3 sm:right-1 flex gap-2">
-              <button
-                onClick={() => handleEdit(member)}
-                className="p-1.5 sm:p-2 text-blue-400 hover:text-blue-300 transition-colors"
-                title="Edit member"
-              >
-                <Pencil className="w-4 h-4 sm:w-5 sm:h-5" />
-              </button>
-              <button
-                onClick={() => handleDelete(member.id)}
-                className="p-1.5 sm:p-2 text-blue-400 hover:text-red-400 transition-colors"
-                title="Delete member"
-              >
-                <Trash2 className="w-4 h-4 sm:w-5 sm:h-5" />
-              </button>
-            </div>
-
-            <div className="mt-16 text-center">
-              <h3 className="text-lg sm:text-xl font-semibold uppercase text-blue-400">
-                {member.name}
-              </h3>
-              <p className="mt-2 text-sm sm:text-base text-gray-300 leading-relaxed">
-                {member.role}
-              </p>
-              <p className="mt-2 text-sm sm:text-base text-gray-300 leading-relaxed">
-                {member.price}
-              </p>
-            </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
 
       {isModalOpen && (
@@ -194,26 +333,26 @@ const TeamMemberComponent = () => {
                 <input
                   id="name"
                   className="w-full px-4 py-3 bg-black/50 text-white rounded-lg border border-blue-900 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all duration-200"
-                  value={newMember.name}
+                  value={newReview.name}
                   onChange={(e) =>
-                    setNewMember({ ...newMember, name: e.target.value })
+                    setNewReview({ ...newReview, name: e.target.value })
                   }
                   placeholder="Enter Course name"
                 />
               </div>
               <div>
                 <label
-                  htmlFor="role"
+                  htmlFor="timePeriod"
                   className="block text-sm font-medium text-blue-300 mb-2"
                 >
                   Duration
                 </label>
                 <input
-                  id="role"
+                  id="timePeriod"
                   className="w-full px-4 py-3 bg-black/50 text-white rounded-lg border border-blue-900 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all duration-200"
-                  value={newMember.role}
+                  value={newReview.timePeriod}
                   onChange={(e) =>
-                    setNewMember({ ...newMember, role: e.target.value })
+                    setNewReview({ ...newReview, timePeriod: e.target.value })
                   }
                   placeholder="Enter Duration"
                 />
@@ -228,9 +367,9 @@ const TeamMemberComponent = () => {
                 <input
                   id="price"
                   className="w-full px-4 py-3 bg-black/50 text-white rounded-lg border border-blue-900 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all duration-200"
-                  value={newMember.price}
+                  value={newReview.price}
                   onChange={(e) =>
-                    setNewMember({ ...newMember, price: e.target.value })
+                    setNewReview({ ...newReview, price: e.target.value })
                   }
                   placeholder="Enter Price"
                 />

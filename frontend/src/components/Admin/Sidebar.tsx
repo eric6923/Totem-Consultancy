@@ -156,7 +156,7 @@ export default function Sidebar({
           onClick={(e) => {
             e.preventDefault();
             setSidebarOpen(false);
-            window.open("https://totem-consultancy.vercel.app/", "_blank");
+            window.open("https://totem-consultancy-s6q4.vercel.app/", "_blank");
           }}
         >
           <LayoutDashboard size={20} />
