@@ -1,4 +1,6 @@
 import prisma from "../../prisma/client.js";
+import { logRecentActivity } from "../helpers/recent.js";
+
 
 
 export const createCourse = async (req, res) => {

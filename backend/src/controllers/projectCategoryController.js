@@ -1,7 +1,9 @@
 import prisma from "../../prisma/client.js";
+import { logRecentActivity } from "../helpers/recent.js";
 
 export const createCategory = async (req, res) => {
     const { name, imageUrl } = req.body;
+    const changesBy = req.user?.name || 'Unknown User';
   
     try {
       const newCategory = await prisma.projectCategory.create({
@@ -10,6 +12,8 @@ export const createCategory = async (req, res) => {
           imageUrl,
         },
       });
+      await logRecentActivity(`Created category: ${name}`, changesBy);
+
   
       res.status(201).json(newCategory);
     } catch (error) {
