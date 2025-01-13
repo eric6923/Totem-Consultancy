@@ -269,11 +269,14 @@ const TeamMemberComponent = () => {
               className="relative bg-gradient-to-b from-black to-blue-900 mt-16 p-6 rounded-2xl w-full sm:w-[290px] h-[210px] shadow-xl hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300 border border-blue-900/20"
             >
               <div className="absolute -top-12 left-1/2 transform -translate-x-1/2">
-                <div className="w-32 h-32 rounded-full border-4 border-blue-600 p-1 bg-black">
+                <div className="w-32 h-32 rounded-full border-4 border-blue-600 p-1 bg-gradient-to-b from-white to-gray-100 overflow-hidden flex items-center justify-center">
                   <img
                     alt={member.name}
-                    className="w-full h-full rounded-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                    className="w-full h-full object-contain transition-all duration-500"
                     src={member.imageUrl}
+                    style={{
+                      backgroundColor: 'transparent'
+                    }}
                   />
                 </div>
               </div>

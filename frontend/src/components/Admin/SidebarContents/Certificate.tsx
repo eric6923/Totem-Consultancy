@@ -201,145 +201,144 @@ const CertificateGenerator = () => {
 
         {/* Form Section */}
         <div className="p-4 sm:p-6">
-          <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-              {/* Form fields remain the same */}
-              <div className="space-y-2">
-                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                  First Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  id="firstName"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleInputChange}
-                  className={`w-full px-4 py-2 rounded-lg border bg-white dark:bg-gray-700 dark:text-white 
-                    focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow
-                    ${errors.firstName 
-                      ? 'border-red-500 focus:ring-red-500 focus:border-red-500' 
-                      : 'border-gray-300 dark:border-gray-600'
-                    }`}
-                  placeholder="Enter first name"
-                />
-                {errors.firstName && (
-                  <p className="text-sm text-red-500 dark:text-red-400">{errors.firstName}</p>
-                )}
-              </div>
+      <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+          <div className="space-y-2">
+            <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+              First Name <span className="text-red-500">*</span>
+            </label>
+            <input
+              id="firstName"
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleInputChange}
+              className={`w-full px-4 py-2 rounded-lg border bg-white dark:bg-gray-700 dark:text-white 
+                focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow
+                ${errors.firstName 
+                  ? 'border-red-500 focus:ring-red-500 focus:border-red-500' 
+                  : 'border-gray-300 dark:border-gray-600'
+                }`}
+              placeholder="Enter first name"
+            />
+            {errors.firstName && (
+              <p className="text-sm text-red-500 dark:text-red-400">{errors.firstName}</p>
+            )}
+          </div>
 
-              <div className="space-y-2">
-                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                  Last Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  id="lastName"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleInputChange}
-                  className={`w-full px-4 py-2 rounded-lg border bg-white dark:bg-gray-700 dark:text-white 
-                    focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow
-                    ${errors.lastName 
-                      ? 'border-red-500 focus:ring-red-500 focus:border-red-500' 
-                      : 'border-gray-300 dark:border-gray-600'
-                    }`}
-                  placeholder="Enter last name"
-                />
-                {errors.lastName && (
-                  <p className="text-sm text-red-500 dark:text-red-400">{errors.lastName}</p>
-                )}
-              </div>
+          <div className="space-y-2">
+            <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+              Last Name <span className="text-red-500">*</span>
+            </label>
+            <input
+              id="lastName"
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleInputChange}
+              className={`w-full px-4 py-2 rounded-lg border bg-white dark:bg-gray-700 dark:text-white 
+                focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow
+                ${errors.lastName 
+                  ? 'border-red-500 focus:ring-red-500 focus:border-red-500' 
+                  : 'border-gray-300 dark:border-gray-600'
+                }`}
+              placeholder="Enter last name"
+            />
+            {errors.lastName && (
+              <p className="text-sm text-red-500 dark:text-red-400">{errors.lastName}</p>
+            )}
+          </div>
 
-              <div className="space-y-2">
-                <label htmlFor="fromDate" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                  From Date
-                </label>
-                <input
-                  id="fromDate"
-                  type="date"
-                  name="fromDate"
-                  value={formData.fromDate}
-                  onChange={handleInputChange}
-                  className={`w-full px-4 py-2 rounded-lg border bg-white dark:bg-gray-700 dark:text-white 
-                    focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow
-                    ${errors.fromDate 
-                      ? 'border-red-500 focus:ring-red-500 focus:border-red-500' 
-                      : 'border-gray-300 dark:border-gray-600'
-                    }`}
-                />
-                {errors.fromDate && (
-                  <p className="text-sm text-red-500 dark:text-red-400">{errors.fromDate}</p>
-                )}
-              </div>
+          <div className="space-y-2">
+            <label htmlFor="fromDate" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+              From Date <span className="text-red-500">*</span>
+            </label>
+            <input
+              id="fromDate"
+              type="date"
+              name="fromDate"
+              value={formData.fromDate}
+              onChange={handleInputChange}
+              className={`w-full px-4 py-2 rounded-lg border bg-white dark:bg-gray-700 dark:text-white 
+                focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow
+                ${errors.fromDate 
+                  ? 'border-red-500 focus:ring-red-500 focus:border-red-500' 
+                  : 'border-gray-300 dark:border-gray-600'
+                }`}
+            />
+            {errors.fromDate && (
+              <p className="text-sm text-red-500 dark:text-red-400">{errors.fromDate}</p>
+            )}
+          </div>
 
-              <div className="space-y-2">
-                <label htmlFor="toDate" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                  To Date
-                </label>
-                <input
-                  id="toDate"
-                  type="date"
-                  name="toDate"
-                  value={formData.toDate}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 
-                    bg-white dark:bg-gray-700 dark:text-white
-                    focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow"
-                />
-              </div>
+          <div className="space-y-2">
+            <label htmlFor="toDate" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+              To Date <span className="text-red-500">*</span>
+            </label>
+            <input
+              id="toDate"
+              type="date"
+              name="toDate"
+              value={formData.toDate}
+              onChange={handleInputChange}
+              className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 
+                bg-white dark:bg-gray-700 dark:text-white
+                focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow"
+            />
+          </div>
 
-              <div className="space-y-2">
-                <label htmlFor="courseName" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                  Course Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  id="courseName"
-                  name="courseName"
-                  value={formData.courseName}
-                  onChange={handleInputChange}
-                  className={`w-full px-4 py-2 rounded-lg border bg-white dark:bg-gray-700 dark:text-white 
-                    focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow
-                    ${errors.courseName 
-                      ? 'border-red-500 focus:ring-red-500 focus:border-red-500' 
-                      : 'border-gray-300 dark:border-gray-600'
-                    }`}
-                  placeholder="Enter course name"
-                />
-                {errors.courseName && (
-                  <p className="text-sm text-red-500 dark:text-red-400">{errors.courseName}</p>
-                )}
-              </div>
+          <div className="space-y-2">
+            <label htmlFor="courseName" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+              Course Name <span className="text-red-500">*</span>
+            </label>
+            <input
+              id="courseName"
+              name="courseName"
+              value={formData.courseName}
+              onChange={handleInputChange}
+              className={`w-full px-4 py-2 rounded-lg border bg-white dark:bg-gray-700 dark:text-white 
+                focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow
+                ${errors.courseName 
+                  ? 'border-red-500 focus:ring-red-500 focus:border-red-500' 
+                  : 'border-gray-300 dark:border-gray-600'
+                }`}
+              placeholder="Enter course name"
+            />
+            {errors.courseName && (
+              <p className="text-sm text-red-500 dark:text-red-400">{errors.courseName}</p>
+            )}
+          </div>
 
-              <div className="col-span-1 sm:col-span-2 space-y-2">
-                <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                  Description
-                </label>
-                <textarea
-                  id="description"
-                  name="description"
-                  value={formData.description}
-                  onChange={handleInputChange}
-                  rows={4}
-                  className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 
-                    bg-white dark:bg-gray-700 dark:text-white
-                    focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow"
-                  placeholder="Enter certificate description"
-                />
-              </div>
-            </div>
-
-            {/* Mobile Generate Button */}
-            <button
-              onClick={generateDocument}
-              disabled={isGenerating}
-              className={`sm:hidden w-full px-6 py-3 rounded-lg font-medium text-white transition-colors
-                ${isGenerating 
-                  ? 'bg-blue-400 dark:bg-blue-500 cursor-not-allowed' 
-                  : 'bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700'
-              }`}
-            >
-              {isGenerating ? 'Generating...' : 'Generate Certificate'}
-            </button>
-          </form>
+          <div className="col-span-1 sm:col-span-2 space-y-2">
+            <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+              Description <span className="text-red-500">*</span>
+            </label>
+            <textarea
+              id="description"
+              name="description"
+              value={formData.description}
+              onChange={handleInputChange}
+              rows={4}
+              className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 
+                bg-white dark:bg-gray-700 dark:text-white
+                focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow"
+              placeholder="Enter certificate description"
+            />
+          </div>
         </div>
+
+        {/* Mobile Generate Button */}
+        <button
+          onClick={generateDocument}
+          disabled={isGenerating}
+          className={`sm:hidden w-full px-6 py-3 rounded-lg font-medium text-white transition-colors
+            ${isGenerating 
+              ? 'bg-blue-400 dark:bg-blue-500 cursor-not-allowed' 
+              : 'bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700'
+          }`}
+        >
+          {isGenerating ? 'Generating...' : 'Generate Certificate'}
+        </button>
+      </form>
+    </div>
       </div>
     </div>
   );
