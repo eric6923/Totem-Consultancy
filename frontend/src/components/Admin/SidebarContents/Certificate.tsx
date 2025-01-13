@@ -172,168 +172,174 @@ const CertificateGenerator = () => {
   
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <div className="max-w-4xl mx-auto">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">Certificate Generator</h1>
-          <button
-            onClick={generateDocument}
-            disabled={isGenerating}
-            className={`px-4 py-2 rounded text-white ${
-              isGenerating 
-                ? 'bg-blue-400 cursor-not-allowed' 
-                : 'bg-blue-600 hover:bg-blue-700'
-            }`}
-            aria-label="Generate certificate"
-          >
-            {isGenerating ? 'Generating...' : 'Generate Certificate'}
-          </button>
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 p-4 sm:p-6">
+      <div className="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-xl">
+        {/* Header Section */}
+        <div className="p-4 sm:p-6 border-b border-gray-100 dark:border-gray-700">
+          <div className="sm:flex sm:items-center sm:justify-between">
+            <div className="space-y-1">
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white">
+                Certificate Generator
+              </h1>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                Fill in the details below to generate a certificate
+              </p>
+            </div>
+            <button
+              onClick={generateDocument}
+              disabled={isGenerating}
+              className={`hidden sm:block px-6 py-2 rounded-lg font-medium text-white min-w-[160px] transition-colors
+                ${isGenerating 
+                  ? 'bg-blue-400 dark:bg-blue-500 cursor-not-allowed' 
+                  : 'bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700'
+              }`}
+            >
+              {isGenerating ? 'Generating...' : 'Generate Certificate'}
+            </button>
+          </div>
         </div>
 
-        <form 
-          className="bg-white shadow-lg rounded-lg p-6 space-y-6"
-          onSubmit={(e) => e.preventDefault()}
-        >
-          <div className="grid grid-cols-2 gap-6">
-            <div>
-              <label 
-                htmlFor="firstName"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                First Name *
-              </label>
-              <input
-                id="firstName"
-                type="text"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleInputChange}
-                className={`w-full p-2 border rounded ${
-                  errors.firstName ? 'border-red-500' : 'border-gray-300'
-                }`}
-                aria-invalid={!!errors.firstName}
-                aria-describedby={errors.firstName ? 'firstName-error' : undefined}
-              />
-              {errors.firstName && (
-                <p id="firstName-error" className="mt-1 text-sm text-red-500">
-                  {errors.firstName}
-                </p>
-              )}
+        {/* Form Section */}
+        <div className="p-4 sm:p-6">
+          <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+              {/* Form fields remain the same */}
+              <div className="space-y-2">
+                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+                  First Name <span className="text-red-500">*</span>
+                </label>
+                <input
+                  id="firstName"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleInputChange}
+                  className={`w-full px-4 py-2 rounded-lg border bg-white dark:bg-gray-700 dark:text-white 
+                    focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow
+                    ${errors.firstName 
+                      ? 'border-red-500 focus:ring-red-500 focus:border-red-500' 
+                      : 'border-gray-300 dark:border-gray-600'
+                    }`}
+                  placeholder="Enter first name"
+                />
+                {errors.firstName && (
+                  <p className="text-sm text-red-500 dark:text-red-400">{errors.firstName}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+                  Last Name <span className="text-red-500">*</span>
+                </label>
+                <input
+                  id="lastName"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleInputChange}
+                  className={`w-full px-4 py-2 rounded-lg border bg-white dark:bg-gray-700 dark:text-white 
+                    focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow
+                    ${errors.lastName 
+                      ? 'border-red-500 focus:ring-red-500 focus:border-red-500' 
+                      : 'border-gray-300 dark:border-gray-600'
+                    }`}
+                  placeholder="Enter last name"
+                />
+                {errors.lastName && (
+                  <p className="text-sm text-red-500 dark:text-red-400">{errors.lastName}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="fromDate" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+                  From Date
+                </label>
+                <input
+                  id="fromDate"
+                  type="date"
+                  name="fromDate"
+                  value={formData.fromDate}
+                  onChange={handleInputChange}
+                  className={`w-full px-4 py-2 rounded-lg border bg-white dark:bg-gray-700 dark:text-white 
+                    focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow
+                    ${errors.fromDate 
+                      ? 'border-red-500 focus:ring-red-500 focus:border-red-500' 
+                      : 'border-gray-300 dark:border-gray-600'
+                    }`}
+                />
+                {errors.fromDate && (
+                  <p className="text-sm text-red-500 dark:text-red-400">{errors.fromDate}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="toDate" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+                  To Date
+                </label>
+                <input
+                  id="toDate"
+                  type="date"
+                  name="toDate"
+                  value={formData.toDate}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 
+                    bg-white dark:bg-gray-700 dark:text-white
+                    focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="courseName" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+                  Course Name <span className="text-red-500">*</span>
+                </label>
+                <input
+                  id="courseName"
+                  name="courseName"
+                  value={formData.courseName}
+                  onChange={handleInputChange}
+                  className={`w-full px-4 py-2 rounded-lg border bg-white dark:bg-gray-700 dark:text-white 
+                    focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow
+                    ${errors.courseName 
+                      ? 'border-red-500 focus:ring-red-500 focus:border-red-500' 
+                      : 'border-gray-300 dark:border-gray-600'
+                    }`}
+                  placeholder="Enter course name"
+                />
+                {errors.courseName && (
+                  <p className="text-sm text-red-500 dark:text-red-400">{errors.courseName}</p>
+                )}
+              </div>
+
+              <div className="col-span-1 sm:col-span-2 space-y-2">
+                <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+                  Description
+                </label>
+                <textarea
+                  id="description"
+                  name="description"
+                  value={formData.description}
+                  onChange={handleInputChange}
+                  rows={4}
+                  className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 
+                    bg-white dark:bg-gray-700 dark:text-white
+                    focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-shadow"
+                  placeholder="Enter certificate description"
+                />
+              </div>
             </div>
-            
-            <div>
-              <label 
-                htmlFor="lastName"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Last Name *
-              </label>
-              <input
-                id="lastName"
-                type="text"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleInputChange}
-                className={`w-full p-2 border rounded ${
-                  errors.lastName ? 'border-red-500' : 'border-gray-300'
-                }`}
-                aria-invalid={!!errors.lastName}
-                aria-describedby={errors.lastName ? 'lastName-error' : undefined}
-              />
-              {errors.lastName && (
-                <p id="lastName-error" className="mt-1 text-sm text-red-500">
-                  {errors.lastName}
-                </p>
-              )}
-            </div>
-            
-            <div>
-              <label 
-                htmlFor="fromDate"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                From Date
-              </label>
-              <input
-                id="fromDate"
-                type="date"
-                name="fromDate"
-                value={formData.fromDate}
-                onChange={handleInputChange}
-                className={`w-full p-2 border rounded ${
-                  errors.fromDate ? 'border-red-500' : 'border-gray-300'
-                }`}
-                aria-invalid={!!errors.fromDate}
-                aria-describedby={errors.fromDate ? 'fromDate-error' : undefined}
-              />
-              {errors.fromDate && (
-                <p id="fromDate-error" className="mt-1 text-sm text-red-500">
-                  {errors.fromDate}
-                </p>
-              )}
-            </div>
-            
-            <div>
-              <label 
-                htmlFor="toDate"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                To Date
-              </label>
-              <input
-                id="toDate"
-                type="date"
-                name="toDate"
-                value={formData.toDate}
-                onChange={handleInputChange}
-                className="w-full p-2 border rounded border-gray-300"
-              />
-            </div>
-            
-            <div>
-              <label 
-                htmlFor="courseName"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Course Name *
-              </label>
-              <input
-                id="courseName"
-                type="text"
-                name="courseName"
-                value={formData.courseName}
-                onChange={handleInputChange}
-                className={`w-full p-2 border rounded ${
-                  errors.courseName ? 'border-red-500' : 'border-gray-300'
-                }`}
-                aria-invalid={!!errors.courseName}
-                aria-describedby={errors.courseName ? 'courseName-error' : undefined}
-              />
-              {errors.courseName && (
-                <p id="courseName-error" className="mt-1 text-sm text-red-500">
-                  {errors.courseName}
-                </p>
-              )}
-            </div>
-            
-            <div className="col-span-2">
-              <label 
-                htmlFor="description"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Description
-              </label>
-              <textarea
-                id="description"
-                name="description"
-                value={formData.description}
-                onChange={handleInputChange}
-                rows={4}
-                className="w-full p-2 border rounded border-gray-300"
-              />
-            </div>
-          </div>
-        </form>
+
+            {/* Mobile Generate Button */}
+            <button
+              onClick={generateDocument}
+              disabled={isGenerating}
+              className={`sm:hidden w-full px-6 py-3 rounded-lg font-medium text-white transition-colors
+                ${isGenerating 
+                  ? 'bg-blue-400 dark:bg-blue-500 cursor-not-allowed' 
+                  : 'bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700'
+              }`}
+            >
+              {isGenerating ? 'Generating...' : 'Generate Certificate'}
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );
