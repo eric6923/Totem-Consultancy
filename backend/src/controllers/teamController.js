@@ -1,4 +1,5 @@
 import prisma from "../../prisma/client.js";
+import { logRecentActivity } from "../helpers/recent.js";
 
 
 
@@ -35,10 +36,14 @@ export const getAllTeamMembers = async (req, res) => {
   // Create a new team member
   export const createTeamMember = async (req, res) => {
     const { profileUrl, name, designation } = req.body;
+    const changesBy = req.user?.name || 'Unknown User';
+
     try {
       const newTeamMember = await prisma.team.create({
         data: { profileUrl, name, designation },
       });
+      await logRecentActivity(`Added Team member: ${name}`, changesBy);
+
       res.status(201).json(newTeamMember);
     } catch (error) {
       res.status(500).json({ error: 'Failed to create team member' });
@@ -49,6 +54,8 @@ export const getAllTeamMembers = async (req, res) => {
   export const updateTeamMember = async (req, res) => {
     const { id } = req.params;
     const { profileUrl, name, designation } = req.body;
+    const changesBy = req.user?.name || 'Unknown User';
+
   
     try {
       // Ensure the team member exists
@@ -64,6 +71,9 @@ export const getAllTeamMembers = async (req, res) => {
         where: { id },
         data: { profileUrl, name, designation },
       });
+
+      await logRecentActivity(`Updated Team member: ${name}`, changesBy);
+
   
       res.status(200).json(updatedTeamMember);
     } catch (error) {
@@ -76,6 +86,8 @@ export const getAllTeamMembers = async (req, res) => {
   // Delete a team member
   export const deleteTeamMember = async (req, res) => {
     const { id } = req.params;
+    const changesBy = req.user?.name || 'Unknown User';
+
   
     try {
       // Ensure the team member exists
@@ -86,10 +98,15 @@ export const getAllTeamMembers = async (req, res) => {
       if (!existingTeamMember) {
         return res.status(404).json({ error: 'Team member not found' });
       }
+
+      const name = existingTeamMember.name
   
       await prisma.team.delete({
         where: { id },
       });
+
+      await logRecentActivity(`Deleted Team member: ${name}`, changesBy);
+
   
       res.status(204).send(); // No content on success
     } catch (error) {

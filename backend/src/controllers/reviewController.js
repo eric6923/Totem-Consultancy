@@ -1,4 +1,5 @@
 import prisma from "../../prisma/client.js";
+import { logRecentActivity } from "../helpers/recent.js";
 
 /**
  * Create a new review
@@ -8,6 +9,8 @@ import prisma from "../../prisma/client.js";
 const createReview = async (req, res) => {
   try {
     const { profileUrl, name, description } = req.body;
+    const changesBy = req.user?.name || 'Unknown User';
+
 
     if (!profileUrl || !name || !description) {
       return res.status(400).json({ 
@@ -18,6 +21,7 @@ const createReview = async (req, res) => {
     const review = await prisma.review.create({
       data: { profileUrl, name, description },
     });
+    await logRecentActivity(`added review for ${name}`, changesBy);
 
     return res.status(201).json({ 
       message: "Review created successfully", 
@@ -59,6 +63,8 @@ const updateReview = async (req, res) => {
   try {
     const { id } = req.params;
     const { profileUrl, name, description } = req.body;
+    const changesBy = req.user?.name || 'Unknown User';
+
 
     if (!id) {
       return res.status(400).json({ 
@@ -80,6 +86,7 @@ const updateReview = async (req, res) => {
         ...(description && { description })
       },
     });
+    await logRecentActivity(`updated review for ${name}`, changesBy);
 
     return res.status(200).json({ 
       message: "Review updated successfully", 
@@ -100,30 +107,49 @@ const updateReview = async (req, res) => {
  * @param {import('express').Response} res 
  */
 const deleteReview = async (req, res) => {
-  try {
-    const { id } = req.params;
+  const { id } = req.params;
+  const changesBy = req.user?.name || "Unknown User";
 
+  try {
     if (!id) {
-      return res.status(400).json({ 
-        message: "Review ID is required" 
+      return res.status(400).json({
+        message: "Review ID is required",
       });
     }
 
+    // Fetch the review details before deleting
+    const existingReview = await prisma.review.findUnique({
+      where: { id },
+    });
+
+    // Check if the review exists
+    if (!existingReview) {
+      return res.status(404).json({ message: "Review not found" });
+    }
+
+    // Extract the name or other details of the review for logging
+    const reviewName = existingReview.name || "Unnamed Review";
+
+    // Delete the review
     await prisma.review.delete({
       where: { id },
     });
 
-    return res.status(200).json({ 
-      message: "Review deleted successfully" 
+    // Log the deletion in recent activity
+    await logRecentActivity(`Deleted review: ${reviewName}`, changesBy);
+
+    return res.status(200).json({
+      message: "Review deleted successfully",
     });
   } catch (error) {
     console.error("Error deleting review:", error);
-    return res.status(500).json({ 
-      message: "Error deleting review", 
-      error: error.message 
+    return res.status(500).json({
+      message: "Error deleting review",
+      error: error.message,
     });
   }
 };
+
 
 export {
   createReview,
