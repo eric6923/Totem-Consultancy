@@ -5,6 +5,7 @@ import {
   Settings,
   Star,
 } from "lucide-react";
+import { useEffect,useState } from "react";
 
 interface QuickAction {
   title: string;
@@ -13,8 +14,86 @@ interface QuickAction {
   description: string;
   route: string;
 }
+interface Category {
+  id: string;
+  name: string;
+  imageUrl: string;
+  createdAt: string;
+  updatedAt: string;
+  projects: any[]; // We don't need the full Project interface since we're not using it
+}
 
 export default function Dashboard(): JSX.Element {
+  const [totalProjects, setTotalProjects] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [totalTeamMembers, setTotalTeamMembers] = useState<number>(0);
+  const [totalCertificates, setTotalCertificates] = useState<number>(0);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch('https://totem-consultancy-alpha.vercel.app/api/categories');
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data: Category[] = await response.json();
+        // Simply count the number of categories since each category is a project
+        const projectCount = data.length;
+        
+        setTotalProjects(projectCount);
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+        setError(error instanceof Error ? error.message : 'An error occurred');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
+
+  useEffect(() => {
+    const fetchTeamMembers = async () => {
+      try {
+        const response = await fetch('https://totem-consultancy-alpha.vercel.app/api/team');
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        setTotalTeamMembers(data.length);
+      } catch (error) {
+        console.error('Error fetching team members:', error);
+      }
+    };
+  
+    fetchTeamMembers();
+  }, []);
+  
+  useEffect(() => {
+    const fetchCertificates = async () => {
+      try {
+        const response = await fetch('https://totem-consultancy-alpha.vercel.app/api/certificates');
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        setTotalCertificates(data.length);
+      } catch (error) {
+        console.error('Error fetching certificates:', error);
+      }
+    };
+  
+    fetchCertificates();
+  }, []);
+
   const quickActions: QuickAction[] = [
     { 
       title: "Edit Reviews", 
@@ -74,8 +153,14 @@ export default function Dashboard(): JSX.Element {
                 <Book className="h-12 w-12 text-blue-600" />
               </div>
               <div className="ml-6">
-                <h3 className="text-3xl xl:text-4xl font-bold text-gray-800 dark:text-white">
-                  6
+              <h3 className="text-3xl xl:text-4xl font-bold text-gray-800 dark:text-white">
+                  {isLoading ? (
+                    <span className="text-gray-400">Loading...</span>
+                  ) : error ? (
+                    <span className="text-red-500">Error</span>
+                  ) : (
+                    totalProjects
+                  )}
                 </h3>
                 <p className="text-lg text-gray-500 dark:text-gray-400 mt-1">
                   Total Projects
@@ -89,9 +174,15 @@ export default function Dashboard(): JSX.Element {
                 <Users className="h-12 w-12 text-yellow-600" />
               </div>
               <div className="ml-6">
-                <h3 className="text-3xl xl:text-4xl font-bold text-gray-800 dark:text-white">
-                  8
-                </h3>
+              <h3 className="text-3xl xl:text-4xl font-bold text-gray-800 dark:text-white">
+  {isLoading ? (
+    <span className="text-gray-400">Loading...</span>
+  ) : error ? (
+    <span className="text-red-500">Error</span>
+  ) : (
+    totalTeamMembers
+  )}
+</h3>
                 <p className="text-lg text-gray-500 dark:text-gray-400 mt-1">
                   Team Members
                 </p>
@@ -105,8 +196,14 @@ export default function Dashboard(): JSX.Element {
               </div>
               <div className="ml-6">
                 <h3 className="text-3xl xl:text-4xl font-bold text-gray-800 dark:text-white">
-                  0
-                </h3>
+  {isLoading ? (
+    <span className="text-gray-400">Loading...</span>
+  ) : error ? (
+    <span className="text-red-500">Error</span>
+  ) : (
+    totalCertificates
+  )}
+</h3>
                 <p className="text-lg text-gray-500 dark:text-gray-400 mt-1">
                   Certificates Issued
                 </p>
