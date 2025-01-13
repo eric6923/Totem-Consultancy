@@ -3,6 +3,7 @@ import PizZip from 'pizzip';
 import Docxtemplater from 'docxtemplater';
 import { saveAs } from 'file-saver';
 
+
 interface FormData {
   firstName: string;
   lastName: string;
@@ -15,6 +16,7 @@ interface FormData {
 interface ValidationErrors {
   [key: string]: string;
 }
+
 
 const CertificateGenerator = () => {
   const [isGenerating, setIsGenerating] = useState(false);
@@ -67,11 +69,13 @@ const CertificateGenerator = () => {
     return `${day}/${month}/${year}`;
   };
 
+  
+
   const generateDocument = async () => {
     if (!validateForm()) {
       return;
     }
-
+  
     setIsGenerating(true);
     try {
       const response = await fetch('/demo.docx');
@@ -82,7 +86,7 @@ const CertificateGenerator = () => {
       const blob = await response.blob();
       const arrayBuffer = await blob.arrayBuffer();
       const zip = new PizZip(arrayBuffer);
-
+  
       const doc = new Docxtemplater()
         .loadZip(zip)
         .setData({
@@ -97,20 +101,75 @@ const CertificateGenerator = () => {
           date: formatDate(new Date().toISOString()),
         })
         .render();
-
-      const out = doc.getZip().generate({
+  
+      const docxBlob = doc.getZip().generate({
         type: 'blob',
         mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
       });
-
-      saveAs(out, `${formData.firstName}_${formData.lastName}_Certificate.docx`);
+  
+      // Create FormData with the DOCX file
+      const formDataApi = new FormData();
+      formDataApi.append('file', docxBlob, 'document.docx');
+  
+      // Convert DOCX to PDF using ConvertAPI REST endpoint
+      const SECRET = 'secret_iwGqSUZNzHdQDx0O';
+      console.log('Sending conversion request...');
+      
+      const convertResponse = await fetch(
+        `https://v2.convertapi.com/convert/docx/to/pdf?Secret=${SECRET}`, {
+          method: 'POST',
+          body: formDataApi,
+        }
+      );
+  
+      if (!convertResponse.ok) {
+        const errorText = await convertResponse.text();
+        console.error('Conversion API Error Response:', errorText);
+        try {
+          const errorData = JSON.parse(errorText);
+          throw new Error(`Conversion API error: ${errorData.Message || errorText}`);
+        } catch (e) {
+          throw new Error(`Conversion API error: ${errorText}`);
+        }
+      }
+  
+      const convertResult = await convertResponse.json();
+      console.log('Conversion result:', convertResult);
+  
+      if (!convertResult.Files || !Array.isArray(convertResult.Files) || convertResult.Files.length === 0) {
+        throw new Error('Conversion response missing Files array');
+      }
+  
+      const pdfFile = convertResult.Files[0];
+      if (!pdfFile || !pdfFile.FileData) {
+        throw new Error('Conversion response missing PDF data');
+      }
+  
+      // Convert base64 to blob
+      const byteCharacters = atob(pdfFile.FileData);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      const pdfBlob = new Blob([byteArray], { type: 'application/pdf' });
+  
+      if (pdfBlob.size === 0) {
+        throw new Error('Generated PDF is empty');
+      }
+  
+      saveAs(pdfBlob, `${formData.firstName}_${formData.lastName}_Certificate.pdf`);
+      console.log('PDF saved successfully');
+  
     } catch (error) {
+      console.error('Detailed error:', error);
       const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
       alert(`Error generating certificate: ${errorMessage}`);
     } finally {
       setIsGenerating(false);
     }
   };
+  
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
