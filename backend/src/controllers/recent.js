@@ -1,7 +1,6 @@
 import prisma from "../../prisma/client.js";
 
 
-
 export const getRecentActivities = async (req, res) => {
     try {
       const activities = await prisma.recentActivity.findMany({
