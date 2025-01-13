@@ -2,6 +2,7 @@ import { createReview,updateReview,getReviews,deleteReview } from "../controller
 import express from "express"
 import { verifyRole } from "../middleware/authMiddleware.js";
 import { getAllTeamMembers,getTeamMemberById,createTeamMember,updateTeamMember,deleteTeamMember } from "../controllers/teamController.js";
+import { getRecentActivities } from "../controllers/recent.js";
 import {
     createCourse,
     getAllCourses,
@@ -61,5 +62,7 @@ router.get('/projects', getAllProjects);
 router.get('/projects/:id',getProjectById);
 router.delete('/projects/:id',verifyRole, deleteProject);
 
+
+router.get('/recent', getRecentActivities);
 
 export default router;
