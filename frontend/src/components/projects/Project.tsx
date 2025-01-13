@@ -3,13 +3,23 @@ import { useNavigate } from 'react-router-dom';
 
 interface Project {
   id: string;
-  imageUrl: string;
+  mediaUrl: string;
+  categoryId: string;
+  category: {
+    id: string;
+    name: string;
+    imageUrl: string;
+  };
+}
+
+interface Category {
+  id: string;
   name: string;
-  timePeriod?: string;
-  price?: number;
+  imageUrl: string;
 }
 
 const PortfolioShowcase = () => {
+  const [categories, setCategories] = useState<Category[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -17,27 +27,42 @@ const PortfolioShowcase = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    fetchProjects();
+    fetchData();
   }, []);
 
-  const fetchProjects = async () => {
+  const fetchData = async () => {
     try {
-      const response = await fetch('https://totem-consultancy-alpha.vercel.app/api/categories');
-      if (!response.ok) {
-        throw new Error('Failed to fetch projects');
+      // Fetch both categories and projects
+      const [categoriesResponse, projectsResponse] = await Promise.all([
+        fetch('https://totem-consultancy-alpha.vercel.app/api/categories'),
+        fetch('https://totem-consultancy-alpha.vercel.app/api/projects')
+      ]);
+
+      if (!categoriesResponse.ok || !projectsResponse.ok) {
+        throw new Error('Failed to fetch data');
       }
-      const data = await response.json();
-      setProjects(data);
+
+      const categoriesData = await categoriesResponse.json();
+      const projectsData = await projectsResponse.json();
+
+      setCategories(categoriesData);
+      setProjects(projectsData);
     } catch (err) {
-      setError('Failed to load projects. Please try again later.');
-      console.error('Error fetching projects:', err);
+      setError('Failed to load content. Please try again later.');
+      console.error('Error fetching data:', err);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleClick = (projectId: string) => {
-    navigate(`/project/${projectId}`);
+  const handleClick = (categoryId: string) => {
+    // Find the first project for this category
+    const project = projects.find(p => p.categoryId === categoryId);
+    if (project) {
+      navigate(`/project/${project.id}`); // Use the project ID, not category ID
+    } else {
+      console.error('No project found for category:', categoryId);
+    }
   };
 
   if (isLoading) {
@@ -54,7 +79,7 @@ const PortfolioShowcase = () => {
         <div className="text-red-600 text-center p-4">
           <p className="text-xl">{error}</p>
           <button 
-            onClick={fetchProjects}
+            onClick={fetchData}
             className="mt-4 px-6 py-2 border border-black hover:bg-black hover:text-white transition-colors duration-300"
           >
             Try Again
@@ -79,37 +104,34 @@ const PortfolioShowcase = () => {
         </div>
 
         <div className="grid grid-cols-1 gap-20 md:grid-cols-2 md:gap-8 lg:grid-cols-3 lg:gap-12 justify-items-center mb-28">
-          {projects.map((project) => (
-            <div
-              key={project.id}
-              className="flex flex-col items-center md:p-6 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow w-full max-w-[320px]"
-            >
-              <div className="w-full aspect-[320/225] mb-6 overflow-hidden">
-                <img
-                  src={project.imageUrl}
-                  alt={project.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
-              <h2 className="text-2xl font-semibold mb-5">{project.name}</h2>
-              {project.timePeriod && (
-                <p className="text-gray-600 mb-3">{project.timePeriod}</p>
-              )}
-              {project.price && (
-                <p className="text-gray-800 font-medium mb-5">
-                  ${project.price.toLocaleString()}
-                </p>
-              )}
-
-              <button
-                className="w-full max-w-[290px] py-3 border border-black hover:bg-black hover:text-white transition-colors duration-300"
-                onClick={() => handleClick(project.id)}
+          {categories.map((category) => {
+            const categoryProject = projects.find(p => p.categoryId === category.id);
+            
+            return (
+              <div
+                key={category.id}
+                className="flex flex-col items-center md:p-6 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow w-full max-w-[320px]"
               >
-                View
-              </button>
-            </div>
-          ))}
+                <div className="w-full aspect-[320/225] mb-6 overflow-hidden">
+                  <img
+                    src={category.imageUrl}
+                    alt={category.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+
+                <h2 className="text-2xl font-semibold mb-5">{category.name}</h2>
+
+                <button
+                  className="w-full max-w-[290px] py-3 border border-black hover:bg-black hover:text-white transition-colors duration-300"
+                  onClick={() => categoryProject && handleClick(category.id)}
+                  disabled={!categoryProject}
+                >
+                  {categoryProject ? 'View' : 'No Projects Available'}
+                </button>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
