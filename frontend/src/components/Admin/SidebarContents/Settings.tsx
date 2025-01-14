@@ -243,6 +243,7 @@ const SettingsPage = () => {
                       value={formData.email}
                       onChange={handleInputChange}
                       className="w-full px-5 py-4 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                      autoComplete="off"
                       placeholder="Enter email"
                       required
                     />
@@ -272,6 +273,7 @@ const SettingsPage = () => {
                     value={formData.password}
                     onChange={handleInputChange}
                     className="w-full px-5 py-4 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                    autoComplete="off"
                     placeholder="Enter password"
                     required
                   />
