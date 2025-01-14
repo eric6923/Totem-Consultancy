@@ -1,5 +1,4 @@
 import React from "react";
-import EventImage from "../home/assets/event.png";
 import PricingIcon from "../home/assets/pricing-icon.jpg";
 import DesignIcon from "../home/assets/design.svg";
 import MilestoneIcon from "../home/assets/milestone.svg";
@@ -17,7 +16,7 @@ const Event: React.FC = () => {
       {/* Image Section */}
       <div className="text-center mt-8 md:mt-14 px-4 md:px-0">
         <img
-          src={EventImage}
+          src="https://res.cloudinary.com/dgagkq1cs/image/upload/v1736820300/DSC_9279_3_lcjdzc.svg"
           alt="Event Management"
           className="w-full md:w-[1200px] h-auto md:h-[800px] object-cover rounded-2xl mx-auto"
         />
