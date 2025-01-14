@@ -25,7 +25,9 @@ export default function Navbar({
   };
 
   const handleLogout = () => {
-    console.log("Logging out...");
+    localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('token');
+    navigate('/login');
     setIsDropdownOpen(false);
   };
 

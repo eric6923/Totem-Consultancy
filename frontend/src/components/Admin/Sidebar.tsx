@@ -176,14 +176,17 @@ export default function Sidebar({
             <span className="ml-3">Settings</span>
           </button>
           <button
-            onClick={() => {
-              /* Handle logout */
-            }}
-            className="flex items-center w-full p-3 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg"
-          >
-            <LogOut size={20} />
-            <span className="ml-3">Logout</span>
-          </button>
+  onClick={() => {
+    localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('token');
+    navigate('/admin'); // Assuming your login page route is '/login'
+    setSidebarOpen(false);
+  }}
+  className="flex items-center w-full p-3 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg"
+>
+  <LogOut size={20} />
+  <span className="ml-3">Logout</span>
+</button>
         </div>
       </nav>
     </aside>
