@@ -26,60 +26,119 @@ export default function Navbar({
 }: NavbarProps) {
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [recentActivities, setRecentActivities] = useState<RecentActivity[]>(
-    []
-  );
+  const [recentActivities, setRecentActivities] = useState<RecentActivity[]>([]);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [seenNotifications, setSeenNotifications] = useState<Set<number>>(() => {
+    const stored = localStorage.getItem('seenNotifications');
+    return new Set(stored ? JSON.parse(stored) : []);
+  });
+  const [newActivitiesCount, setNewActivitiesCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  
   const dropdownRef = useRef<HTMLDivElement>(null);
   const notificationRef = useRef<HTMLDivElement>(null);
-  const [lastUpdate, setLastUpdate] = useState<string | null>(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const lastFetchedIdsRef = useRef<Set<number>>(new Set());
 
   const fetchRecentActivities = async () => {
+    setIsLoading(true);
+    setError(null);
+    
     try {
-      console.log("Fetching recent activities...");
-      const response = await fetch(
-        "https://totem-consultancy-alpha.vercel.app/api/recent"
-      );
+      const token = localStorage.getItem('token');
+      
+      if (!token) {
+        throw new Error('No authentication token found');
+      }
+
+      const response = await fetch("https://totem-consultancy-alpha.vercel.app/api/recent", {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (!response.ok) {
+        if (response.status === 403) {
+          throw new Error('Authentication failed. Please log in again.');
+        }
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
       const data = await response.json();
-      console.log("Received data:", data);
-      setRecentActivities(data);
+      
+      if (!Array.isArray(data)) {
+        throw new Error("Data is not an array");
+      }
+
+      // Sort activities by ID in descending order
+      const sortedActivities = [...data].sort((a, b) => b.id - a.id);
+      setRecentActivities(sortedActivities);
+      
+      // Get currently fetched IDs
+      const currentIds = new Set(sortedActivities.map(a => a.id));
+      
+      // Find new notifications (ones that weren't in the last fetch and haven't been seen)
+      const newNotifications = sortedActivities.filter(activity => 
+        !lastFetchedIdsRef.current.has(activity.id) && 
+        !seenNotifications.has(activity.id)
+      );
+      
+      // Update the count only if there are new notifications
+      if (newNotifications.length > 0) {
+        setNewActivitiesCount(prev => prev + newNotifications.length);
+      }
+      
+      // Update last fetched IDs
+      lastFetchedIdsRef.current = currentIds;
+      
     } catch (error) {
       console.error("Error fetching recent activities:", error);
+      const errorMessage = error instanceof Error ? error.message : 'An error occurred';
+      setError(errorMessage);
+      
+      if (errorMessage.includes('authentication')) {
+        localStorage.removeItem('token');
+        navigate('/admin/login');
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Handle notification view
+  const handleNotificationClick = () => {
+    setShowNotifications(!showNotifications);
+    if (!showNotifications) {
+      // Mark all current notifications as seen
+      const newSeen = new Set(seenNotifications);
+      recentActivities.forEach(activity => {
+        newSeen.add(activity.id);
+      });
+      setSeenNotifications(newSeen);
+      localStorage.setItem('seenNotifications', JSON.stringify([...newSeen]));
+      setNewActivitiesCount(0);
     }
   };
 
   useEffect(() => {
     fetchRecentActivities();
-    // Poll more frequently - every 5 seconds instead of every minute
-    const interval = setInterval(fetchRecentActivities, 5000);
-    return () => clearInterval(interval);
+    
+    const interval = setInterval(() => {
+      fetchRecentActivities();
+    }, 10000);
+    
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
-  useEffect(() => {
-    fetchRecentActivities();
-    // Fetch activities every minute
-    const interval = setInterval(fetchRecentActivities, 60000);
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      console.log("Welcome Chief");
-    }
-  }, [isLoggedIn]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsDropdownOpen(false);
       }
-      if (
-        notificationRef.current &&
-        !notificationRef.current.contains(event.target as Node)
-      ) {
+      if (notificationRef.current && !notificationRef.current.contains(event.target as Node)) {
         setShowNotifications(false);
       }
     };
@@ -96,14 +155,25 @@ export default function Navbar({
   const handleLogout = () => {
     localStorage.removeItem("isAuthenticated");
     localStorage.removeItem("token");
-    navigate("/admin/login");
+    navigate("/admin/login",{replace:true});
     setIsDropdownOpen(false);
   };
 
+  const formatTimeAgo = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+    
+    if (diffInSeconds < 60) return 'just now';
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+    return `${Math.floor(diffInSeconds / 86400)}d ago`;
+  };
+
+  // Rest of the JSX remains the same as before, just change the notification item className:
   return (
     <header className="bg-white dark:bg-gray-800 h-16 fixed top-0 right-0 left-0 z-40 px-4 lg:px-6">
       <div className="h-full max-w-screen-2xl mx-auto flex items-center justify-between">
-        {/* Left side - Menu button and Brand */}
         <div className="flex items-center gap-4">
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -111,18 +181,15 @@ export default function Navbar({
           >
             <Menu size={24} />
           </button>
-
-          {/* Brand/Logo - Visible in desktop */}
           <div className="hidden lg:block text-xl font-semibold text-gray-800 dark:text-white">
             Your Brand
           </div>
         </div>
 
-        {/* Right side - Icons and Profile */}
         <div className="flex items-center gap-2 lg:gap-4">
           <button
             onClick={() => setDarkMode(!darkMode)}
-            className="rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+            className="rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 p-2"
           >
             {darkMode ? (
               <Sun className="h-6 w-6 text-gray-800 dark:text-gray-200" />
@@ -131,28 +198,39 @@ export default function Navbar({
             )}
           </button>
 
-          {/* Notification Bell with Dropdown */}
           <div className="relative" ref={notificationRef}>
             <button
-              onClick={() => setShowNotifications(!showNotifications)}
+              onClick={handleNotificationClick}
               className="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg relative"
             >
               <Bell size={20} />
-              {recentActivities.length > 0 && (
+              {isLoading && (
+                <span className="absolute top-0 right-0 h-2 w-2 bg-blue-500 rounded-full"></span>
+              )}
+              {newActivitiesCount > 0 && !isLoading && (
                 <span className="absolute top-0 right-0 h-5 w-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
-                  {Math.min(recentActivities.length, 1)}{" "}
-                  {/* Ensure it shows "1" */}
+                  {newActivitiesCount}
                 </span>
               )}
             </button>
 
             {showNotifications && (
               <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-1 z-50 border border-gray-200 dark:border-gray-700 max-h-96 overflow-y-auto">
-                {recentActivities.length > 0 ? (
+                {error ? (
+                  <p className="px-4 py-3 text-sm text-red-500 dark:text-red-400">
+                    Error: {error}
+                  </p>
+                ) : isLoading ? (
+                  <p className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
+                    Loading...
+                  </p>
+                ) : recentActivities.length > 0 ? (
                   recentActivities.map((activity) => (
                     <div
                       key={activity.id}
-                      className="px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 border-b border-gray-200 dark:border-gray-700"
+                      className={`px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 border-b border-gray-200 dark:border-gray-700 ${
+                        !seenNotifications.has(activity.id) ? 'bg-blue-50 dark:bg-blue-900/20' : ''
+                      }`}
                     >
                       <p className="text-sm text-gray-800 dark:text-gray-200">
                         {activity.action}
@@ -162,7 +240,7 @@ export default function Navbar({
                           By: {activity.changesBy}
                         </span>
                         <span className="text-xs text-gray-500 dark:text-gray-400">
-                          {new Date(activity.createdAt).toLocaleString()}
+                          {formatTimeAgo(activity.createdAt)}
                         </span>
                       </div>
                     </div>
@@ -176,7 +254,6 @@ export default function Navbar({
             )}
           </div>
 
-          {/* Profile Dropdown */}
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
