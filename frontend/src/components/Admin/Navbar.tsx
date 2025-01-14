@@ -2,11 +2,20 @@ import { useState, useRef, useEffect } from "react";
 import { Menu, Bell, Sun, Moon, Settings, LogOut } from "lucide-react";
 import profile from "./assets/assets/profile.png";
 import { useNavigate } from "react-router-dom";
+
 interface NavbarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (open: boolean) => void;
   darkMode: boolean;
   setDarkMode: (dark: boolean) => void;
+}
+
+interface RecentActivity {
+  id: number;
+  action: string;
+  changesBy: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export default function Navbar({
@@ -15,21 +24,49 @@ export default function Navbar({
   darkMode,
   setDarkMode,
 }: NavbarProps) {
-  const navigate = useNavigate(); // Move useNavigate hook inside the component
+  const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [recentActivities, setRecentActivities] = useState<RecentActivity[]>(
+    []
+  );
+  const [showNotifications, setShowNotifications] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const notificationRef = useRef<HTMLDivElement>(null);
+  const [lastUpdate, setLastUpdate] = useState<string | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
 
-  const handleSettings = () => {
-    navigate('/admin/settings');
-    setIsDropdownOpen(false);
+  const fetchRecentActivities = async () => {
+    try {
+      console.log("Fetching recent activities...");
+      const response = await fetch(
+        "https://totem-consultancy-alpha.vercel.app/api/recent"
+      );
+      const data = await response.json();
+      console.log("Received data:", data);
+      setRecentActivities(data);
+    } catch (error) {
+      console.error("Error fetching recent activities:", error);
+    }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('isAuthenticated');
-    localStorage.removeItem('token');
-    navigate('/login');
-    setIsDropdownOpen(false);
-  };
+  useEffect(() => {
+    fetchRecentActivities();
+    // Poll more frequently - every 5 seconds instead of every minute
+    const interval = setInterval(fetchRecentActivities, 5000);
+    return () => clearInterval(interval);
+  }, []);
+  useEffect(() => {
+    fetchRecentActivities();
+    // Fetch activities every minute
+    const interval = setInterval(fetchRecentActivities, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      console.log("Welcome Chief");
+    }
+  }, [isLoggedIn]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -39,11 +76,29 @@ export default function Navbar({
       ) {
         setIsDropdownOpen(false);
       }
+      if (
+        notificationRef.current &&
+        !notificationRef.current.contains(event.target as Node)
+      ) {
+        setShowNotifications(false);
+      }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const handleSettings = () => {
+    navigate("/admin/settings");
+    setIsDropdownOpen(false);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("isAuthenticated");
+    localStorage.removeItem("token");
+    navigate("/admin/login");
+    setIsDropdownOpen(false);
+  };
 
   return (
     <header className="bg-white dark:bg-gray-800 h-16 fixed top-0 right-0 left-0 z-40 px-4 lg:px-6">
@@ -76,12 +131,50 @@ export default function Navbar({
             )}
           </button>
 
-          <button className="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg relative">
-            <Bell size={20} />
-            <span className="absolute top-0 right-0 h-5 w-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
-              1
-            </span>
-          </button>
+          {/* Notification Bell with Dropdown */}
+          <div className="relative" ref={notificationRef}>
+            <button
+              onClick={() => setShowNotifications(!showNotifications)}
+              className="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg relative"
+            >
+              <Bell size={20} />
+              {recentActivities.length > 0 && (
+                <span className="absolute top-0 right-0 h-5 w-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+                  {Math.min(recentActivities.length, 1)}{" "}
+                  {/* Ensure it shows "1" */}
+                </span>
+              )}
+            </button>
+
+            {showNotifications && (
+              <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-1 z-50 border border-gray-200 dark:border-gray-700 max-h-96 overflow-y-auto">
+                {recentActivities.length > 0 ? (
+                  recentActivities.map((activity) => (
+                    <div
+                      key={activity.id}
+                      className="px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 border-b border-gray-200 dark:border-gray-700"
+                    >
+                      <p className="text-sm text-gray-800 dark:text-gray-200">
+                        {activity.action}
+                      </p>
+                      <div className="flex justify-between items-center mt-1">
+                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                          By: {activity.changesBy}
+                        </span>
+                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                          {new Date(activity.createdAt).toLocaleString()}
+                        </span>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
+                    No recent activities
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
 
           {/* Profile Dropdown */}
           <div className="relative" ref={dropdownRef}>
