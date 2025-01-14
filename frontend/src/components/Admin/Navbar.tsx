@@ -215,43 +215,47 @@ export default function Navbar({
             </button>
 
             {showNotifications && (
-              <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-1 z-50 border border-gray-200 dark:border-gray-700 max-h-96 overflow-y-auto">
-                {error ? (
-                  <p className="px-4 py-3 text-sm text-red-500 dark:text-red-400">
-                    Error: {error}
-                  </p>
-                ) : isLoading ? (
-                  <p className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
-                    Loading...
-                  </p>
-                ) : recentActivities.length > 0 ? (
-                  recentActivities.map((activity) => (
-                    <div
-                      key={activity.id}
-                      className={`px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 border-b border-gray-200 dark:border-gray-700 ${
-                        !seenNotifications.has(activity.id) ? 'bg-blue-50 dark:bg-blue-900/20' : ''
-                      }`}
-                    >
-                      <p className="text-sm text-gray-800 dark:text-gray-200">
-                        {activity.action}
-                      </p>
-                      <div className="flex justify-between items-center mt-1">
-                        <span className="text-xs text-gray-500 dark:text-gray-400">
-                          By: {activity.changesBy}
-                        </span>
-                        <span className="text-xs text-gray-500 dark:text-gray-400">
-                          {formatTimeAgo(activity.createdAt)}
-                        </span>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <p className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
-                    No recent activities
-                  </p>
-                )}
-              </div>
-            )}
+  <div className="fixed sm:absolute left-0 sm:left-auto right-0 sm:right-0 top-16 sm:top-auto sm:mt-2 w-full sm:w-80 bg-white dark:bg-gray-800 shadow-lg py-1 z-50 sm:rounded-lg sm:border border-gray-200 dark:border-gray-700 max-h-[70vh] sm:max-h-96 overflow-y-auto">
+    <div className="sticky top-0 bg-white dark:bg-gray-800 py-2 px-4 border-b border-gray-200 dark:border-gray-700">
+      <h3 className="font-medium text-gray-900 dark:text-gray-100">Notifications</h3>
+    </div>
+    
+    {error ? (
+      <p className="px-4 py-3 text-sm text-red-500 dark:text-red-400">
+        Error: {error}
+      </p>
+    ) : isLoading ? (
+      <p className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
+        Loading...
+      </p>
+    ) : recentActivities.length > 0 ? (
+      recentActivities.map((activity) => (
+        <div
+          key={activity.id}
+          className={`px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 border-b border-gray-100 dark:border-gray-700 ${
+            !seenNotifications.has(activity.id) ? 'bg-blue-50 dark:bg-blue-900/20' : ''
+          }`}
+        >
+          <p className="text-sm text-gray-800 dark:text-gray-200 font-medium">
+            {activity.action}
+          </p>
+          <div className="flex flex-col gap-0.5 mt-1">
+            <span className="text-xs text-gray-500 dark:text-gray-400">
+              By: {activity.changesBy}
+            </span>
+            <span className="text-xs text-gray-500 dark:text-gray-400">
+              {formatTimeAgo(activity.createdAt)}
+            </span>
+          </div>
+        </div>
+      ))
+    ) : (
+      <p className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
+        No recent activities
+      </p>
+    )}
+  </div>
+)}
           </div>
 
           <div className="relative" ref={dropdownRef}>
