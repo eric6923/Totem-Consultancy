@@ -1,8 +1,12 @@
 import prisma from "../../prisma/client.js";
+import { logRecentActivity } from "../helpers/recent.js";
+
 
 
 export const createCourse = async (req, res) => {
     const { imageUrl, name, timePeriod, price } = req.body;
+    const changesBy = req.user?.name || 'Unknown User';
+
   
     try {
       const newCourse = await prisma.course.create({
@@ -13,6 +17,8 @@ export const createCourse = async (req, res) => {
           price,
         },
       });
+      await logRecentActivity(`Created Course: ${name}`, changesBy);
+
   
       res.status(201).json(newCourse);
     } catch (error) {
@@ -55,6 +61,8 @@ export const createCourse = async (req, res) => {
   export const updateCourse = async (req, res) => {
     const { id } = req.params;
     const { imageUrl, name, timePeriod, price } = req.body;
+    const changesBy = req.user?.name || 'Unknown User';
+
   
     try {
       const existingCourse = await prisma.course.findUnique({
@@ -74,6 +82,8 @@ export const createCourse = async (req, res) => {
           price,
         },
       });
+      await logRecentActivity(`Updated Course: ${name}`, changesBy);
+
   
       res.status(200).json(updatedCourse);
     } catch (error) {
@@ -85,6 +95,8 @@ export const createCourse = async (req, res) => {
   
   export const deleteCourse = async (req, res) => {
     const { id } = req.params;
+    const changesBy = req.user?.name || 'Unknown User';
+
   
     try {
       const existingCourse = await prisma.course.findUnique({
@@ -94,10 +106,15 @@ export const createCourse = async (req, res) => {
       if (!existingCourse) {
         return res.status(404).json({ error: 'Course not found' });
       }
+
+      const name = existingCourse.name
   
       await prisma.course.delete({
         where: { id },
       });
+
+      await logRecentActivity(`Created category: ${name}`, changesBy);
+
   
       res.status(204).send(); // No content on success
     } catch (error) {
