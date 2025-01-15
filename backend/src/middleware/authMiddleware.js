@@ -34,7 +34,8 @@ const verifyRole = (req, res, next) => {
     // Attach decoded user data to request object
     req.user = {
       id: decoded.id,
-      role: decoded.role
+      role: decoded.role,
+      name:decoded.name
     };
 
     // Proceed to next middleware

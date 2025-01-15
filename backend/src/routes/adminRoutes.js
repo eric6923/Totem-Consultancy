@@ -2,6 +2,14 @@ import { createReview,updateReview,getReviews,deleteReview } from "../controller
 import express from "express"
 import { verifyRole } from "../middleware/authMiddleware.js";
 import { getAllTeamMembers,getTeamMemberById,createTeamMember,updateTeamMember,deleteTeamMember } from "../controllers/teamController.js";
+import { getRecentActivities } from "../controllers/recent.js";
+import {
+  createCertificate,
+  getAllCertificates,
+  getCertificateById,
+  updateCertificate,
+  deleteCertificate,
+} from "../controllers/certificateController.js";
 import {
     createCourse,
     getAllCourses,
@@ -61,5 +69,15 @@ router.get('/projects', getAllProjects);
 router.get('/projects/:id',getProjectById);
 router.delete('/projects/:id',verifyRole, deleteProject);
 
+
+router.get('/recent',verifyRole, getRecentActivities);
+
+//certificate
+
+router.post("/certificates", verifyRole, createCertificate);
+router.get("/certificates", getAllCertificates);
+router.get("/certificates/:id", getCertificateById);
+router.put("/certificates/:id", verifyRole, updateCertificate);
+router.delete("/certificates/:id", verifyRole, deleteCertificate);
 
 export default router;

@@ -101,7 +101,8 @@ const registerAdmin = async (req, res) => {
     const token = jwt.sign(
       {
         id: admin.id,
-        role: "admin"
+        role: "admin",
+        name:admin.name
       },
       jwtSecret,
       {
