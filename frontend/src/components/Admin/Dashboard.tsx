@@ -96,7 +96,7 @@ export default function Dashboard(): JSX.Element {
 
   const quickActions: QuickAction[] = [
     { 
-      title: "Edit Reviews", 
+      title: "Edi Reviews", 
       icon: <Star className="h-8 w-8 text-purple-600" />,
       bgColor: "bg-purple-100 dark:bg-purple-900",
       description: "Manage course reviews and student feedback",
