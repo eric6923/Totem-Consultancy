@@ -258,7 +258,7 @@ const Footer: React.FC = () => {
           </div>
 
           {/* Developed by - Last on both mobile and desktop */}
-          <div className="text-center sm:flex-1 order-3 mb-4 sm:mb-0">
+          {/* <div className="text-center sm:flex-1 order-3 mb-4 sm:mb-0">
             <p>
               Developed with ❤ By{" "}
               <a
@@ -270,7 +270,7 @@ const Footer: React.FC = () => {
                 ANOVAS
               </a>
             </p>
-          </div>
+          </div> */}
         </div>
       </footer>
     </>
