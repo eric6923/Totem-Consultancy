@@ -101,12 +101,12 @@ export default function Navbar({
     setIsDropdownOpen(false);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("isAuthenticated");
-    localStorage.removeItem("token");
-    navigate("/crm/login", { replace: true });
-    setIsDropdownOpen(false);
-  };
+  // const handleLogout = () => {
+  //   localStorage.removeItem("isAuthenticated");
+  //   localStorage.removeItem("token");
+  //   navigate("/crm/login", { replace: true });
+  //   setIsDropdownOpen(false);
+  // };
 
   const formatTimeAgo = (dateString: string) => {
     const date = new Date(dateString);
@@ -235,12 +235,17 @@ export default function Navbar({
                   <span>Settings</span>
                 </button>
                 <button
-                  onClick={handleLogout}
-                  className="w-full px-4 py-2 text-left text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
-                >
-                  <LogOut size={16} />
-                  <span>Logout</span>
-                </button>
+            onClick={() => {
+              localStorage.removeItem("isAuthenticated");
+              localStorage.removeItem("token");
+              navigate("/crm/login");
+              setSidebarOpen(false);
+            }}
+            className="flex items-center w-full p-3 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg"
+          >
+            <LogOut size={20} />
+            <span className="ml-3">Logout</span>
+          </button>
               </div>
             )}
           </div>
