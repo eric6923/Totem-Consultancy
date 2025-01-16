@@ -104,7 +104,7 @@ const ProjectManagement = () => {
     setIsLoading(true);
     try {
       const token = getToken();
-      const response = await fetch(`https://totem-consultancy-beta.vercel.app/api/projects/${mediaId}`, {
+      const response = await fetch(`https://totem-consultancy-beta.vercel.app/api/portfolio/${mediaId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -233,7 +233,7 @@ const ProjectManagement = () => {
       const token = getToken();
       const mediaUrl = await uploadToCloudinary(file);
       
-      const response = await fetch('https://totem-consultancy-beta.vercel.app/api/projects', {
+      const response = await fetch('https://totem-consultancy-beta.vercel.app/api/portfolio', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

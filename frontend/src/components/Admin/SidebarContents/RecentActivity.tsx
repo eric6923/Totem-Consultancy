@@ -3,7 +3,6 @@ import {
   Clock,
   Circle,
   Activity,
-  AlertCircle
 } from 'lucide-react';
 
 interface ActivityItem {
@@ -18,81 +17,49 @@ const RecentActivity = () => {
   const [activities, setActivities] = useState<ActivityItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
-    const controller = new AbortController();
-    const TIMEOUT_DURATION = 30000; // 30 seconds timeout
-    const MAX_RETRIES = 3;
-
     const fetchActivities = async () => {
       try {
+        // Get token from localStorage
         const token = localStorage.getItem('token');
         
         if (!token) {
           throw new Error('Authentication token not found');
         }
 
-        // Create timeout promise
-        const timeoutPromise = new Promise((_, reject) => {
-          setTimeout(() => {
-            controller.abort();
-            reject(new Error('Request timeout'));
-          }, TIMEOUT_DURATION);
-        });
-
-        // Create fetch promise
-        const fetchPromise = fetch('https://totem-consultancy-beta.vercel.app/api/recent', {
+        const response = await fetch('https://totem-consultancy-beta.vercel.app/api/recent', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
-          },
-          signal: controller.signal
+          }
         });
-
-        // Race between fetch and timeout
-        const response = await Promise.race([fetchPromise, timeoutPromise]) as Response;
 
         if (response.status === 401) {
           throw new Error('Unauthorized: Please login again');
         }
 
-        if (response.status === 504) {
-          throw new Error('Server timeout - Please try again');
-        }
-
         if (!response.ok) {
-          throw new Error(`Failed to fetch activities (Status: ${response.status})`);
+          throw new Error('Failed to fetch activities');
         }
 
         const data = await response.json();
         setActivities(data);
-        setError(null);
-        setRetryCount(0);
       } catch (err) {
-        console.error('Error:', err);
-        
-        // Handle retry logic
-        if (retryCount < MAX_RETRIES) {
-          setRetryCount(prev => prev + 1);
-          setError(`Request failed. Retrying... (${retryCount + 1}/${MAX_RETRIES})`);
-          setTimeout(fetchActivities, 2000 * (retryCount + 1)); // Exponential backoff
+        if (err instanceof Error) {
+          setError(err.message);
         } else {
-          const errorMessage = err instanceof Error ? err.message : 'Failed to load recent activities';
-          setError(errorMessage);
+          setError('Failed to load recent activities');
         }
+        console.error('Error:', err);
       } finally {
         setLoading(false);
       }
     };
 
     fetchActivities();
-
-    return () => {
-      controller.abort(); // Cleanup on unmount
-    };
-  }, [retryCount]);
+  }, []);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -119,13 +86,21 @@ const RecentActivity = () => {
     }
   };
 
-  if (loading && retryCount === 0) {
+  if (loading) {
     return (
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
         <div className="flex justify-center items-center">
           <Activity className="h-5 w-5 text-gray-400 animate-spin" />
           <span className="ml-2 text-gray-500">Loading activities...</span>
         </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+        <div className="text-red-500 text-center">{error}</div>
       </div>
     );
   }
@@ -139,15 +114,6 @@ const RecentActivity = () => {
         </div>
       </div>
       
-      {error && (
-        <div className="m-4 p-4 rounded-lg bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-800">
-          <div className="flex items-center space-x-2">
-            <AlertCircle className="h-4 w-4 text-red-600 dark:text-red-400" />
-            <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
-          </div>
-        </div>
-      )}
-
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
         {activities.map((activity) => (
           <div 
