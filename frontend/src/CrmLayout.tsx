@@ -13,10 +13,15 @@ interface LayoutProps {
 }
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const isAuthenticated = localStorage.getItem("crmAuthenticated") === "true";
+  // Check for both token and authentication status
+  const isAuthenticated = localStorage.getItem("crmAuthenticated") === "true" && localStorage.getItem("token");
   const location = useLocation();
 
   if (!isAuthenticated) {
+    // Clear any stale authentication data
+    localStorage.removeItem("crmAuthenticated");
+    localStorage.removeItem("token");
+    localStorage.removeItem("userRole");
     return <Navigate to="/crm/login" state={{ from: location }} replace />;
   }
 
@@ -24,7 +29,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 // Placeholder component - replace with your actual dashboard
-const CrmDashboard = () => <div>CRM Dashboard</div>;
+// const CrmDashboard = () => <div>CRM Dashboard</div>;
 
 const CrmRoutes = ({ darkMode, setDarkMode }: LayoutProps) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -39,7 +44,6 @@ const CrmRoutes = ({ darkMode, setDarkMode }: LayoutProps) => {
         />
       )}
 
-      {/* Sidebar Component with all required props */}
       <Sidebar
         sidebarOpen={sidebarOpen}
         setSidebarOpen={setSidebarOpen}
@@ -47,7 +51,6 @@ const CrmRoutes = ({ darkMode, setDarkMode }: LayoutProps) => {
       />
 
       <div className="transition-all duration-300 lg:ml-[280px]">
-        {/* Navbar Component with all required props */}
         <Navbar
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
@@ -75,7 +78,6 @@ const CrmRoutes = ({ darkMode, setDarkMode }: LayoutProps) => {
 export default function CrmLayout({ darkMode, setDarkMode }: LayoutProps) {
   return (
     <Routes>
-      {/* Root CRM route */}
       <Route
         path="/"
         element={
@@ -85,11 +87,10 @@ export default function CrmLayout({ darkMode, setDarkMode }: LayoutProps) {
         }
       />
 
-      {/* Login route */}
       <Route
         path="/login"
         element={
-          localStorage.getItem("crmAuthenticated") === "true" ? (
+          (localStorage.getItem("crmAuthenticated") === "true" && localStorage.getItem("token")) ? (
             <Navigate to="/crm/dashboard" replace />
           ) : (
             <CrmLogin />
@@ -97,7 +98,6 @@ export default function CrmLayout({ darkMode, setDarkMode }: LayoutProps) {
         }
       />
 
-      {/* Protected CRM routes */}
       <Route
         path="/*"
         element={

@@ -1,43 +1,69 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, LogIn } from 'lucide-react';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Eye, EyeOff, LogIn } from "lucide-react";
 
 export default function CrmLogin() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [role, setRole] = useState('admin'); // Default role
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [role, setRole] = useState("admin");
   const navigate = useNavigate();
-
-  // Temporary login credentials
-  const TEMP_EMAIL = 'admin@crm.com';
-  const TEMP_PASSWORD = 'admin123';
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
 
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    const apiUrl =
+      role === "admin"
+        ? "https://totem-consultancy-beta.vercel.app/api/auth/adminlogin"
+        : "https://totem-consultancy-beta.vercel.app/api/auth/login";
 
-    if (email === TEMP_EMAIL && password === TEMP_PASSWORD) {
-      localStorage.setItem('crmAuthenticated', 'true');
-      localStorage.setItem('userRole', role); // Store the selected role
-      navigate('/crm/dashboard');
-    } else {
-      setError('Invalid email or password');
+    try {
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("crmAuthenticated", "true");
+        localStorage.setItem("userRole", role);
+
+        // Navigate based on role
+        if (role === "admin") {
+          navigate("/crm/dashboard");
+        } else if (role === "manager") {
+          navigate("/manager/dashboard");
+        } else {
+          navigate("/team/dashboard");
+        }
+      } else {
+        setError(
+          data.message || "Login failed. Please check your credentials."
+        );
+      }
+    } catch (err) {
+      setError("An error occurred. Please try again later.");
+      console.error("Login error:", err);
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 px-4">
       <div className="max-w-md w-full space-y-8 bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg">
-        {/* Header */}
         <div className="text-center">
           <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white">
             CRM
@@ -47,17 +73,45 @@ export default function CrmLogin() {
           </p>
         </div>
 
-        {/* Login Form */}
         <form className="mt-8 space-y-6" onSubmit={handleLogin}>
           {error && (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <div
+              className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+              role="alert"
+            >
               <span className="block sm:inline">{error}</span>
             </div>
           )}
 
-          {/* Email Input */}
+          {/* Role Selection */}
+          <div className="space-y-4">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Select Role
+            </label>
+            <div className="flex flex-col space-y-2">
+              {["admin", "manager", "team"].map((roleOption) => (
+                <label key={roleOption} className="inline-flex items-center">
+                  <input
+                    type="radio"
+                    name="role"
+                    value={roleOption}
+                    checked={role === roleOption}
+                    onChange={(e) => setRole(e.target.value)}
+                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
+                  />
+                  <span className="ml-2 text-sm text-gray-700 dark:text-gray-300 capitalize">
+                    {roleOption} {roleOption === "team" ? "Member" : ""}
+                  </span>
+                </label>
+              ))}
+            </div>
+          </div>
+
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
               Email address
             </label>
             <div className="mt-1">
@@ -76,30 +130,11 @@ export default function CrmLogin() {
             </div>
           </div>
 
-          {/* Role Selection Dropdown */}
           <div>
-            <label htmlFor="role" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Select Role
-            </label>
-            <div className="mt-1">
-              <select
-                id="role"
-                name="role"
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm 
-                focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
-              >
-                <option value="admin">Admin</option>
-                <option value="manager">Manager</option>
-                <option value="team-member">Team Member</option>
-              </select>
-            </div>
-          </div>
-
-          {/* Password Input */}
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
               Password
             </label>
             <div className="mt-1 relative">
@@ -129,7 +164,6 @@ export default function CrmLogin() {
             </div>
           </div>
 
-          {/* Remember Me and Forgot Password */}
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <input
@@ -138,19 +172,24 @@ export default function CrmLogin() {
                 type="checkbox"
                 className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
-              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900 dark:text-gray-300">
+              <label
+                htmlFor="remember-me"
+                className="ml-2 block text-sm text-gray-900 dark:text-gray-300"
+              >
                 Remember me
               </label>
             </div>
 
             <div className="text-sm">
-              <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
+              <a
+                href="#"
+                className="font-medium text-blue-600 hover:text-blue-500"
+              >
                 Forgot your password?
               </a>
             </div>
           </div>
 
-          {/* Submit Button */}
           <div>
             <button
               type="submit"
@@ -161,9 +200,25 @@ export default function CrmLogin() {
             >
               {loading ? (
                 <div className="flex items-center">
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  <svg
+                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
                   </svg>
                   Signing in...
                 </div>
@@ -177,12 +232,13 @@ export default function CrmLogin() {
           </div>
         </form>
 
-        {/* Demo Credentials */}
-        <div className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
-          <p>Demo credentials:</p>
-          <p>Email: {TEMP_EMAIL}</p>
-          <p>Password: {TEMP_PASSWORD}</p>
-        </div>
+        {role === "admin" && (
+          <div className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
+            <p>Admin Credentials:</p>
+            <p>Email: totemmanagement@gmail.com</p>
+            <p>Password: Totem@123</p>
+          </div>
+        )}
       </div>
     </div>
   );
