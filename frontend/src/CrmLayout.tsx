@@ -3,6 +3,7 @@ import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import CrmLogin from './components/Crm/Login';
 import Navbar from './components/Crm/Navbar';
 import Sidebar from "./components/Crm/Sidebar";
+import Settings from './components/Crm/CrmSidebar/Settings'
 
 interface LayoutProps {
   darkMode: boolean;
@@ -58,7 +59,8 @@ const CrmRoutes = ({ darkMode, setDarkMode }: LayoutProps) => {
               <Route path="/dashboard" element={<CrmDashboard />} />
               {/* Add your CRM routes here similar to Admin routes */}
               <Route path="/contacts" element={<div>Contacts</div>} />
-              <Route path="/settings" element={<div>Settings</div>} />
+              <Route path="/settings" element={<Settings/>} />
+              
             </Routes>
           </div>
         </main>
