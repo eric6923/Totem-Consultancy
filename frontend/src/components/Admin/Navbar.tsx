@@ -59,7 +59,7 @@ export default function Navbar({
       }
 
       const response = await fetch(
-        "https://totem-consultancy-alpha.vercel.app/api/recent",
+        "https://totem-consultancy-beta.vercel.app/api/recent",
         {
           headers: {
             Authorization: `Bearer ${token}`,

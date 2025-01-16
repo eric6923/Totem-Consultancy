@@ -20,7 +20,7 @@ function Login() {
     e.preventDefault();
 
     try {
-      const response = await fetch('https://totem-consultancy-alpha.vercel.app/api/auth/login', {
+      const response = await fetch('https://totem-consultancy-beta.vercel.app/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

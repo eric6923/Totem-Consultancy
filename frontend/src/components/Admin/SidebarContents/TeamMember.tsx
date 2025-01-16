@@ -39,7 +39,7 @@ const TeamMemberComponent = () => {
       }
 
       const response = await fetch(
-        "https://totem-consultancy-alpha.vercel.app/api/team",
+        "https://totem-consultancy-beta.vercel.app/api/team",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -90,7 +90,7 @@ const TeamMemberComponent = () => {
       }
 
       const response = await fetch(
-        `https://totem-consultancy-alpha.vercel.app/api/team/${id}`,
+        `https://totem-consultancy-beta.vercel.app/api/team/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -134,8 +134,8 @@ const TeamMemberComponent = () => {
       };
 
       const url = editingMember
-        ? `https://totem-consultancy-alpha.vercel.app/api/team/${editingMember.id}`
-        : "https://totem-consultancy-alpha.vercel.app/api/team";
+        ? `https://totem-consultancy-beta.vercel.app/api/team/${editingMember.id}`
+        : "https://totem-consultancy-beta.vercel.app/api/team";
 
       const response = await fetch(url, {
         method: editingMember ? "PUT" : "POST",

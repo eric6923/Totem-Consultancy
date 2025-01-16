@@ -46,7 +46,7 @@ const ProjectManagement = () => {
     setIsLoading(true);
     try {
       const token = getToken();
-      const response = await fetch('https://totem-consultancy-alpha.vercel.app/api/categories', {
+      const response = await fetch('https://totem-consultancy-beta.vercel.app/api/categories', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -73,7 +73,7 @@ const ProjectManagement = () => {
     setIsLoading(true);
     try {
       const token = getToken();
-      const response = await fetch(`https://totem-consultancy-alpha.vercel.app/api/categories/${id}`, {
+      const response = await fetch(`https://totem-consultancy-beta.vercel.app/api/categories/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -104,7 +104,7 @@ const ProjectManagement = () => {
     setIsLoading(true);
     try {
       const token = getToken();
-      const response = await fetch(`https://totem-consultancy-alpha.vercel.app/api/projects/${mediaId}`, {
+      const response = await fetch(`https://totem-consultancy-beta.vercel.app/api/projects/${mediaId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -162,8 +162,8 @@ const ProjectManagement = () => {
     try {
       const token = getToken();
       const endpoint = selectedProject 
-        ? `https://totem-consultancy-alpha.vercel.app/api/categories/${selectedProject.id}`
-        : 'https://totem-consultancy-alpha.vercel.app/api/categories';
+        ? `https://totem-consultancy-beta.vercel.app/api/categories/${selectedProject.id}`
+        : 'https://totem-consultancy-beta.vercel.app/api/categories';
       
       const method = selectedProject ? 'PUT' : 'POST';
       
@@ -233,7 +233,7 @@ const ProjectManagement = () => {
       const token = getToken();
       const mediaUrl = await uploadToCloudinary(file);
       
-      const response = await fetch('https://totem-consultancy-alpha.vercel.app/api/projects', {
+      const response = await fetch('https://totem-consultancy-beta.vercel.app/api/projects', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

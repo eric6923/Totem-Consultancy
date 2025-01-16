@@ -41,7 +41,7 @@ const EditReview: React.FC = () => {
       }
 
       const response = await fetch(
-        "https://totem-consultancy-alpha.vercel.app/api/reviews",
+        "https://totem-consultancy-beta.vercel.app/api/reviews",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -72,7 +72,7 @@ const EditReview: React.FC = () => {
       }
 
       const response = await fetch(
-        `https://totem-consultancy-alpha.vercel.app/api/reviews/${id}`,
+        `https://totem-consultancy-beta.vercel.app/api/reviews/${id}`,
         {
           method: "DELETE",
           headers: {
@@ -127,8 +127,8 @@ const EditReview: React.FC = () => {
       }
 
       const url = editingReview 
-        ? `https://totem-consultancy-alpha.vercel.app/api/reviews/${editingReview.id}`
-        : "https://totem-consultancy-alpha.vercel.app/api/reviews";
+        ? `https://totem-consultancy-beta.vercel.app/api/reviews/${editingReview.id}`
+        : "https://totem-consultancy-beta.vercel.app/api/reviews";
 
       const response = await fetch(url, {
         method: editingReview ? "PUT" : "POST",

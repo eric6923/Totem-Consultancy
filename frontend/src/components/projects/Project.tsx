@@ -34,8 +34,8 @@ const PortfolioShowcase = () => {
     try {
       // Fetch both categories and projects
       const [categoriesResponse, projectsResponse] = await Promise.all([
-        fetch('https://totem-consultancy-alpha.vercel.app/api/categories'),
-        fetch('https://totem-consultancy-alpha.vercel.app/api/projects')
+        fetch('https://totem-consultancy-beta.vercel.app/api/categories'),
+        fetch('https://totem-consultancy-beta.vercel.app/api/projects')
       ]);
 
       if (!categoriesResponse.ok || !projectsResponse.ok) {

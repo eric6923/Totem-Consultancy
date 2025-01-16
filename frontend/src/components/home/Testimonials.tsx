@@ -19,7 +19,7 @@ const Testimonials = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await fetch('https://totem-consultancy-alpha.vercel.app/api/reviews');
+        const response = await fetch('https://totem-consultancy-beta.vercel.app/api/reviews');
         if (!response.ok) {
           throw new Error('Failed to fetch reviews');
         }

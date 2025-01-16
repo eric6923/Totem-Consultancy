@@ -111,7 +111,7 @@ const SettingsPage = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "https://totem-consultancy-alpha.vercel.app/api/auth/register",
+        "https://totem-consultancy-beta.vercel.app/api/auth/register",
         {
           method: "POST",
           headers: {

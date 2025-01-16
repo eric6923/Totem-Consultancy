@@ -88,7 +88,7 @@ const CertificateGenerator = () => {
       if (!token.startsWith('Bearer ') && !token.startsWith('bearer ')) {
         const formattedToken = `Bearer ${token}`;
         
-        const response = await fetch('https://totem-consultancy-alpha.vercel.app/api/certificates', {
+        const response = await fetch('https://totem-consultancy-beta.vercel.app/api/certificates', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -118,7 +118,7 @@ const CertificateGenerator = () => {
         return data;
       } else {
         // Token already has Bearer prefix
-        const response = await fetch('https://totem-consultancy-alpha.vercel.app/api/certificates', {
+        const response = await fetch('https://totem-consultancy-beta.vercel.app/api/certificates', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

@@ -26,7 +26,7 @@ const About = () => {
     useEffect(() => {
       const fetchTeam = async () => {
         try {
-          const response = await fetch('https://totem-consultancy-alpha.vercel.app/api/team');
+          const response = await fetch('https://totem-consultancy-beta.vercel.app/api/team');
           if (!response.ok) {
             throw new Error('Failed to fetch team data');
           }

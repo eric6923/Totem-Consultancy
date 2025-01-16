@@ -27,7 +27,7 @@ const ProjectDetail = () => {
       try {
         setIsLoading(true);
         
-        const projectResponse = await fetch(`https://totem-consultancy-alpha.vercel.app/api/projects/${id}`);
+        const projectResponse = await fetch(`https://totem-consultancy-beta.vercel.app/api/projects/${id}`);
         
         if (!projectResponse.ok) {
           throw new Error('Failed to fetch project');
@@ -36,7 +36,7 @@ const ProjectDetail = () => {
         const projectData = await projectResponse.json();
         setProject(projectData);
 
-        const allProjectsResponse = await fetch('https://totem-consultancy-alpha.vercel.app/api/projects');
+        const allProjectsResponse = await fetch('https://totem-consultancy-beta.vercel.app/api/projects');
         
         if (!allProjectsResponse.ok) {
           throw new Error('Failed to fetch related projects');

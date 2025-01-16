@@ -76,7 +76,7 @@ const CourseGrid: React.FC = () => {
     const fetchCourses = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch('https://totem-consultancy-alpha.vercel.app/api/courses', {
+        const response = await fetch('https://totem-consultancy-beta.vercel.app/api/courses', {
           headers: {
             'Authorization': `Bearer ${token}`
           }

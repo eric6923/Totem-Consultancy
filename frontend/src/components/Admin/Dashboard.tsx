@@ -34,7 +34,7 @@ export default function Dashboard(): JSX.Element {
     const fetchProjects = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch('https://totem-consultancy-alpha.vercel.app/api/categories');
+        const response = await fetch('https://totem-consultancy-beta.vercel.app/api/categories');
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -59,7 +59,7 @@ export default function Dashboard(): JSX.Element {
   useEffect(() => {
     const fetchTeamMembers = async () => {
       try {
-        const response = await fetch('https://totem-consultancy-alpha.vercel.app/api/team');
+        const response = await fetch('https://totem-consultancy-beta.vercel.app/api/team');
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -78,7 +78,7 @@ export default function Dashboard(): JSX.Element {
   useEffect(() => {
     const fetchCertificates = async () => {
       try {
-        const response = await fetch('https://totem-consultancy-alpha.vercel.app/api/certificates');
+        const response = await fetch('https://totem-consultancy-beta.vercel.app/api/certificates');
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

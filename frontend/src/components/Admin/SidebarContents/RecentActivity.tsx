@@ -28,7 +28,7 @@ const RecentActivity = () => {
           throw new Error('Authentication token not found');
         }
 
-        const response = await fetch('https://totem-consultancy-alpha.vercel.app/api/recent', {
+        const response = await fetch('https://totem-consultancy-beta.vercel.app/api/recent', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
