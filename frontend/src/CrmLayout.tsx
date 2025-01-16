@@ -3,8 +3,9 @@ import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import CrmLogin from './components/Crm/Login';
 import Navbar from './components/Crm/Navbar';
 import Sidebar from "./components/Crm/Sidebar";
-import Settings from './components/Crm/CrmSidebar/Settings'
+import Settings from './components/Crm/CrmSidebar/Settings';
 
+// Define interface for props
 interface LayoutProps {
   darkMode: boolean;
   setDarkMode: (dark: boolean) => void;
@@ -37,15 +38,15 @@ const CrmRoutes = ({ darkMode, setDarkMode }: LayoutProps) => {
         />
       )}
 
-      {/* Sidebar Component */}
+      {/* Sidebar Component with all required props */}
       <Sidebar
         sidebarOpen={sidebarOpen}
         setSidebarOpen={setSidebarOpen}
         currentPath={location.pathname}
-        />
+      />
 
       <div className="transition-all duration-300 lg:ml-[280px]">
-        {/* Navbar Component */}
+        {/* Navbar Component with all required props */}
         <Navbar
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
@@ -57,10 +58,11 @@ const CrmRoutes = ({ darkMode, setDarkMode }: LayoutProps) => {
           <div className="p-4 lg:p-6">
             <Routes>
               <Route path="/dashboard" element={<CrmDashboard />} />
-              {/* Add your CRM routes here similar to Admin routes */}
               <Route path="/contacts" element={<div>Contacts</div>} />
-              <Route path="/settings" element={<Settings/>} />
-              
+              <Route path="/clients" element={<div>Clients</div>} />
+              <Route path="/projects" element={<div>Projects</div>} />
+              <Route path="/tasks" element={<div>Tasks</div>} />
+              <Route path="/settings" element={<Settings />} />
             </Routes>
           </div>
         </main>
