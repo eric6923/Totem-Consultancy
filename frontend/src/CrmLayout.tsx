@@ -4,6 +4,7 @@ import CrmLogin from './components/Crm/Login';
 import Navbar from './components/Crm/Navbar';
 import Sidebar from "./components/Crm/Sidebar";
 import Settings from './components/Crm/CrmSidebar/Settings';
+import Dashboard from "./components/Crm/CrmSidebar/Dashboard";
 
 // Define interface for props
 interface LayoutProps {
@@ -57,7 +58,7 @@ const CrmRoutes = ({ darkMode, setDarkMode }: LayoutProps) => {
         <main className={`pt-16 min-h-screen ${darkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
           <div className="p-4 lg:p-6">
             <Routes>
-              <Route path="/dashboard" element={<CrmDashboard />} />
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/contacts" element={<div>Contacts</div>} />
               <Route path="/clients" element={<div>Clients</div>} />
               <Route path="/projects" element={<div>Projects</div>} />

@@ -5,6 +5,7 @@ import { Eye, EyeOff, LogIn } from 'lucide-react';
 export default function CrmLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState('admin'); // Default role
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -24,6 +25,7 @@ export default function CrmLogin() {
 
     if (email === TEMP_EMAIL && password === TEMP_PASSWORD) {
       localStorage.setItem('crmAuthenticated', 'true');
+      localStorage.setItem('userRole', role); // Store the selected role
       navigate('/crm/dashboard');
     } else {
       setError('Invalid email or password');
@@ -71,6 +73,27 @@ export default function CrmLogin() {
                 focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
                 placeholder="Enter your email"
               />
+            </div>
+          </div>
+
+          {/* Role Selection Dropdown */}
+          <div>
+            <label htmlFor="role" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Select Role
+            </label>
+            <div className="mt-1">
+              <select
+                id="role"
+                name="role"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm 
+                focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+              >
+                <option value="admin">Admin</option>
+                <option value="manager">Manager</option>
+                <option value="team-member">Team Member</option>
+              </select>
             </div>
           </div>
 
