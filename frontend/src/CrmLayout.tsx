@@ -41,7 +41,7 @@ const CrmRoutes = ({ darkMode, setDarkMode }: LayoutProps) => {
         sidebarOpen={sidebarOpen}
         setSidebarOpen={setSidebarOpen}
         currentPath={location.pathname}
-      />
+        />
 
       <div className="transition-all duration-300 lg:ml-[280px]">
         {/* Navbar Component */}
@@ -57,11 +57,7 @@ const CrmRoutes = ({ darkMode, setDarkMode }: LayoutProps) => {
             <Routes>
               <Route path="/dashboard" element={<CrmDashboard />} />
               {/* Add your CRM routes here similar to Admin routes */}
-              <Route path="/leads" element={<div>Leads</div>} />
               <Route path="/contacts" element={<div>Contacts</div>} />
-              <Route path="/deals" element={<div>Deals</div>} />
-              <Route path="/tasks" element={<div>Tasks</div>} />
-              <Route path="/reports" element={<div>Reports</div>} />
               <Route path="/settings" element={<div>Settings</div>} />
             </Routes>
           </div>

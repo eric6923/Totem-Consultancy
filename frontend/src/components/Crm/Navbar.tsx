@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Menu, Bell, Sun, Moon, Settings, LogOut } from "lucide-react";
+import { Menu, Bell, Sun, Moon, Settings, LogOut, UserPlus } from "lucide-react";
 import profile from '../Admin/assets/assets/profile.png'
 import { useNavigate } from "react-router-dom";
 
@@ -46,64 +46,8 @@ export default function Navbar({
 
   const fetchRecentActivities = async () => {
     // Don't fetch if notifications panel is open
-    if (showNotifications) return;
-
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        throw new Error("No authentication token found");
-      }
-
-      const response = await fetch(
-        "https://totem-consultancy-alpha.vercel.app/api/recent",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (!response.ok) {
-        if (response.status === 403) {
-          throw new Error("Authentication failed. Please log in again.");
-        }
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      if (!Array.isArray(data)) {
-        throw new Error("Data is not an array");
-      }
-
-      const sortedActivities = [...data].sort((a, b) => b.id - a.id);
-      setRecentActivities(sortedActivities);
-
-      // Calculate new activities (only those that haven't been seen)
-      const newCount = sortedActivities.filter(
-        (activity) => !seenNotifications.has(activity.id)
-      ).length;
-
-      setNewActivitiesCount(newCount);
-      lastFetchedIdsRef.current = new Set(sortedActivities.map((a) => a.id));
-    } catch (error) {
-      console.error("Error fetching recent activities:", error);
-      const errorMessage =
-        error instanceof Error ? error.message : "An error occurred";
-      setError(errorMessage);
-
-      if (errorMessage.includes("authentication")) {
-        localStorage.removeItem("token");
-        navigate("/admin/login");
-      }
-    } finally {
-      setIsLoading(false);
-    }
+    setRecentActivities([]);
+    setNewActivitiesCount(0);
   };
 
   const handleNotificationClick = () => {
@@ -153,14 +97,18 @@ export default function Navbar({
   }, []);
 
   const handleSettings = () => {
-    navigate("/admin/settings");
+    navigate("/crm/settings");
+    setIsDropdownOpen(false);
+  };
+  const handleRegister = () => {
+    navigate("/crm/settings");
     setIsDropdownOpen(false);
   };
 
   const handleLogout = () => {
     localStorage.removeItem("isAuthenticated");
     localStorage.removeItem("token");
-    navigate("/admin/login", { replace: true });
+    navigate("/crm/login", { replace: true });
     setIsDropdownOpen(false);
   };
 
@@ -282,6 +230,13 @@ export default function Navbar({
 
             {isDropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-1 z-50 border border-gray-200 dark:border-gray-700">
+                <button
+                  onClick={handleRegister}
+                  className="w-full px-4 py-2 text-left text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
+                >
+                  <UserPlus size={16} />
+                  <span>Register User</span>
+                </button>
                 <button
                   onClick={handleSettings}
                   className="w-full px-4 py-2 text-left text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
