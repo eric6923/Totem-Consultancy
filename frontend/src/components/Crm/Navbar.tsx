@@ -1,13 +1,17 @@
 import { useState, useRef, useEffect } from "react";
-import { Menu, Bell, Sun, Moon, Settings, LogOut, UserPlus } from "lucide-react";
-import profile from '../Admin/assets/assets/profile.png'
+import { Menu, Bell, Sun, Moon, Settings, LogOut } from "lucide-react";
+import profile from '../Admin/assets/assets/profile.png';
 import { useNavigate } from "react-router-dom";
+
+// Add UserRole type definition
+type UserRole = "admin" | "manager" | "team" | null;
 
 interface NavbarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (open: boolean) => void;
   darkMode: boolean;
   setDarkMode: (dark: boolean) => void;
+  userRole: UserRole;
 }
 
 interface RecentActivity {
@@ -23,12 +27,11 @@ export default function Navbar({
   setSidebarOpen,
   darkMode,
   setDarkMode,
+  userRole
 }: NavbarProps) {
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [recentActivities, setRecentActivities] = useState<RecentActivity[]>(
-    []
-  );
+  const [recentActivities, setRecentActivities] = useState<RecentActivity[]>([]);
   const [showNotifications, setShowNotifications] = useState(false);
   const [seenNotifications, setSeenNotifications] = useState<Set<number>>(
     () => {
@@ -43,6 +46,7 @@ export default function Navbar({
   const dropdownRef = useRef<HTMLDivElement>(null);
   const notificationRef = useRef<HTMLDivElement>(null);
   const lastFetchedIdsRef = useRef<Set<number>>(new Set());
+
 
   const fetchRecentActivities = async () => {
     // Don't fetch if notifications panel is open
