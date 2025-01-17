@@ -63,7 +63,7 @@ const ContactList: React.FC = () => {
 
   const fetchContacts = async (): Promise<void> => {
     try {
-      const response = await fetch('https://totem-consultancy-beta.vercel.app/api/crm/contacts');
+      const response = await fetch('https://bihar-innovation-omega.vercel.app/api/crm/contacts');
       const data: ApiResponse = await response.json();
       const clientContacts = data.contacts.filter(contact => contact.isClient);
       setContacts(clientContacts);
@@ -125,7 +125,7 @@ const ContactList: React.FC = () => {
     };
   
     try {
-      const response = await fetch(`https://totem-consultancy-beta.vercel.app/api/crm/contacts/${editingContact?.id}`, {
+      const response = await fetch(`https://bihar-innovation-omega.vercel.app/api/crm/contacts/${editingContact?.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -158,7 +158,7 @@ const ContactList: React.FC = () => {
     
     setDeleteLoading(contactId);
     try {
-      const response = await fetch(`https://totem-consultancy-beta.vercel.app/api/crm/contacts/${contactId}`, {
+      const response = await fetch(`https://bihar-innovation-omega.vercel.app/api/crm/contacts/${contactId}`, {
         method: 'DELETE',
       });
 
