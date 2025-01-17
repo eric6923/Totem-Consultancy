@@ -4,8 +4,20 @@ import CrmLogin from './components/Crm/Login';
 import Navbar from './components/Crm/Navbar';
 import Sidebar from "./components/Crm/Sidebar";
 import DashboardManager from "./components/Crm/Manager/DashboardManager";
-import Dashboard from './components/Crm/CrmSidebar/Admin/Dashboard';
+import Dashboard from './components/Crm/Admin/Dashboard';
 import DashboardTeam from "./components/Crm/TeamMember/DashboardTeam";
+
+// Import new management components
+import AdminClientManagement from './components/Crm/Admin/ClientManagent';
+import AdminContactManagement from './components/Crm/Admin/ContactManagement';
+import AdminProjectManagement from './components/Crm/Admin/ProjectManagement';
+import AdminTaskManagement from './components/Crm/Admin/TaskManagement';
+import Settings from './components/Crm/Admin/Settings'
+import ManagerClientManagement from './components/Crm/Manager/ClientManagement';
+import ManagerContactManagement from './components/Crm/Manager/ContactManagement';
+import ManagerProjectManagement from './components/Crm/Manager/ProjectManagement';
+import ManagerTaskManagement from './components/Crm/Manager/TaskManagement';
+import SettingsManager from "./components/Crm/Manager/SettingsManager";
 
 interface LayoutProps {
   darkMode: boolean;
@@ -74,9 +86,26 @@ const CrmRoutes = ({ darkMode, setDarkMode }: LayoutProps) => {
         <main className={`flex-1 overflow-auto pt-16 ${darkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
           <div className="p-4 lg:p-6">
             <Routes>
-              <Route path="/admin/*" element={<Dashboard />} />
-              <Route path="/manager/*" element={<DashboardManager />} />
+              {/* Admin Routes */}
+              <Route path="/admin" element={<Dashboard />} />
+              <Route path="/admin/clients" element={<AdminClientManagement />} />
+              <Route path="/admin/contacts" element={<AdminContactManagement />} />
+              <Route path="/admin/projects" element={<AdminProjectManagement />} />
+              <Route path="/admin/tasks" element={<AdminTaskManagement />} />
+              <Route path="/admin/settings" element={<Settings />} />
+
+              {/* Manager Routes */}
+              <Route path="/manager" element={<DashboardManager />} />
+              <Route path="/manager/clients" element={<ManagerClientManagement />} />
+              <Route path="/manager/contacts" element={<ManagerContactManagement />} />
+              <Route path="/manager/projects" element={<ManagerProjectManagement />} />
+              <Route path="/manager/tasks" element={<ManagerTaskManagement />} />
+              <Route path="/manager/settings" element={<SettingsManager />} />
+
+              {/* Team Routes */}
               <Route path="/team/*" element={<DashboardTeam />} />
+
+              {/* Default Redirect */}
               <Route
                 path="*"
                 element={

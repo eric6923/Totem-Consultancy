@@ -1,7 +1,15 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import profile from "../Admin/assets/assets/profile.png";
-import { LayoutDashboard, Settings, LogOut, X } from "lucide-react";
+import { 
+  LayoutDashboard, 
+  Settings, 
+  LogOut, 
+  X, 
+  Users, 
+  FolderKanban, 
+  CheckSquare 
+} from "lucide-react";
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -30,8 +38,31 @@ export default function Sidebar({
     };
   }, [sidebarOpen]);
 
-  // Simple navigation based on role
   const roleBasePath = `/crm/${userRole}`;
+
+  // Management links that are only shown to admin and manager
+  const managementLinks = (userRole === 'admin' || userRole === 'manager') && [
+    {
+      title: "Client Management",
+      icon: <Users size={20} />,
+      path: `${roleBasePath}/clients`
+    },
+    {
+      title: "Contact Management",
+      icon: <Users size={20} />,
+      path: `${roleBasePath}/contacts`
+    },
+    {
+      title: "Project Management",
+      icon: <FolderKanban size={20} />,
+      path: `${roleBasePath}/projects`
+    },
+    {
+      title: "Task Management",
+      icon: <CheckSquare size={20} />,
+      path: `${roleBasePath}/tasks`
+    }
+  ];
 
   return (
     <aside
@@ -69,6 +100,23 @@ export default function Sidebar({
           <LayoutDashboard size={20} />
           <span className="ml-3 font-medium">Dashboard</span>
         </Link>
+
+        {/* Management Links */}
+        {managementLinks && managementLinks.map((link) => (
+          <Link
+            key={link.title}
+            to={link.path}
+            className={`flex items-center w-full p-3 rounded-lg transition-colors mb-2 ${
+              currentPath === link.path
+                ? "bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400"
+                : "text-gray-600 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700"
+            }`}
+            onClick={() => setSidebarOpen(false)}
+          >
+            {link.icon}
+            <span className="ml-3 font-medium">{link.title}</span>
+          </Link>
+        ))}
 
         {/* Bottom Actions */}
         <div className="fixed bottom-0 left-0 w-[280px] p-4 border-t border-gray-200 bg-white dark:bg-gray-800">
