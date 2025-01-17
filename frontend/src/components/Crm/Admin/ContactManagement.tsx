@@ -15,7 +15,7 @@ interface Contact {
   id: string;
   name: string;
   email: string;
-  phone: number;
+  phone: string;
   company: string | null;
   profileURL: string | null;
   location: string;
@@ -125,82 +125,77 @@ const ContactForm: React.FC = () => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setError('');
-    setSuccess('');
+  // Update the handleSubmit function
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  setError('');
+  setSuccess('');
 
-    const validationError = validateForm();
-    if (validationError) {
-      setError(validationError);
-      return;
-    }
+  const validationError = validateForm();
+  if (validationError) {
+    setError(validationError);
+    return;
+  }
 
-    setFormLoading(true);
+  setFormLoading(true);
 
-    const phoneNumber = parseInt(formData.phone);
-    if (isNaN(phoneNumber)) {
-      setError('Phone number must be a valid number');
-      setFormLoading(false);
-      return;
-    }
-
-    const requestData = {
-      name: formData.name.trim(),
-      email: formData.email.trim(),
-      phone: phoneNumber,
-      location: formData.location.trim(),
-      company: formData.company.trim() || null,
-      profileURL: formData.profileURL.trim() || null,
-      isClient: formData.isClient
-    };
-
-    try {
-      const url = editingContact 
-        ? `https://totem-consultancy-beta.vercel.app/api/crm/contacts/${editingContact.id}`
-        : 'https://totem-consultancy-beta.vercel.app/api/crm/contacts';
-      
-      const method = editingContact ? 'PUT' : 'POST';
-      
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestData)
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || `Failed to ${editingContact ? 'update' : 'create'} contact`);
-      }
-
-      setSuccess(`Contact ${editingContact ? 'updated' : 'created'} successfully!`);
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        location: '',
-        company: '',
-        profileURL: '',
-        isClient: false
-      });
-      
-      fetchContacts();
-      setEditingContact(null);
-      
-      setTimeout(() => {
-        setIsOpen(false);
-        setSuccess('');
-      }, 2000);
-    } catch (err) {
-      console.error('Error details:', err);
-      setError(err instanceof Error ? err.message : `Failed to ${editingContact ? 'update' : 'create'} contact`);
-    } finally {
-      setFormLoading(false);
-    }
+  // Remove parseInt as phone should be string based on API response
+  const requestData = {
+    name: formData.name.trim(),
+    email: formData.email.trim(),
+    phone: formData.phone.trim(), // Keep as string
+    location: formData.location.trim(),
+    company: formData.company.trim() || null,
+    profileURL: formData.profileURL.trim() || null,
+    isClient: formData.isClient
   };
+
+  try {
+    const url = editingContact 
+      ? `https://totem-consultancy-beta.vercel.app/api/crm/contacts/${editingContact.id}`
+      : 'https://totem-consultancy-beta.vercel.app/api/crm/contacts';
+    
+    const method = editingContact ? 'PUT' : 'POST';
+    
+    const response = await fetch(url, {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestData)
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || `Failed to ${editingContact ? 'update' : 'create'} contact`);
+    }
+
+    setSuccess(`Contact ${editingContact ? 'updated' : 'created'} successfully!`);
+    setFormData({
+      name: '',
+      email: '',
+      phone: '',
+      location: '',
+      company: '',
+      profileURL: '',
+      isClient: false
+    });
+    
+    await fetchContacts(); // Wait for contacts to update
+    setEditingContact(null);
+    
+    setTimeout(() => {
+      setIsOpen(false);
+      setSuccess('');
+    }, 2000);
+  } catch (err) {
+    console.error('Error details:', err);
+    setError(err instanceof Error ? err.message : `Failed to ${editingContact ? 'update' : 'create'} contact`);
+  } finally {
+    setFormLoading(false);
+  }
+};
 
   const filteredContacts = contacts.filter(contact => 
     contact.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -310,6 +305,18 @@ const ContactForm: React.FC = () => {
                                   Client
                                 </span>
                               )}
+                              {contact.profileURL && (
+                                <a
+                                  href={contact.profileURL}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800 mt-1"
+                                >
+                                  <Link className="h-4 w-4" />
+                                  View Profile
+                                  <ArrowUpRight className="h-4 w-4" />
+                                </a>
+                              )}
                             </div>
                           </div>
                         </td>
@@ -385,6 +392,11 @@ const ContactForm: React.FC = () => {
                         {contact.company && (
                           <p className="text-sm text-gray-500">{contact.company}</p>
                         )}
+                        {contact.isClient && (
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 mt-1">
+                            Client
+                          </span>
+                        )}
                       </div>
                       <div className="flex items-center space-x-3">
                         <button
@@ -404,11 +416,6 @@ const ContactForm: React.FC = () => {
                             <Trash2 className="h-5 w-5" />
                           )}
                         </button>
-                        {contact.isClient && (
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                            Client
-                          </span>
-                        )}
                       </div>
                     </div>
 
@@ -588,20 +595,6 @@ const ContactForm: React.FC = () => {
                       placeholder="https://example.com/profile"
                     />
                   </div>
-
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      id="isClient"
-                      name="isClient"
-                      checked={formData.isClient}
-                      onChange={handleCheckboxChange}
-                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
-                    />
-                    <label htmlFor="isClient" className="text-sm font-medium text-gray-700">
-                      Is Client?
-                    </label>
-                  </div>
                 </div>
 
                 {error && (
@@ -637,6 +630,5 @@ const ContactForm: React.FC = () => {
       </div>
     </div>
   );
-};
-
-export default ContactForm;
+  }
+  export default ContactForm
