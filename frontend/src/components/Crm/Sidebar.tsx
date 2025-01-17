@@ -8,7 +8,10 @@ import {
   X, 
   Users, 
   FolderKanban, 
-  CheckSquare 
+  CheckSquare,
+  HandHelping,
+  ShieldCheck,
+  ReceiptText
 } from "lucide-react";
 
 interface SidebarProps {
@@ -60,6 +63,21 @@ export default function Sidebar({
     {
       title: "Task Management",
       icon: <CheckSquare size={20} />,
+      path: `${roleBasePath}/tasks`
+    },
+    {
+      title: "Proposal Generation",
+      icon: <HandHelping size={20} />,
+      path: `${roleBasePath}/tasks`
+    },
+    {
+      title: "Invoice Generation",
+      icon: <ShieldCheck size={20} />,
+      path: `${roleBasePath}/tasks`
+    },
+    {
+      title: "Contract",
+      icon: <ReceiptText size={20} />,
       path: `${roleBasePath}/tasks`
     }
   ];
