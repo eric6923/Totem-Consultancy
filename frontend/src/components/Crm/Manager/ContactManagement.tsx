@@ -58,7 +58,7 @@ const ContactForm: React.FC = () => {
   const fetchContacts = async () => {
     setLoading(true);
     try {
-      const response = await fetch('https://totem-consultancy-beta.vercel.app/api/crm/contacts');
+      const response = await fetch('https://bihar-innovation-omega.vercel.app/api/crm/contacts');
       const data = await response.json();
       if (!response.ok) {
         throw new Error(data.message || 'Failed to fetch contacts');
@@ -103,7 +103,7 @@ const ContactForm: React.FC = () => {
     
     setDeleteLoading(contactId);
     try {
-      const response = await fetch(`https://totem-consultancy-beta.vercel.app/api/crm/contacts/${contactId}`, {
+      const response = await fetch(`https://bihar-innovation-omega.vercel.app/api/crm/contacts/${contactId}`, {
         method: 'DELETE',
       });
 
@@ -152,8 +152,8 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 
   try {
     const url = editingContact 
-      ? `https://totem-consultancy-beta.vercel.app/api/crm/contacts/${editingContact.id}`
-      : 'https://totem-consultancy-beta.vercel.app/api/crm/contacts';
+      ? `https://bihar-innovation-omega.vercel.app/api/crm/contacts/${editingContact.id}`
+      : 'https://bihar-innovation-omega.vercel.app/api/crm/contacts';
     
     const method = editingContact ? 'PUT' : 'POST';
     

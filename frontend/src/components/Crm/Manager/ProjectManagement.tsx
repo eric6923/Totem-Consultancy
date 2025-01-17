@@ -53,7 +53,7 @@ const ProjectManagement = () => {
 
   const fetchProjects = async () => {
     try {
-      const response = await fetch('https://totem-consultancy-beta.vercel.app/api/crm/projects');
+      const response = await fetch('https://bihar-innovation-omega.vercel.app/api/crm/projects');
       const data = await response.json();
       setProjects(data.projectts || []);  // Note: API response uses "projectts"
     } catch (error) {
@@ -63,7 +63,7 @@ const ProjectManagement = () => {
 
   const fetchContacts = async () => {
     try {
-      const response = await fetch('https://totem-consultancy-beta.vercel.app/api/crm/contacts');
+      const response = await fetch('https://bihar-innovation-omega.vercel.app/api/crm/contacts');
       const data = await response.json();
       setContacts(data.contacts || []);
     } catch (error) {
@@ -104,8 +104,8 @@ const ProjectManagement = () => {
 
     try {
       const url = selectedProject
-        ? `https://totem-consultancy-beta.vercel.app/api/crm/projects/${selectedProject.id}`
-        : 'https://totem-consultancy-beta.vercel.app/api/crm/projects';
+        ? `https://bihar-innovation-omega.vercel.app/api/crm/projects/${selectedProject.id}`
+        : 'https://bihar-innovation-omega.vercel.app/api/crm/projects';
 
       const response = await fetch(url, {
         method: selectedProject ? 'PUT' : 'POST',
@@ -131,7 +131,7 @@ const ProjectManagement = () => {
 
   const handleDelete = async (projectId: string) => {
     try {
-      const response = await fetch(`https://totem-consultancy-beta.vercel.app/api/crm/projects/${projectId}`, {
+      const response = await fetch(`https://bihar-innovation-omega.vercel.app/api/crm/projects/${projectId}`, {
         method: 'DELETE',
       });
 

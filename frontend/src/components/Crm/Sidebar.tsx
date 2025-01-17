@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import profile from "../Admin/assets/assets/profile.png";
+import profile from './Admin/profile.jpg';
 import { 
   LayoutDashboard, 
   Settings, 
@@ -75,7 +75,7 @@ export default function Sidebar({
         <Link to={roleBasePath} className="flex items-center">
           <img className="h-7 w-6" src={profile} alt="" />
           <span className="ml-3 text-xl font-bold text-blue-600">
-            Totem CRM
+            Bihar Innovation
           </span>
         </Link>
         <button
