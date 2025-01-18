@@ -68,17 +68,17 @@ export default function Sidebar({
     {
       title: "Proposal Generation",
       icon: <HandHelping size={20} />,
-      path: `${roleBasePath}/tasks`
+      path: `${roleBasePath}/proposal`
     },
     {
       title: "Invoice Generation",
       icon: <ShieldCheck size={20} />,
-      path: `${roleBasePath}/tasks`
+      path: `${roleBasePath}/invoice`
     },
     {
       title: "Contract",
       icon: <ReceiptText size={20} />,
-      path: `${roleBasePath}/tasks`
+      path: `${roleBasePath}/contract`
     }
   ];
 
