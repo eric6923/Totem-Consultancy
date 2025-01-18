@@ -30,8 +30,8 @@ export default function CrmLogin() {
     setLoading(true);
 
     const apiUrl = role === "admin"
-      ? "https://totem-consultancy-beta.vercel.app/api/auth/adminlogin"
-      : "https://totem-consultancy-beta.vercel.app/api/auth/login";
+      ? "https://bihar-innovation-omega.vercel.app/api/auth/adminlogin"
+      : "https://bihar-innovation-omega.vercel.app/api/auth/login";
 
     try {
       const response = await fetch(apiUrl, {
