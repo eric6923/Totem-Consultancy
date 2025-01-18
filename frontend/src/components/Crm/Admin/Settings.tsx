@@ -119,7 +119,7 @@ const SettingsPage = () => {
   const handleAdminSubmit = async (data: { name: string; email: string; password: string }) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('https://totem-consultancy-beta.vercel.app/api/auth/register-admin', {
+      const response = await fetch('https://bihar-innovation-omega.vercel.app/api/auth/register-admin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -142,7 +142,7 @@ const SettingsPage = () => {
   const handleManagerSubmit = async (data: { name: string; email: string; password: string; designation: string }) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('https://totem-consultancy-beta.vercel.app/api/auth/register-user?role=manager', {
+      const response = await fetch('https://bihar-innovation-omega.vercel.app/api/auth/register-user?role=manager', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -170,7 +170,7 @@ const SettingsPage = () => {
   const handleTeamMemberSubmit = async (data: { name: string; email: string; password: string; designation: string }) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('https://totem-consultancy-beta.vercel.app/api/auth/register-user?role=teammember', {
+      const response = await fetch('https://bihar-innovation-omega.vercel.app/api/auth/register-user?role=teammember', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
