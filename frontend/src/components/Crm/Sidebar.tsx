@@ -43,7 +43,6 @@ export default function Sidebar({
 
   const roleBasePath = `/crm/${userRole}`;
 
-  // Management links that are only shown to admin and manager
   const managementLinks = (userRole === 'admin' || userRole === 'manager') && [
     {
       title: "Client Management",
@@ -86,10 +85,10 @@ export default function Sidebar({
     <aside
       className={`fixed top-0 left-0 h-full bg-white dark:bg-gray-800 transition-all duration-300 
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"} 
-        w-[280px] shadow-lg z-50`}
+        w-[280px] shadow-lg z-50 flex flex-col`}
     >
       {/* Header */}
-      <div className="flex items-center justify-between p-6 h-16 mt-6">
+      <div className="flex items-center justify-between p-6 h-16">
         <Link to={roleBasePath} className="flex items-center">
           <img className="h-7 w-6" src={profile} alt="" />
           <span className="ml-3 text-xl font-bold text-blue-600">
@@ -105,7 +104,7 @@ export default function Sidebar({
       </div>
 
       {/* Navigation */}
-      <nav className="mt-3 px-4 pb-28 overflow-y-auto">
+      <nav className="flex-1 px-4 overflow-y-auto">
         <Link
           to={roleBasePath}
           className={`flex items-center w-full p-3 rounded-lg transition-colors mb-2 ${
@@ -135,34 +134,34 @@ export default function Sidebar({
             <span className="ml-3 font-medium">{link.title}</span>
           </Link>
         ))}
-
-        {/* Bottom Actions */}
-        <div className="fixed bottom-0 left-0 w-[280px] p-4 border-t border-gray-200 bg-white dark:bg-gray-800">
-          <button
-            onClick={() => {
-              setSidebarOpen(false);
-              navigate(`/crm/${userRole}/settings`);
-            }}
-            className="flex items-center w-full p-3 text-gray-600 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg"
-          >
-            <Settings size={20} />
-            <span className="ml-3">Settings</span>
-          </button>
-          <button
-            onClick={() => {
-              localStorage.removeItem("crmAuthenticated");
-              localStorage.removeItem("token");
-              localStorage.removeItem("userRole");
-              navigate("/crm/login");
-              setSidebarOpen(false);
-            }}
-            className="flex items-center w-full p-3 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg"
-          >
-            <LogOut size={20} />
-            <span className="ml-3">Logout</span>
-          </button>
-        </div>
       </nav>
+
+      {/* Bottom Actions */}
+      <div className="px-4 py-2 border-t border-gray-200 bg-white dark:bg-gray-800">
+        <button
+          onClick={() => {
+            setSidebarOpen(false);
+            navigate(`/crm/${userRole}/settings`);
+          }}
+          className="flex items-center w-full p-3 text-gray-600 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg"
+        >
+          <Settings size={20} />
+          <span className="ml-3">Settings</span>
+        </button>
+        <button
+          onClick={() => {
+            localStorage.removeItem("crmAuthenticated");
+            localStorage.removeItem("token");
+            localStorage.removeItem("userRole");
+            navigate("/crm/login");
+            setSidebarOpen(false);
+          }}
+          className="flex items-center w-full p-3 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg"
+        >
+          <LogOut size={20} />
+          <span className="ml-3">Logout</span>
+        </button>
+      </div>
     </aside>
   );
 }

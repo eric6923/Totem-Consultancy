@@ -66,8 +66,8 @@ export default function CrmLogin() {
   const getCredentialsForRole = (): Credentials | null => {
     const credentials: Record<UserRole, Credentials> = {
       admin: {
-        email: "totemmanagement@gmail.com",
-        password: "Totem@123"
+        email: "admin@gmail.com",
+        password: "admin@123"
       },
       manager: {
         email: "ericsa2023@gmail.com",
