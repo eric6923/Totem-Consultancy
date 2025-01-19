@@ -462,148 +462,153 @@ const ClientList: React.FC = () => {
         )}
 
         {/* Enhanced Modal */}
-        {isOpen && (
-          <div className="fixed inset-0 z-50 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
-              <div className="fixed inset-0 bg-gray-500/75 dark:bg-gray-900/75 backdrop-blur-sm transition-opacity" />
+        {/* Modal Form */}
+{isOpen && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start sm:items-center justify-center p-4 z-50 overflow-y-auto">
+    <div className="bg-white rounded-xl shadow-xl w-full max-w-md relative my-4 sm:my-0">
+      <div className="flex justify-between items-center p-4 sm:p-6 border-b">
+        <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
+          {editingContact ? 'Edit Contact' : 'Create New Contact'}
+        </h2>
+        <button
+          onClick={() => {
+            setIsOpen(false);
+            setEditingContact(null);
+            setFormData({
+              name: '',
+              email: '',
+              phone: '',
+              location: '',
+              company: '',
+              profileURL: '',
+              isClient: false
+            });
+          }}
+          className="text-gray-400 hover:text-gray-500 transition-colors"
+        >
+          <X className="h-5 w-5 sm:h-6 sm:w-6" />
+        </button>
+      </div>
 
-              <div className="relative transform overflow-hidden rounded-xl bg-white dark:bg-gray-800 px-4 pb-4 pt-5 text-left shadow-xl transition-all w-full max-w-lg mx-4 sm:mx-auto sm:p-6">
-                <div className="absolute right-0 top-0 pr-4 pt-4 block">
-                  <button
-                    onClick={() => setIsOpen(false)}
-                    className="rounded-lg bg-white dark:bg-gray-800 text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 p-2 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <X className="h-5 w-5" />
-                  </button>
-                </div>
+      <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-4 sm:space-y-6">
+        <div className="grid grid-cols-1 gap-4 sm:gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Name <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+              className="w-full rounded-lg border border-gray-300 px-3 py-1.5 sm:px-4 sm:py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+              placeholder="Enter full name"
+            />
+          </div>
 
-                <div className="sm:flex sm:items-start">
-                  <div className="mt-3 text-center sm:mt-0 sm:text-left w-full">
-                    <div className="flex items-center gap-4 mb-6">
-                      <div className="bg-blue-100 dark:bg-blue-900/50 p-2 rounded-lg">
-                        <Edit2 className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-                      </div>
-                      <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                        Edit Contact
-                      </h3>
-                    </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Email <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                className="w-full rounded-lg border border-gray-300 px-3 py-1.5 sm:px-4 sm:py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                placeholder="email@example.com"
+              />
+            </div>
 
-                    <form onSubmit={handleSubmit} className="space-y-5">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                          Name
-                        </label>
-                        <input
-                          type="text"
-                          name="name"
-                          value={formData.name}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-colors hover:border-gray-300 dark:hover:border-gray-600"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                          Email
-                        </label>
-                        <input
-                          type="email"
-                          name="email"
-                          value={formData.email}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-colors hover:border-gray-300 dark:hover:border-gray-600"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                          Phone
-                        </label>
-                        <input
-                          type="text"
-                          name="phone"
-                          value={formData.phone}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-colors hover:border-gray-300 dark:hover:border-gray-600"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                          Location
-                        </label>
-                        <input
-                          type="text"
-                          name="location"
-                          value={formData.location}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-colors hover:border-gray-300 dark:hover:border-gray-600"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                          Company Name
-                        </label>
-                        <input
-                          type="text"
-                          name="company"
-                          value={formData.company}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-colors hover:border-gray-300 dark:hover:border-gray-600"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                          Profile URL
-                        </label>
-                        <input
-                          type="url"
-                          name="profileURL"
-                          value={formData.profileURL}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-colors hover:border-gray-300 dark:hover:border-gray-600"
-                        />
-                      </div>
-
-                      {error && (
-                        <div className="p-3 text-sm text-red-600 bg-red-50 dark:text-red-400 dark:bg-red-900/50 rounded-lg border-l-4 border-red-500">
-                          {error}
-                        </div>
-                      )}
-
-                      {success && (
-                        <div className="p-3 text-sm text-green-600 bg-green-50 dark:text-green-400 dark:bg-green-900/50 rounded-lg border-l-4 border-green-500">
-                          {success}
-                        </div>
-                      )}
-
-                      <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
-                        <button
-                          type="button"
-                          onClick={() => setIsOpen(false)}
-                          className="w-full sm:w-auto px-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-                        >
-                          Cancel
-                        </button>
-                        <button
-                          type="submit"
-                          disabled={formLoading}
-                          className="w-full sm:w-auto px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center"
-                        >
-                          {formLoading ? (
-                            <>
-                              <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                              Saving Changes...
-                            </>
-                          ) : (
-                            "Save Changes"
-                          )}
-                        </button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Phone <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleInputChange}
+                className="w-full rounded-lg border border-gray-300 px-3 py-1.5 sm:px-4 sm:py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                placeholder="Enter phone number"
+              />
             </div>
           </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Location <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              name="location"
+              value={formData.location}
+              onChange={handleInputChange}
+              className="w-full rounded-lg border border-gray-300 px-3 py-1.5 sm:px-4 sm:py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+              placeholder="City, Country"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Company
+            </label>
+            <input
+              type="text"
+              name="company"
+              value={formData.company}
+              onChange={handleInputChange}
+              className="w-full rounded-lg border border-gray-300 px-3 py-1.5 sm:px-4 sm:py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+              placeholder="Company name"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Profile URL
+            </label>
+            <input
+              type="url"
+              name="profileURL"
+              value={formData.profileURL}
+              onChange={handleInputChange}
+              className="w-full rounded-lg border border-gray-300 px-3 py-1.5 sm:px-4 sm:py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+              placeholder="https://example.com/profile"
+            />
+          </div>
+        </div>
+
+        {error && (
+          <div className="p-3 sm:p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">
+            {error}
+          </div>
         )}
+
+        {success && (
+          <div className="p-3 sm:p-4 bg-green-50 border border-green-200 text-green-700 rounded-lg text-sm">
+            {success}
+          </div>
+        )}
+
+        <button
+          type="submit"
+          disabled={formLoading}
+          className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors disabled:bg-blue-400"
+        >
+          {formLoading ? (
+            <>
+              <Loader2 className="h-5 w-5 animate-spin" />
+              {editingContact ? 'Updating Contact...' : 'Creating Contact...'}
+            </>
+          ) : (
+            editingContact ? 'Update Contact' : 'Create Contact'
+          )}
+        </button>
+      </form>
+    </div>
+  </div>
+)}
       </div>
     </div>
   );

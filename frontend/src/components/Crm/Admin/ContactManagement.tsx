@@ -327,14 +327,14 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                               {contact.email}
                             </div>
                             <div className="flex items-center gap-2">
-                              <Phone className="h-4 w-4 text-gray-400" />
+                              <Phone className="h-4 w-4 text-green-400" />
                               {contact.phone}
                             </div>
                           </div>
                         </td>
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-2 text-sm text-gray-900">
-                            <MapPin className="h-4 w-4 text-gray-400" />
+                            <MapPin className="h-4 w-4 text-yellow-400" />
                             {contact.location}
                           </div>
                         </td>
@@ -422,15 +422,15 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                     {/* Contact Details */}
                     <div className="space-y-3">
                       <div className="flex items-center gap-3 text-sm">
-                        <Mail className="h-4 w-4 text-gray-400 flex-shrink-0" />
+                        <Mail className="h-4 w-4 text-black-600 flex-shrink-0" />
                         <span className="text-gray-600 truncate">{contact.email}</span>
                       </div>
                       <div className="flex items-center gap-3 text-sm">
-                        <Phone className="h-4 w-4 text-gray-400 flex-shrink-0" />
+                        <Phone className="h-4 w-4 text-green-600 flex-shrink-0" />
                         <span className="text-gray-600">{contact.phone}</span>
                       </div>
                       <div className="flex items-center gap-3 text-sm">
-                        <MapPin className="h-4 w-4 text-gray-400 flex-shrink-0" />
+                        <MapPin className="h-4 w-4 text-yellow-600 flex-shrink-0" />
                         <span className="text-gray-600">{contact.location}</span>
                       </div>
                     </div>
@@ -481,152 +481,152 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         )}
 
         {/* Modal Form */}
-        {isOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-xl shadow-xl w-full max-w-md relative">
-              <div className="flex justify-between items-center p-6 border-b">
-                <h2 className="text-xl font-semibold text-gray-900">
-                  {editingContact ? 'Edit Contact' : 'Create New Contact'}
-                </h2>
-                <button
-                  onClick={() => {
-                    setIsOpen(false);
-                    setEditingContact(null);
-                    setFormData({
-                      name: '',
-                      email: '',
-                      phone: '',
-                      location: '',
-                      company: '',
-                      profileURL: '',
-                      isClient: false
-                    });
-                  }}
-                  className="text-gray-400 hover:text-gray-500 transition-colors"
-                >
-                  <X className="h-6 w-6" />
-                </button>
-              </div>
+{isOpen && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start sm:items-center justify-center p-4 z-50 overflow-y-auto">
+    <div className="bg-white rounded-xl shadow-xl w-full max-w-md relative my-4 sm:my-0">
+      <div className="flex justify-between items-center p-4 sm:p-6 border-b">
+        <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
+          {editingContact ? 'Edit Contact' : 'Create New Contact'}
+        </h2>
+        <button
+          onClick={() => {
+            setIsOpen(false);
+            setEditingContact(null);
+            setFormData({
+              name: '',
+              email: '',
+              phone: '',
+              location: '',
+              company: '',
+              profileURL: '',
+              isClient: false
+            });
+          }}
+          className="text-gray-400 hover:text-gray-500 transition-colors"
+        >
+          <X className="h-5 w-5 sm:h-6 sm:w-6" />
+        </button>
+      </div>
 
-              <form onSubmit={handleSubmit} className="p-6 space-y-6">
-                <div className="grid grid-cols-1 gap-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Name <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                      placeholder="Enter full name"
-                    />
-                  </div>
+      <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-4 sm:space-y-6">
+        <div className="grid grid-cols-1 gap-4 sm:gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Name <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+              className="w-full rounded-lg border border-gray-300 px-3 py-1.5 sm:px-4 sm:py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+              placeholder="Enter full name"
+            />
+          </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Email <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                        placeholder="email@example.com"
-                      />
-                    </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Email <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                className="w-full rounded-lg border border-gray-300 px-3 py-1.5 sm:px-4 sm:py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                placeholder="email@example.com"
+              />
+            </div>
 
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Phone <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="tel"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleInputChange}
-                        className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                        placeholder="Enter phone number"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Location <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="location"
-                      value={formData.location}
-                      onChange={handleInputChange}
-                      className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                      placeholder="City, Country"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Company
-                    </label>
-                    <input
-                      type="text"
-                      name="company"
-                      value={formData.company}
-                      onChange={handleInputChange}
-                      className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                      placeholder="Company name"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Profile URL
-                    </label>
-                    <input
-                      type="url"
-                      name="profileURL"
-                      value={formData.profileURL}
-                      onChange={handleInputChange}
-                      className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-                      placeholder="https://example.com/profile"
-                    />
-                  </div>
-                </div>
-
-                {error && (
-                  <div className="p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">
-                    {error}
-                  </div>
-                )}
-
-                {success && (
-                  <div className="p-4 bg-green-50 border border-green-200 text-green-700 rounded-lg text-sm">
-                    {success}
-                  </div>
-                )}
-
-                <button
-                  type="submit"
-                  disabled={formLoading}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors disabled:bg-blue-400"
-                >
-                  {formLoading ? (
-                    <>
-                      <Loader2 className="h-5 w-5 animate-spin" />
-                      {editingContact ? 'Updating Contact...' : 'Creating Contact...'}
-                    </>
-                  ) : (
-                    editingContact ? 'Update Contact' : 'Create Contact'
-                  )}
-                </button>
-              </form>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Phone <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleInputChange}
+                className="w-full rounded-lg border border-gray-300 px-3 py-1.5 sm:px-4 sm:py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                placeholder="Enter phone number"
+              />
             </div>
           </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Location <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              name="location"
+              value={formData.location}
+              onChange={handleInputChange}
+              className="w-full rounded-lg border border-gray-300 px-3 py-1.5 sm:px-4 sm:py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+              placeholder="City, Country"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Company
+            </label>
+            <input
+              type="text"
+              name="company"
+              value={formData.company}
+              onChange={handleInputChange}
+              className="w-full rounded-lg border border-gray-300 px-3 py-1.5 sm:px-4 sm:py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+              placeholder="Company name"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Profile URL
+            </label>
+            <input
+              type="url"
+              name="profileURL"
+              value={formData.profileURL}
+              onChange={handleInputChange}
+              className="w-full rounded-lg border border-gray-300 px-3 py-1.5 sm:px-4 sm:py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+              placeholder="https://example.com/profile"
+            />
+          </div>
+        </div>
+
+        {error && (
+          <div className="p-3 sm:p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">
+            {error}
+          </div>
         )}
+
+        {success && (
+          <div className="p-3 sm:p-4 bg-green-50 border border-green-200 text-green-700 rounded-lg text-sm">
+            {success}
+          </div>
+        )}
+
+        <button
+          type="submit"
+          disabled={formLoading}
+          className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors disabled:bg-blue-400"
+        >
+          {formLoading ? (
+            <>
+              <Loader2 className="h-5 w-5 animate-spin" />
+              {editingContact ? 'Updating Contact...' : 'Creating Contact...'}
+            </>
+          ) : (
+            editingContact ? 'Update Contact' : 'Create Contact'
+          )}
+        </button>
+      </form>
+    </div>
+  </div>
+)}
       </div>
     </div>
   );
