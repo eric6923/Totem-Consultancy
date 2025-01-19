@@ -1,5 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { Loader2, Search, Mail, Phone, MapPin, Link, ArrowUpRight, Edit2, Trash2, X } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import {
+  Loader2,
+  Search,
+  Mail,
+  Phone,
+  MapPin,
+  Link,
+  ArrowUpRight,
+  Edit2,
+  Trash2,
+  X,
+} from "lucide-react";
 
 interface Project {
   id: string;
@@ -37,22 +48,22 @@ interface FormData {
 const ClientList: React.FC = () => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>('');
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const [deleteLoading, setDeleteLoading] = useState<string>('');
-  const [success, setSuccess] = useState<string>('');
+  const [error, setError] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [deleteLoading, setDeleteLoading] = useState<string>("");
+  const [success, setSuccess] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [editingContact, setEditingContact] = useState<Contact | null>(null);
   const [formLoading, setFormLoading] = useState<boolean>(false);
 
   const [formData, setFormData] = useState<FormData>({
-    name: '',
-    email: '',
-    phone: '',
-    location: '',
-    company: '',
-    profileURL: '',
-    isClient: true
+    name: "",
+    email: "",
+    phone: "",
+    location: "",
+    company: "",
+    profileURL: "",
+    isClient: true,
   });
 
   useEffect(() => {
@@ -61,13 +72,17 @@ const ClientList: React.FC = () => {
 
   const fetchContacts = async () => {
     try {
-      const response = await fetch('https://totem-consultancy-beta.vercel.app/api/crm/contacts');
+      const response = await fetch(
+        "https://totem-consultancy-beta.vercel.app/api/crm/contacts"
+      );
       const data: ApiResponse = await response.json();
-      const clientContacts = data.contacts.filter(contact => contact.isClient);
+      const clientContacts = data.contacts.filter(
+        (contact) => contact.isClient
+      );
       setContacts(clientContacts);
       setLoading(false);
     } catch (err) {
-      setError('Failed to fetch contacts');
+      setError("Failed to fetch contacts");
       setLoading(false);
     }
   };
@@ -79,18 +94,18 @@ const ClientList: React.FC = () => {
       email: contact.email,
       phone: contact.phone,
       location: contact.location,
-      company: contact.company || '',
-      profileURL: contact.profileURL || '',
-      isClient: true
+      company: contact.company || "",
+      profileURL: contact.profileURL || "",
+      isClient: true,
     });
     setIsOpen(true);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -104,84 +119,92 @@ const ClientList: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError('');
-    setSuccess('');
-  
+    setError("");
+    setSuccess("");
+
     const validationError = validateForm();
     if (validationError) {
       setError(validationError);
       return;
     }
-  
+
     setFormLoading(true);
-  
+
     try {
-      const response = await fetch(`https://totem-consultancy-beta.vercel.app/api/crm/contacts/${editingContact?.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: formData.name.trim(),
-          email: formData.email.trim(),
-          phone: formData.phone.trim(),
-          location: formData.location.trim(),
-          company: formData.company.trim(),    
-        profileURL: formData.profileURL.trim()
-        })
-      });
-  
+      const response = await fetch(
+        `https://totem-consultancy-beta.vercel.app/api/crm/contacts/${editingContact?.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: formData.name.trim(),
+            email: formData.email.trim(),
+            phone: formData.phone.trim(),
+            location: formData.location.trim(),
+            company: formData.company.trim(),
+            profileURL: formData.profileURL.trim(),
+          }),
+        }
+      );
+
       const data = await response.json();
-  
+
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to update contact');
+        throw new Error(data.message || "Failed to update contact");
       }
-  
-      setSuccess('Contact updated successfully!');
+
+      setSuccess("Contact updated successfully!");
       await fetchContacts();
-      
+
       setTimeout(() => {
         setIsOpen(false);
-        setSuccess('');
+        setSuccess("");
       }, 2000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to update contact');
+      setError(err instanceof Error ? err.message : "Failed to update contact");
     } finally {
       setFormLoading(false);
     }
   };
 
   const handleDelete = async (contactId: string) => {
-    if (!window.confirm('Are you sure you want to delete this contact?')) return;
-    
+    if (!window.confirm("Are you sure you want to delete this contact?"))
+      return;
+
     setDeleteLoading(contactId);
     try {
-      const response = await fetch(`https://totem-consultancy-beta.vercel.app/api/crm/contacts/${contactId}`, {
-        method: 'DELETE',
-      });
+      const response = await fetch(
+        `https://totem-consultancy-beta.vercel.app/api/crm/contacts/${contactId}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.message || 'Failed to delete contact');
+        throw new Error(data.message || "Failed to delete contact");
       }
 
-      setSuccess('Contact deleted successfully!');
+      setSuccess("Contact deleted successfully!");
       fetchContacts();
-      
+
       setTimeout(() => {
-        setSuccess('');
+        setSuccess("");
       }, 2000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to delete contact');
+      setError(err instanceof Error ? err.message : "Failed to delete contact");
     } finally {
-      setDeleteLoading('');
+      setDeleteLoading("");
     }
   };
 
-  const filteredContacts = contacts.filter(contact =>
-    contact.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    contact.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    contact.company?.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredContacts = contacts.filter(
+    (contact) =>
+      contact.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      contact.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      contact.company?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -281,29 +304,29 @@ const ClientList: React.FC = () => {
                         />
                       </div>
                       <div>
-  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-    Company Name
-  </label>
-  <input
-    type="text"
-    name="company"
-    value={formData.company}
-    onChange={handleInputChange}
-    className="w-full p-2 border border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-  />
-</div>
-<div>
-  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-    Profile URL
-  </label>
-  <input
-    type="url"
-    name="profileURL"
-    value={formData.profileURL}
-    onChange={handleInputChange}
-    className="w-full p-2 border border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-  />
-</div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                          Company Name
+                        </label>
+                        <input
+                          type="text"
+                          name="company"
+                          value={formData.company}
+                          onChange={handleInputChange}
+                          className="w-full p-2 border border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                          Profile URL
+                        </label>
+                        <input
+                          type="url"
+                          name="profileURL"
+                          value={formData.profileURL}
+                          onChange={handleInputChange}
+                          className="w-full p-2 border border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                        />
+                      </div>
 
                       {error && (
                         <div className="p-2 text-sm text-red-600 bg-red-50 dark:bg-red-900/50 rounded">
@@ -320,7 +343,7 @@ const ClientList: React.FC = () => {
                           {formLoading ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
                           ) : (
-                            'Save Changes'
+                            "Save Changes"
                           )}
                         </button>
                         <button
@@ -364,20 +387,35 @@ const ClientList: React.FC = () => {
                 <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                   <thead className="bg-gray-50 dark:bg-gray-700">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Contact</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Contact Info</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Location</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Company</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Contact
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Contact Info
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Location
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Company
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Actions
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                     {filteredContacts.map((contact) => (
-                      <tr key={contact.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                      <tr
+                        key={contact.id}
+                        className="hover:bg-gray-50 dark:hover:bg-gray-700"
+                      >
                         <td className="px-6 py-4">
                           <div className="flex items-center">
                             <div>
-                              <div className="text-sm font-medium text-gray-900 dark:text-white">{contact.name}</div>
+                              <div className="text-sm font-medium text-gray-900 dark:text-white">
+                                {contact.name}
+                              </div>
                               {contact.profileURL && (
                                 <a
                                   href={contact.profileURL}
@@ -411,12 +449,14 @@ const ClientList: React.FC = () => {
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-2 text-sm">
                             <MapPin className="h-4 w-4 text-gray-400" />
-                            <span className="text-gray-900 dark:text-gray-300">{contact.location}</span>
+                            <span className="text-gray-900 dark:text-gray-300">
+                              {contact.location}
+                            </span>
                           </div>
                         </td>
                         <td className="px-6 py-4">
                           <span className="text-sm text-gray-900 dark:text-gray-300">
-                            {contact.company || 'N/A'}
+                            {contact.company || "N/A"}
                           </span>
                         </td>
                         <td className="px-6 py-4">
@@ -450,13 +490,20 @@ const ClientList: React.FC = () => {
             {/* Mobile View */}
             <div className="lg:hidden space-y-4">
               {filteredContacts.map((contact) => (
-                <div key={contact.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                <div
+                  key={contact.id}
+                  className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden"
+                >
                   <div className="p-4">
                     <div className="flex justify-between items-start mb-4">
                       <div>
-                        <h3 className="text-lg font-medium text-gray-900 dark:text-white">{contact.name}</h3>
+                        <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+                          {contact.name}
+                        </h3>
                         {contact.company && (
-                          <p className="text-sm text-gray-500 dark:text-gray-400">{contact.company}</p>
+                          <p className="text-sm text-gray-500 dark:text-gray-400">
+                            {contact.company}
+                          </p>
                         )}
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 mt-1">
                           Client
@@ -486,15 +533,21 @@ const ClientList: React.FC = () => {
                     <div className="space-y-3">
                       <div className="flex items-center gap-3 text-sm">
                         <Mail className="h-4 w-4 text-gray-400 flex-shrink-0" />
-                        <span className="text-gray-600 dark:text-gray-300">{contact.email}</span>
+                        <span className="text-gray-600 dark:text-gray-300">
+                          {contact.email}
+                        </span>
                       </div>
                       <div className="flex items-center gap-3 text-sm">
                         <Phone className="h-4 w-4 text-gray-400 flex-shrink-0" />
-                        <span className="text-gray-600 dark:text-gray-300">{contact.phone}</span>
+                        <span className="text-gray-600 dark:text-gray-300">
+                          {contact.phone}
+                        </span>
                       </div>
                       <div className="flex items-center gap-3 text-sm">
                         <MapPin className="h-4 w-4 text-gray-400 flex-shrink-0" />
-                        <span className="text-gray-600 dark:text-gray-300">{contact.location}</span>
+                        <span className="text-gray-600 dark:text-gray-300">
+                          {contact.location}
+                        </span>
                       </div>
                     </div>
 
