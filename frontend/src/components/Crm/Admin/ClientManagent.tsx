@@ -34,9 +34,7 @@ interface FormData {
   isClient: boolean;
 }
 
-
-
-const ContactList: React.FC = () => {
+const ClientList: React.FC = () => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
@@ -396,4 +394,4 @@ const ContactList: React.FC = () => {
   );
 };
 
-export default ContactList;
+export default ClientList;
