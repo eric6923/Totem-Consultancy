@@ -18,6 +18,9 @@ import ManagerContactManagement from './components/Crm/Manager/ContactManagement
 import ManagerProjectManagement from './components/Crm/Manager/ProjectManagement';
 import ManagerTaskManagement from './components/Crm/Manager/TaskManagement';
 import SettingsManager from "./components/Crm/Manager/SettingsManager";
+import ProposalGeneration from "./components/Crm/Admin/ProposalGeneration";
+import InvoiceGeneration from "./components/Crm/Admin/InvoiceGeneration";
+import Contract from "./components/Crm/Admin/Contract";
 
 interface LayoutProps {
   darkMode: boolean;
@@ -92,6 +95,10 @@ const CrmRoutes = ({ darkMode, setDarkMode }: LayoutProps) => {
               <Route path="/admin/contacts" element={<AdminContactManagement />} />
               <Route path="/admin/projects" element={<AdminProjectManagement />} />
               <Route path="/admin/tasks" element={<AdminTaskManagement />} />
+              <Route path="/admin/proposal" element={<ProposalGeneration />} />
+              <Route path="/admin/invoice" element={<InvoiceGeneration />} />
+              <Route path="/admin/contract" element={<Contract />} />
+
               <Route path="/admin/settings" element={<Settings />} />
 
               {/* Manager Routes */}
