@@ -669,22 +669,6 @@ const ContactForm: React.FC = () => {
                     />
                   </div>
 
-                  {/* <div className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      id="isClient"
-                      name="isClient"
-                      checked={formData.isClient}
-                      onChange={handleCheckboxChange}
-                      className="h-4 w-4 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500 dark:bg-gray-700"
-                    />
-                    <label
-                      htmlFor="isClient"
-                      className="text-sm font-medium text-gray-700 dark:text-gray-300"
-                    >
-                      This is a client
-                    </label>
-                  </div> */}
                 </div>
 
                 {error && (
@@ -732,9 +716,9 @@ const ContactForm: React.FC = () => {
                           : "Creating Contact..."}
                       </>
                     ) : editingContact ? (
-                      "Update Contact"
+                      "Update"
                     ) : (
-                      "Create Contact"
+                      "Create"
                     )}
                   </button>
                 </div>

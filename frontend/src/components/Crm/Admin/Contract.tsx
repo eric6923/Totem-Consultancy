@@ -734,9 +734,9 @@ const ContactForm: React.FC = () => {
                           : "Creating Contact..."}
                       </>
                     ) : editingContact ? (
-                      "Update Contact"
+                      "Update"
                     ) : (
-                      "Create Contact"
+                      "Create"
                     )}
                   </button>
                 </div>
