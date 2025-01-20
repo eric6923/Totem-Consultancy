@@ -62,6 +62,21 @@ export default function Sidebar({
       title: "Task Management",
       icon: <ClipboardList size={20} />,
       path: `${roleBasePath}/tasks`
+    },
+    {
+      title: "Proposal Generation",
+      icon: <ClipboardList size={20} />,
+      path: `${roleBasePath}/proposal`
+    },
+    {
+      title: "Invoice Generation",
+      icon: <ClipboardList size={20} />,
+      path: `${roleBasePath}/invoice`
+    },
+    {
+      title: "Contract",
+      icon: <ClipboardList size={20} />,
+      path: `${roleBasePath}/contract`
     }
   ];
 
