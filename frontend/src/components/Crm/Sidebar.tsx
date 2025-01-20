@@ -6,8 +6,9 @@ import {
   Settings, 
   LogOut, 
   X, 
+  Briefcase,
   Users, 
-  FolderKanban, 
+  ClipboardList, 
   CheckSquare 
 } from "lucide-react";
 
@@ -54,12 +55,12 @@ export default function Sidebar({
     },
     {
       title: "Project Management",
-      icon: <FolderKanban size={20} />,
+      icon: <Briefcase size={20} />,
       path: `${roleBasePath}/projects`
     },
     {
       title: "Task Management",
-      icon: <CheckSquare size={20} />,
+      icon: <ClipboardList size={20} />,
       path: `${roleBasePath}/tasks`
     }
   ];
@@ -74,7 +75,7 @@ export default function Sidebar({
       <div className="flex items-center justify-between p-6 h-16 mt-6">
         <Link to={roleBasePath} className="flex items-center">
           <img className="h-7 w-6" src={profile} alt="" />
-          <span className="ml-3 text-xl font-bold text-blue-600">
+          <span className="ml-3 text-xl font-bold text-blue-600 dark:text-white">
             Totem CRM
           </span>
         </Link>

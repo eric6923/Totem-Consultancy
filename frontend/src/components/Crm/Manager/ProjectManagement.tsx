@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Pencil, Trash2 } from 'lucide-react';
+import { Pencil, Trash2,Briefcase,Plus } from 'lucide-react';
 
 interface Contact {
   id: string;
@@ -158,15 +158,24 @@ const ProjectManagement = () => {
   return (
     <div className="p-6">
       {/* Header */}
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Projects</h1>
-        <button
-          onClick={() => handleOpenModal()}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          Add Project
-        </button>
-      </div>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 mb-12">
+  <div className="flex items-center gap-4">
+    <div className="bg-blue-600 p-3 rounded-xl">
+      <Briefcase className="h-8 w-8 text-white" />
+    </div>
+    <div>
+      <h1 className="text-4xl font-bold text-gray-900">Projects</h1>
+      <p className="mt-1 text-gray-500">Manage your project portfolio</p>
+    </div>
+  </div>
+  <button
+    onClick={() => handleOpenModal()}
+    className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+  >
+    <Plus className="h-5 w-5 mr-2" />
+    Add Project
+  </button>
+</div>
 
       {/* Projects Table */}
       <div className="overflow-x-auto bg-white rounded-lg shadow">
