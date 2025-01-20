@@ -15,6 +15,8 @@ import {
   ChevronDown,
   Edit2,
   Trash2,
+  HandHelping,
+  ShieldCheck,
 } from "lucide-react";
 
 interface Project {
@@ -253,18 +255,17 @@ const ContactForm: React.FC = () => {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header Section */}
-        {/* Header Section */}
         <div className="flex flex-col gap-6 mb-6">
           <div className="flex items-center gap-4">
             <div className="bg-blue-600 dark:bg-blue-500 p-3 rounded-xl">
-              <Users className="h-8 w-8 text-white" />
+              <ShieldCheck className="h-8 w-8 text-white" />
             </div>
             <div>
               <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
-                Contacts
+                Invoice
               </h1>
               <p className="mt-1 text-gray-500 dark:text-gray-400">
-                Manage your contacts
+                Manage your invoices
               </p>
             </div>
           </div>
@@ -286,7 +287,7 @@ const ContactForm: React.FC = () => {
               className="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white text-sm font-medium rounded-md hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-900 transition-colors"
             >
               <Plus className="h-5 w-5 mr-2" />
-              Add Contact
+              Add Invoice
             </button>
           </div>
         </div>
@@ -418,7 +419,7 @@ const ContactForm: React.FC = () => {
                             </div>
                           ) : (
                             <span className="text-sm text-gray-500 dark:text-gray-400">
-                              No projects
+                              No Proposal
                             </span>
                           )}
                         </td>
@@ -573,7 +574,7 @@ const ContactForm: React.FC = () => {
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-md relative my-4 sm:my-0">
               <div className="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700">
                 <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
-                  {editingContact ? "Edit Contact" : "Create New Contact"}
+                  {editingContact ? "Edit Contact" : "Create New Invoice"}
                 </h2>
               </div>
 
@@ -668,22 +669,6 @@ const ContactForm: React.FC = () => {
                     />
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      id="isClient"
-                      name="isClient"
-                      checked={formData.isClient}
-                      onChange={handleCheckboxChange}
-                      className="h-4 w-4 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500 dark:bg-gray-700"
-                    />
-                    <label
-                      htmlFor="isClient"
-                      className="text-sm font-medium text-gray-700 dark:text-gray-300"
-                    >
-                      This is a client
-                    </label>
-                  </div>
                 </div>
 
                 {error && (
@@ -731,7 +716,7 @@ const ContactForm: React.FC = () => {
                           : "Creating Contact..."}
                       </>
                     ) : editingContact ? (
-                      "Update Contact"
+                      "Update"
                     ) : (
                       "Create"
                     )}
