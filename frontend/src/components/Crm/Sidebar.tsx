@@ -9,7 +9,10 @@ import {
   Briefcase,
   Users, 
   ClipboardList, 
-  CheckSquare 
+  CheckSquare, 
+  HandHelping,
+  ShieldCheck,
+  ReceiptText
 } from "lucide-react";
 
 interface SidebarProps {
@@ -41,7 +44,6 @@ export default function Sidebar({
 
   const roleBasePath = `/crm/${userRole}`;
 
-  // Management links that are only shown to admin and manager
   const managementLinks = (userRole === 'admin' || userRole === 'manager') && [
     {
       title: "Client Management",
@@ -65,17 +67,17 @@ export default function Sidebar({
     },
     {
       title: "Proposal Generation",
-      icon: <ClipboardList size={20} />,
+      icon: <HandHelping size={20} />,
       path: `${roleBasePath}/proposal`
     },
     {
       title: "Invoice Generation",
-      icon: <ClipboardList size={20} />,
+      icon: <ShieldCheck size={20} />,
       path: `${roleBasePath}/invoice`
     },
     {
       title: "Contract",
-      icon: <ClipboardList size={20} />,
+      icon: <ReceiptText size={20} />,
       path: `${roleBasePath}/contract`
     }
   ];
@@ -102,11 +104,11 @@ export default function Sidebar({
         </button>
       </div>
 
-      {/* Navigation */}
-      <nav className="mt-3 px-4 pb-28 overflow-y-auto">
+      {/* Navigation - Added responsive spacing */}
+      <nav className="mt-3 px-4 pb-28 lg:pb-28 overflow-y-auto">
         <Link
           to={roleBasePath}
-          className={`flex items-center w-full p-3 rounded-lg transition-colors mb-2 ${
+          className={`flex items-center w-full p-2.5 lg:p-3 rounded-lg transition-colors mb-1.5 lg:mb-2 ${
             currentPath === roleBasePath
               ? "bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400"
               : "text-gray-600 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700"
@@ -117,12 +119,12 @@ export default function Sidebar({
           <span className="ml-3 font-medium">Dashboard</span>
         </Link>
 
-        {/* Management Links */}
+        {/* Management Links - Added responsive spacing */}
         {managementLinks && managementLinks.map((link) => (
           <Link
             key={link.title}
             to={link.path}
-            className={`flex items-center w-full p-3 rounded-lg transition-colors mb-2 ${
+            className={`flex items-center w-full p-2.5 lg:p-3 rounded-lg transition-colors mb-1.5 lg:mb-2 ${
               currentPath === link.path
                 ? "bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400"
                 : "text-gray-600 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700"
@@ -135,13 +137,13 @@ export default function Sidebar({
         ))}
 
         {/* Bottom Actions */}
-        <div className="fixed bottom-0 left-0 w-[280px] p-4 border-t border-gray-200 bg-white dark:bg-gray-800">
+        <div className="fixed bottom-0 left-0 w-[280px] p-3 lg:p-4 border-gray-200 bg-white dark:bg-gray-800">
           <button
             onClick={() => {
               setSidebarOpen(false);
               navigate(`/crm/${userRole}/settings`);
             }}
-            className="flex items-center w-full p-3 text-gray-600 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg"
+            className="flex items-center w-full p-2.5 lg:p-3 text-gray-600 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg"
           >
             <Settings size={20} />
             <span className="ml-3">Settings</span>
@@ -154,7 +156,7 @@ export default function Sidebar({
               navigate("/crm/login");
               setSidebarOpen(false);
             }}
-            className="flex items-center w-full p-3 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg"
+            className="flex items-center w-full p-2.5 lg:p-3 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg"
           >
             <LogOut size={20} />
             <span className="ml-3">Logout</span>

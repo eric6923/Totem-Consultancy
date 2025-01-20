@@ -154,30 +154,31 @@ const TaskManagementPage = () => {
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 p-6">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header Section */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
-            <div className="flex items-center gap-4">
-              <div className="bg-gradient-to-r from-blue-600 to-blue-500 p-3 rounded-xl shadow-md">
-                <ClipboardList className="h-8 w-8 text-white animate-pulse" />
-              </div>
-              <div>
-                <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300">
-                  Tasks
-                </h1>
-                <p className="mt-1 text-gray-500 dark:text-gray-400">
-                  Manage and track your project tasks efficiently
-                </p>
-              </div>
-            </div>
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="group inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-md hover:shadow-lg"
-            >
-              <Plus className="h-5 w-5 mr-2 transform group-hover:rotate-90 transition-transform duration-200" />
-              Create Task
-            </button>
-          </div>
-        </div>
+        {/* Header Section */}
+<div className="flex flex-col gap-6 mb-6">
+  <div className="flex items-center gap-4">
+    <div className="bg-blue-600 dark:bg-blue-500 p-3 rounded-xl">
+      <ClipboardList className="h-8 w-8 text-white" />
+    </div>
+    <div>
+      <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
+        Tasks
+      </h1>
+      <p className="mt-1 text-gray-500 dark:text-gray-400">
+        Manage your project tasks
+      </p>
+    </div>
+  </div>
+  <div className="flex justify-end">
+    <button
+      onClick={() => setIsModalOpen(true)}
+      className="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white text-sm font-medium rounded-md hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-900 transition-colors"
+    >
+      <Plus className="h-5 w-5 mr-2" />
+      Add Task
+    </button>
+  </div>
+</div>
   
         {/* Tasks Grid */}
         <div className="grid grid-cols-1 gap-6">
