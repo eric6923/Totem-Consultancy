@@ -47,11 +47,66 @@ export default function Navbar({
   const notificationRef = useRef<HTMLDivElement>(null);
   const lastFetchedIdsRef = useRef<Set<number>>(new Set());
 
-
   const fetchRecentActivities = async () => {
     // Don't fetch if notifications panel is open
-    setRecentActivities([]);
-    setNewActivitiesCount(0);
+    if (showNotifications) return;
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        throw new Error("No authentication token found");
+      }
+
+      const response = await fetch(
+        "https://totem-consultancy-beta.vercel.app/api/recent", // Replace with your actual API endpoint
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        if (response.status === 403) {
+          throw new Error("Authentication failed. Please log in again.");
+        }
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (!Array.isArray(data)) {
+        throw new Error("Data is not an array");
+      }
+
+      const sortedActivities = [...data].sort((a, b) => b.id - a.id);
+      setRecentActivities(sortedActivities);
+
+      // Calculate new activities (only those that haven't been seen)
+      const newCount = sortedActivities.filter(
+        (activity) => !seenNotifications.has(activity.id)
+      ).length;
+
+      setNewActivitiesCount(newCount);
+      lastFetchedIdsRef.current = new Set(sortedActivities.map((a) => a.id));
+    } catch (error) {
+      console.error("Error fetching recent activities:", error);
+      const errorMessage =
+        error instanceof Error ? error.message : "An error occurred";
+      setError(errorMessage);
+
+      if (errorMessage.includes("authentication")) {
+        localStorage.removeItem("token");
+        navigate("/crm/login");
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleNotificationClick = () => {
@@ -78,7 +133,7 @@ export default function Navbar({
     return () => {
       clearInterval(interval);
     };
-  }, [showNotifications]); // Add showNotifications as dependency
+  }, [showNotifications]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -105,13 +160,6 @@ export default function Navbar({
     setIsDropdownOpen(false);
   };
 
-  // const handleLogout = () => {
-  //   localStorage.removeItem("isAuthenticated");
-  //   localStorage.removeItem("token");
-  //   navigate("/crm/login", { replace: true });
-  //   setIsDropdownOpen(false);
-  // };
-
   const formatTimeAgo = (dateString: string) => {
     const date = new Date(dateString);
     const now = new Date();
@@ -124,7 +172,6 @@ export default function Navbar({
     return `${Math.floor(diffInSeconds / 86400)}d ago`;
   };
 
-  // Rest of the JSX remains the same as before, just change the notification item className:
   return (
     <header className="bg-white dark:bg-gray-800 h-16 fixed top-0 right-0 left-0 z-40 px-4 lg:px-6">
       <div className="h-full max-w-screen-2xl mx-auto flex items-center justify-between">
@@ -153,20 +200,20 @@ export default function Navbar({
           </button>
 
           <div className="relative" ref={notificationRef}>
-        <button
-          onClick={handleNotificationClick}
-          className="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg relative"
-        >
-          <Bell size={20} />
-          {isLoading && !showNotifications && (
-            <span className="absolute top-0 right-0 h-2 w-2 bg-blue-500 rounded-full"></span>
-          )}
-          {newActivitiesCount > 0 && !isLoading && !showNotifications && (
-            <span className="absolute top-0 right-0 h-5 w-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
-              {newActivitiesCount}
-            </span>
-          )}
-        </button>
+            <button
+              onClick={handleNotificationClick}
+              className="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg relative"
+            >
+              <Bell size={20} />
+              {isLoading && !showNotifications && (
+                <span className="absolute top-0 right-0 h-2 w-2 bg-blue-500 rounded-full"></span>
+              )}
+              {newActivitiesCount > 0 && !isLoading && !showNotifications && (
+                <span className="absolute top-0 right-0 h-5 w-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+                  {newActivitiesCount}
+                </span>
+              )}
+            </button>
 
             {showNotifications && (
               <div className="fixed sm:absolute left-0 sm:left-auto right-0 sm:right-0 top-16 sm:top-auto sm:mt-2 w-full sm:w-80 bg-white dark:bg-gray-800 shadow-lg py-1 z-50 sm:rounded-lg sm:border border-gray-200 dark:border-gray-700 max-h-[70vh] sm:max-h-96 overflow-y-auto">
@@ -230,7 +277,6 @@ export default function Navbar({
 
             {isDropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-1 z-50 border border-gray-200 dark:border-gray-700">
-                
                 <button
                   onClick={handleSettings}
                   className="w-full px-4 py-2 text-left text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
@@ -239,17 +285,17 @@ export default function Navbar({
                   <span>Settings</span>
                 </button>
                 <button
-            onClick={() => {
-              localStorage.removeItem("isAuthenticated");
-              localStorage.removeItem("token");
-              navigate("/crm/login");
-              setSidebarOpen(false);
-            }}
-            className="flex items-center w-full p-3 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg"
-          >
-            <LogOut size={20} />
-            <span className="ml-3">Logout</span>
-          </button>
+                  onClick={() => {
+                    localStorage.removeItem("isAuthenticated");
+                    localStorage.removeItem("token");
+                    navigate("/crm/login");
+                    setSidebarOpen(false);
+                  }}
+                  className="w-full px-4 py-2 text-left text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 flex items-center gap-2"
+                >
+                  <LogOut size={16} />
+                  <span>Logout</span>
+                </button>
               </div>
             )}
           </div>
