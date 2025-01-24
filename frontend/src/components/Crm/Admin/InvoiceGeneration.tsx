@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
+  FileDown,
+  FileText,
   Plus,
   X,
   Loader2,
   Search,
   Receipt,
   Building2,
+  ChevronDown,
   Briefcase,
   Edit2,
   Trash2,
@@ -13,8 +16,9 @@ import {
   Calendar,
   DollarSign,
   Clock,
-  FileText
-} from 'lucide-react';
+} from "lucide-react";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 interface Contact {
   id: string;
@@ -69,35 +73,36 @@ interface InvoiceFormData {
 }
 
 const defaultInvoiceDetail: InvoiceDetail = {
-  item: '',
+  item: "",
   quantity: 1,
-  price: 0
+  price: 0,
 };
 
-const InvoiceForm: React.FC = () => {
+function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [loading, setLoading] = useState(false);
   const [formLoading, setFormLoading] = useState(false);
-  const [error, setError] = useState<string>('');
-  const [success, setSuccess] = useState<string>('');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [error, setError] = useState<string>("");
+  const [success, setSuccess] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [editingInvoice, setEditingInvoice] = useState<Invoice | null>(null);
-  const [deleteLoading, setDeleteLoading] = useState<string>('');
+  const [deleteLoading, setDeleteLoading] = useState<string>("");
+  const [showDownloadMenu, setShowDownloadMenu] = useState(false);
 
   const [formData, setFormData] = useState<InvoiceFormData>({
-    contactId: '',
-    projectId: '',
+    contactId: "",
+    projectId: "",
     amount: 0,
-    invoiceDate: new Date().toISOString().split('T')[0],
-    dueDate: '',
-    paymentStatus: 'unpaid',
-    description: '',
-    notes: '',
-    termsAndConditions: '',
-    details: [{ ...defaultInvoiceDetail }]
+    invoiceDate: new Date().toISOString().split("T")[0],
+    dueDate: "",
+    paymentStatus: "unpaid",
+    description: "",
+    notes: "",
+    termsAndConditions: "",
+    details: [{ ...defaultInvoiceDetail }],
   });
 
   useEffect(() => {
@@ -108,110 +113,199 @@ const InvoiceForm: React.FC = () => {
 
   const fetchContacts = async () => {
     try {
-      const response = await fetch('https://totem-consultancy-beta.vercel.app/api/crm/contacts');
+      const response = await fetch(
+        "https://totem-consultancy-beta.vercel.app/api/crm/contacts"
+      );
       const data = await response.json();
       setContacts(data.contacts);
     } catch (err) {
-      setError('Failed to fetch contacts');
-      console.error('Error fetching contacts:', err);
+      setError("Failed to fetch contacts");
+      console.error("Error fetching contacts:", err);
     }
   };
 
   const fetchProjects = async () => {
     try {
-      const response = await fetch('https://totem-consultancy-beta.vercel.app/api/crm/projects');
+      const response = await fetch(
+        "https://totem-consultancy-beta.vercel.app/api/crm/projects"
+      );
       const data = await response.json();
       setProjects(data.projectts);
     } catch (err) {
-      setError('Failed to fetch projects');
-      console.error('Error fetching projects:', err);
+      setError("Failed to fetch projects");
+      console.error("Error fetching projects:", err);
     }
   };
 
   const fetchInvoices = async () => {
     setLoading(true);
     try {
-      const response = await fetch('https://totem-consultancy-beta.vercel.app/api/crm/invoice');
+      const response = await fetch(
+        "https://totem-consultancy-beta.vercel.app/api/crm/invoice"
+      );
       const data = await response.json();
       setInvoices(data.invoices);
     } catch (err) {
-      setError('Failed to fetch invoices');
-      console.error('Error fetching invoices:', err);
+      setError("Failed to fetch invoices");
+      console.error("Error fetching invoices:", err);
     } finally {
       setLoading(false);
     }
   };
 
+  const downloadCSV = () => {
+    if (invoices.length === 0) return;
+
+    const headers = [
+      "Invoice Date",
+      "Due Date",
+      "Client",
+      "Project",
+      "Description",
+      "Amount",
+      "Status",
+    ];
+    const csvData = invoices.map((invoice) => [
+      new Date(invoice.invoiceDate).toLocaleDateString(),
+      new Date(invoice.dueDate).toLocaleDateString(),
+      invoice.contact.name,
+      invoice.project.name,
+      invoice.description,
+      formatCurrency(invoice.amount),
+      invoice.paymentStatus,
+    ]);
+
+    const csvContent = [
+      headers.join(","),
+      ...csvData.map((row) => row.map((cell) => `"${cell}"`).join(",")),
+    ].join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "invoices.csv";
+    link.click();
+  };
+
+  const downloadPDF = () => {
+    if (invoices.length === 0) return;
+
+    const doc = new jsPDF();
+
+    // Add title
+    doc.setFontSize(20);
+    doc.text("Invoices Report", 14, 22);
+
+    // Add generation date
+    doc.setFontSize(10);
+    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 32);
+
+    const tableData = invoices.map((invoice) => [
+      new Date(invoice.invoiceDate).toLocaleDateString(),
+      new Date(invoice.dueDate).toLocaleDateString(),
+      invoice.contact.name,
+      invoice.project.name,
+      invoice.description,
+      formatCurrency(invoice.amount),
+      invoice.paymentStatus,
+    ]);
+
+    (doc as any).autoTable({
+      head: [
+        [
+          "Invoice Date",
+          "Due Date",
+          "Client",
+          "Project",
+          "Description",
+          "Amount",
+          "Status",
+        ],
+      ],
+      body: tableData,
+      startY: 40,
+      styles: { fontSize: 8 },
+      headStyles: { fillColor: [66, 139, 202] },
+    });
+
+    doc.save("invoices.pdf");
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormLoading(true);
-    setError('');
-    setSuccess('');
+    setError("");
+    setSuccess("");
 
     try {
-      const url = editingInvoice 
+      const url = editingInvoice
         ? `https://totem-consultancy-beta.vercel.app/api/crm/invoice/${editingInvoice.id}`
-        : 'https://totem-consultancy-beta.vercel.app/api/crm/invoice';
+        : "https://totem-consultancy-beta.vercel.app/api/crm/invoice";
 
       const response = await fetch(url, {
-        method: editingInvoice ? 'PUT' : 'POST',
+        method: editingInvoice ? "PUT" : "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           ...formData,
-          amount: calculateTotalAmount()
+          amount: calculateTotalAmount(),
         }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to save invoice');
+        throw new Error(data.message || "Failed to save invoice");
       }
 
-      setSuccess(editingInvoice ? 'Invoice updated successfully!' : 'Invoice created successfully!');
+      setSuccess(
+        editingInvoice
+          ? "Invoice updated successfully!"
+          : "Invoice created successfully!"
+      );
       resetForm();
       await fetchInvoices();
 
       setTimeout(() => {
         setIsOpen(false);
-        setSuccess('');
+        setSuccess("");
       }, 2000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save invoice');
+      setError(err instanceof Error ? err.message : "Failed to save invoice");
     } finally {
       setFormLoading(false);
     }
   };
 
   const handleDelete = async (invoiceId: string) => {
-    if (!window.confirm('Are you sure you want to delete this invoice?')) return;
+    if (!window.confirm("Are you sure you want to delete this invoice?"))
+      return;
 
     setDeleteLoading(invoiceId);
     try {
       const response = await fetch(
         `https://totem-consultancy-beta.vercel.app/api/crm/invoice/${invoiceId}`,
         {
-          method: 'DELETE',
+          method: "DELETE",
         }
       );
 
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.message || 'Failed to delete invoice');
+        throw new Error(data.message || "Failed to delete invoice");
       }
 
-      setSuccess('Invoice deleted successfully!');
+      setSuccess("Invoice deleted successfully!");
       fetchInvoices();
 
       setTimeout(() => {
-        setSuccess('');
+        setSuccess("");
       }, 2000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to delete invoice');
+      setError(err instanceof Error ? err.message : "Failed to delete invoice");
     } finally {
-      setDeleteLoading('');
+      setDeleteLoading("");
     }
   };
 
@@ -227,59 +321,68 @@ const InvoiceForm: React.FC = () => {
       description: invoice.description,
       notes: invoice.notes,
       termsAndConditions: invoice.termsAndConditions,
-      details: invoice.details
+      details: invoice.details,
     });
     setIsOpen(true);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData(prev => ({
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
+    setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     }));
   };
 
-  const handleDetailChange = (index: number, field: keyof InvoiceDetail, value: string | number) => {
-    setFormData(prev => ({
+  const handleDetailChange = (
+    index: number,
+    field: keyof InvoiceDetail,
+    value: string | number
+  ) => {
+    setFormData((prev) => ({
       ...prev,
-      details: prev.details.map((detail, i) => 
+      details: prev.details.map((detail, i) =>
         i === index ? { ...detail, [field]: value } : detail
-      )
+      ),
     }));
   };
 
   const addDetail = () => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      details: [...prev.details, { ...defaultInvoiceDetail }]
+      details: [...prev.details, { ...defaultInvoiceDetail }],
     }));
   };
 
   const removeDetail = (index: number) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      details: prev.details.filter((_, i) => i !== index)
+      details: prev.details.filter((_, i) => i !== index),
     }));
   };
 
   const calculateTotalAmount = () => {
-    return formData.details.reduce((total, detail) => 
-      total + (detail.quantity * detail.price), 0
+    return formData.details.reduce(
+      (total, detail) => total + detail.quantity * detail.price,
+      0
     );
   };
 
   const resetForm = () => {
     setFormData({
-      contactId: '',
-      projectId: '',
+      contactId: "",
+      projectId: "",
       amount: 0,
-      invoiceDate: new Date().toISOString().split('T')[0],
-      dueDate: '',
-      paymentStatus: 'unpaid',
-      description: '',
-      notes: '',
-      termsAndConditions: '',
-      details: [{ ...defaultInvoiceDetail }]
+      invoiceDate: new Date().toISOString().split("T")[0],
+      dueDate: "",
+      paymentStatus: "unpaid",
+      description: "",
+      notes: "",
+      termsAndConditions: "",
+      details: [{ ...defaultInvoiceDetail }],
     });
     setEditingInvoice(null);
   };
@@ -292,11 +395,32 @@ const InvoiceForm: React.FC = () => {
   );
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR'
+    return new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
     }).format(amount);
   };
+
+  const handleDownloadClick = (type: "csv" | "pdf") => {
+    if (type === "csv") {
+      downloadCSV();
+    } else {
+      downloadPDF();
+    }
+    setShowDownloadMenu(false);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest(".download-dropdown")) {
+        setShowDownloadMenu(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -316,17 +440,48 @@ const InvoiceForm: React.FC = () => {
               </p>
             </div>
           </div>
-          <div className="flex justify-end">
-            <button
-              onClick={() => {
-                resetForm();
-                setIsOpen(true);
-              }}
-              className="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white text-sm font-medium rounded-md hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-900 transition-colors"
-            >
-              <Plus className="h-5 w-5 mr-2" />
-              Create Invoice
-            </button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-end self-end">
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => {
+                  resetForm();
+                  setIsOpen(true);
+                }}
+                className="inline-flex items-center sm:px-4 sm:py-2 px-3 py-1.5 bg-blue-600 dark:bg-blue-500 text-white text-sm font-medium rounded-md hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-900 transition-colors"
+              >
+                <Plus className="h-5 w-5 mr-2" />
+                Create Invoice
+              </button>
+              <div className="relative download-dropdown">
+                <button
+                  onClick={() => setShowDownloadMenu(!showDownloadMenu)}
+                  className="inline-flex items-center p-2 bg-blue-600 dark:bg-blue-500 text-white text-sm font-medium rounded-md hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-900 transition-colors"
+                  aria-label="Download options"
+                >
+                  <FileDown className="h-5 w-5" />
+                </button>
+                {showDownloadMenu && (
+                  <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 z-10">
+                    <div className="py-1">
+                      <button
+                        onClick={() => handleDownloadClick("csv")}
+                        className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center"
+                      >
+                        <FileDown className="h-4 w-4 mr-2" />
+                        Download CSV
+                      </button>
+                      <button
+                        onClick={() => handleDownloadClick("pdf")}
+                        className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center"
+                      >
+                        <FileText className="h-4 w-4 mr-2" />
+                        Download PDF
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
 
@@ -391,7 +546,10 @@ const InvoiceForm: React.FC = () => {
                   </thead>
                   <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                     {filteredInvoices.map((invoice) => (
-                      <tr key={invoice.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                      <tr
+                        key={invoice.id}
+                        className="hover:bg-gray-50 dark:hover:bg-gray-700"
+                      >
                         <td className="px-6 py-4">
                           <div className="text-sm text-gray-900 dark:text-white">
                             {invoice.description}
@@ -414,18 +572,28 @@ const InvoiceForm: React.FC = () => {
                           </div>
                         </td>
                         <td className="px-6 py-4">
-                          <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                            invoice.paymentStatus === 'paid' 
-                              ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200'
-                              : 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200'
-                          }`}>
+                          <span
+                            className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                              invoice.paymentStatus === "paid"
+                                ? "bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200"
+                                : "bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200"
+                            }`}
+                          >
                             {invoice.paymentStatus}
                           </span>
                         </td>
                         <td className="px-6 py-4">
                           <div className="text-sm text-gray-500 dark:text-gray-400">
-                            <div>Invoice: {new Date(invoice.invoiceDate).toLocaleDateString()}</div>
-                            <div>Due: {new Date(invoice.dueDate).toLocaleDateString()}</div>
+                            <div>
+                              Invoice:{" "}
+                              {new Date(
+                                invoice.invoiceDate
+                              ).toLocaleDateString()}
+                            </div>
+                            <div>
+                              Due:{" "}
+                              {new Date(invoice.dueDate).toLocaleDateString()}
+                            </div>
                           </div>
                         </td>
                         <td className="px-6 py-4 text-right">
@@ -520,18 +688,26 @@ const InvoiceForm: React.FC = () => {
                       <div className="flex items-center gap-3 text-sm">
                         <Calendar className="h-4 w-4 text-gray-400 dark:text-gray-500" />
                         <div className="text-gray-500 dark:text-gray-400">
-                          <div>Invoice: {new Date(invoice.invoiceDate).toLocaleDateString()}</div>
-                          <div>Due: {new Date(invoice.dueDate).toLocaleDateString()}</div>
+                          <div>
+                            Invoice:{" "}
+                            {new Date(invoice.invoiceDate).toLocaleDateString()}
+                          </div>
+                          <div>
+                            Due:{" "}
+                            {new Date(invoice.dueDate).toLocaleDateString()}
+                          </div>
                         </div>
                       </div>
                     </div>
 
                     <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                      <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        invoice.paymentStatus === 'paid' 
-                          ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200'
-                          : 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200'
-                      }`}>
+                      <span
+                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                          invoice.paymentStatus === "paid"
+                            ? "bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200"
+                            : "bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200"
+                        }`}
+                      >
                         {invoice.paymentStatus}
                       </span>
                     </div>
@@ -549,7 +725,7 @@ const InvoiceForm: React.FC = () => {
               <div className="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700">
                 <div className="flex justify-between items-center">
                   <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
-                    {editingInvoice ? 'Edit Invoice' : 'Create New Invoice'}
+                    {editingInvoice ? "Edit Invoice" : "Create New Invoice"}
                   </h2>
                   <button
                     onClick={() => {
@@ -577,7 +753,7 @@ const InvoiceForm: React.FC = () => {
                       className="w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
                       <option value="">Select a contact</option>
-                      {contacts.map(contact => (
+                      {contacts.map((contact) => (
                         <option key={contact.id} value={contact.id}>
                           {contact.name} - {contact.company}
                         </option>
@@ -597,7 +773,7 @@ const InvoiceForm: React.FC = () => {
                       className="w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     >
                       <option value="">Select a project</option>
-                      {projects.map(project => (
+                      {projects.map((project) => (
                         <option key={project.id} value={project.id}>
                           {project.name}
                         </option>
@@ -661,43 +837,48 @@ const InvoiceForm: React.FC = () => {
                       placeholder="Additional notes"
                     />
                   </div>
+
                   {editingInvoice && (
-                  <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Payment Status
-                    </label>
-                    <div className="flex items-center space-x-4">
-                      <button
-                        type="button"
-                        onClick={() => setFormData(prev => ({
-                          ...prev,
-                          paymentStatus: 'unpaid'
-                        }))}
-                        className={`px-4 py-2 rounded-lg text-sm font-medium ${
-                          formData.paymentStatus === 'unpaid'
-                            ? 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 border-2 border-yellow-500'
-                            : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
-                        }`}
-                      >
-                        Unpaid
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setFormData(prev => ({
-                          ...prev,
-                          paymentStatus: 'paid'
-                        }))}
-                        className={`px-4 py-2 rounded-lg text-sm font-medium ${
-                          formData.paymentStatus === 'paid'
-                            ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 border-2 border-green-500'
-                            : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
-                        }`}
-                      >
-                        Paid
-                      </button>
+                    <div className="md:col-span-2">
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Payment Status
+                      </label>
+                      <div className="flex items-center space-x-4">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setFormData((prev) => ({
+                              ...prev,
+                              paymentStatus: "unpaid",
+                            }))
+                          }
+                          className={`px-4 py-2 rounded-lg text-sm font-medium ${
+                            formData.paymentStatus === "unpaid"
+                              ? "bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 border-2 border-yellow-500"
+                              : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
+                          }`}
+                        >
+                          Unpaid
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setFormData((prev) => ({
+                              ...prev,
+                              paymentStatus: "paid",
+                            }))
+                          }
+                          className={`px-4 py-2 rounded-lg text-sm font-medium ${
+                            formData.paymentStatus === "paid"
+                              ? "bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 border-2 border-green-500"
+                              : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
+                          }`}
+                        >
+                          Paid
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
                   <div className="md:col-span-2">
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -727,8 +908,7 @@ const InvoiceForm: React.FC = () => {
                         Add Item
                       </button>
                     </div>
-                    
-                    
+
                     <div className="space-y-4">
                       {formData.details.map((detail, index) => (
                         <div key={index} className="flex gap-4 items-start">
@@ -736,7 +916,13 @@ const InvoiceForm: React.FC = () => {
                             <input
                               type="text"
                               value={detail.item}
-                              onChange={(e) => handleDetailChange(index, 'item', e.target.value)}
+                              onChange={(e) =>
+                                handleDetailChange(
+                                  index,
+                                  "item",
+                                  e.target.value
+                                )
+                              }
                               placeholder="Item description"
                               className="w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             />
@@ -745,17 +931,29 @@ const InvoiceForm: React.FC = () => {
                             <input
                               type="number"
                               value={detail.quantity}
-                              onChange={(e) => handleDetailChange(index, 'quantity', parseInt(e.target.value))}
+                              onChange={(e) =>
+                                handleDetailChange(
+                                  index,
+                                  "quantity",
+                                  parseInt(e.target.value)
+                                )
+                              }
                               min="1"
                               placeholder="Qty"
-                              className="w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3  py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              className="w-full rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             />
                           </div>
                           <div className="w-32">
                             <input
                               type="number"
                               value={detail.price}
-                              onChange={(e) => handleDetailChange(index, 'price', parseFloat(e.target.value))}
+                              onChange={(e) =>
+                                handleDetailChange(
+                                  index,
+                                  "price",
+                                  parseFloat(e.target.value)
+                                )
+                              }
                               min="0"
                               step="0.01"
                               placeholder="Price"
@@ -805,12 +1003,12 @@ const InvoiceForm: React.FC = () => {
                     {formLoading ? (
                       <>
                         <Loader2 className="h-5 w-5 animate-spin" />
-                        {editingInvoice ? 'Updating...' : 'Creating...'}
+                        {editingInvoice ? "Updating..." : "Creating..."}
                       </>
                     ) : (
                       <>
                         <Send className="h-5 w-5" />
-                        {editingInvoice ? 'Update' : 'Create'}
+                        {editingInvoice ? "Update" : "Create"}
                       </>
                     )}
                   </button>
@@ -822,6 +1020,6 @@ const InvoiceForm: React.FC = () => {
       </div>
     </div>
   );
-};
+}
 
-export default InvoiceForm;
+export default App;

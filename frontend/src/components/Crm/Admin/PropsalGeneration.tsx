@@ -8,10 +8,13 @@ import {
   Building2,
   Briefcase,
   Edit2,
+  FileDown,
   Trash2,
   Send,
   Calendar
 } from 'lucide-react';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 interface Contact {
   id: string;
@@ -61,6 +64,7 @@ const ProposalForm: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [editingProposal, setEditingProposal] = useState<Proposal | null>(null);
   const [deleteLoading, setDeleteLoading] = useState<string>('');
+  const [showDownloadMenu, setShowDownloadMenu] = useState(false);
 
   const [formData, setFormData] = useState<ProposalFormData>({
     title: '',
@@ -215,6 +219,85 @@ const ProposalForm: React.FC = () => {
       proposal.project.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.download-dropdown')) {
+        setShowDownloadMenu(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, []);
+
+  const downloadCSV = () => {
+    if (proposals.length === 0) return;
+
+    const headers = ['Title', 'Description', 'Client', 'Project', 'Status', 'Created At'];
+    const csvData = proposals.map(proposal => [
+      proposal.title,
+      proposal.desc,
+      proposal.contact.name,
+      proposal.project.name,
+      proposal.status,
+      new Date(proposal.createdAt).toLocaleDateString()
+    ]);
+
+    const csvContent = [
+      headers.join(','),
+      ...csvData.map(row => row.map(cell => `"${cell}"`).join(','))
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'proposals.csv';
+    link.click();
+  };
+
+  const downloadPDF = () => {
+    if (proposals.length === 0) return;
+
+    const doc = new jsPDF();
+    
+    // Add title
+    doc.setFontSize(20);
+    doc.text('Proposals Report', 14, 22);
+    
+    // Add generation date
+    doc.setFontSize(10);
+    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 32);
+
+    const tableData = proposals.map(proposal => [
+      proposal.title,
+      proposal.desc,
+      proposal.contact.name,
+      proposal.project.name,
+      proposal.status,
+      new Date(proposal.createdAt).toLocaleDateString()
+    ]);
+
+    (doc as any).autoTable({
+      head: [['Title', 'Description', 'Client', 'Project', 'Status', 'Created At']],
+      body: tableData,
+      startY: 40,
+      styles: { fontSize: 8 },
+      headStyles: { fillColor: [66, 139, 202] },
+    });
+
+    doc.save('proposals.pdf');
+  };
+
+  const handleDownloadClick = (type: 'csv' | 'pdf') => {
+    if (type === 'csv') {
+      downloadCSV();
+    } else {
+      downloadPDF();
+    }
+    setShowDownloadMenu(false);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -233,24 +316,55 @@ const ProposalForm: React.FC = () => {
               </p>
             </div>
           </div>
-          <div className="flex justify-end">
-            <button
-              onClick={() => {
-                setEditingProposal(null);
-                setFormData({
-                  title: '',
-                  desc: '',
-                  contactId: '',
-                  projectId: '',
-                  status: 'sent'
-                });
-                setIsOpen(true);
-              }}
-              className="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white text-sm font-medium rounded-md hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-900 transition-colors"
-            >
-              <Plus className="h-5 w-5 mr-2" />
-              Add Proposal
-            </button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-end self-end">
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => {
+                  setEditingProposal(null);
+                  setFormData({
+                    title: '',
+                    desc: '',
+                    contactId: '',
+                    projectId: '',
+                    status: 'sent'
+                  });
+                  setIsOpen(true);
+                }}
+                className="inline-flex items-center sm:px-4 sm:py-2 px-3 py-1.5 bg-blue-600 dark:bg-blue-500 text-white text-sm font-medium rounded-md hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-900 transition-colors"
+              >
+                <Plus className="h-5 w-5 mr-2" />
+                Add Proposal
+              </button>
+              <div className="relative download-dropdown">
+                <button
+                  onClick={() => setShowDownloadMenu(!showDownloadMenu)}
+                  className="inline-flex items-center p-2 bg-blue-600 dark:bg-blue-500 text-white text-sm font-medium rounded-md hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-900 transition-colors"
+                  aria-label="Download options"
+                >
+                  <FileDown className="h-5 w-5" />
+                </button>
+                {showDownloadMenu && (
+                  <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 z-10">
+                    <div className="py-1">
+                      <button
+                        onClick={() => handleDownloadClick('csv')}
+                        className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center"
+                      >
+                        <FileDown className="h-4 w-4 mr-2" />
+                        Download CSV
+                      </button>
+                      <button
+                        onClick={() => handleDownloadClick('pdf')}
+                        className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center"
+                      >
+                        <FileText className="h-4 w-4 mr-2" />
+                        Download PDF
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
 
