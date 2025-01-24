@@ -11,7 +11,8 @@ import {
   FileDown,
   Trash2,
   Send,
-  Calendar
+  Calendar,
+  HandHelping
 } from 'lucide-react';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
@@ -305,7 +306,7 @@ const ProposalForm: React.FC = () => {
         <div className="flex flex-col gap-6 mb-6">
           <div className="flex items-center gap-4">
             <div className="bg-blue-600 dark:bg-blue-500 p-3 rounded-xl">
-              <FileText className="h-8 w-8 text-white" />
+              <HandHelping className="h-8 w-8 text-white" />
             </div>
             <div>
               <h1 className="text-4xl font-bold text-gray-900 dark:text-white">

@@ -12,7 +12,9 @@ import {
   CheckSquare, 
   HandHelping,
   ShieldCheck,
-  ReceiptText
+  ReceiptText,
+  UserCogIcon,
+  UserCheck
 } from "lucide-react";
 
 interface SidebarProps {
@@ -145,8 +147,8 @@ export default function Sidebar({
             }}
             className="flex items-center w-full p-2.5 lg:p-3 text-gray-600 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-lg"
           >
-            <Settings size={20} />
-            <span className="ml-3">Settings</span>
+            <UserCheck size={20} />
+            <span className="ml-3">Team Management</span>
           </button>
           <button
             onClick={() => {

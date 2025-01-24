@@ -14,7 +14,11 @@ import {
   Users,
   Building2,
   IndianRupee,
+  ReceiptText,
 } from 'lucide-react';
+import { FileDown } from 'lucide-react';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 interface Contact {
   id: string;
@@ -46,6 +50,7 @@ function App() {
   const [formLoading, setFormLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [showDownloadMenu, setShowDownloadMenu] = useState(false);
 
   const initialFormState: Contract = {
     title: '',
@@ -161,6 +166,94 @@ function App() {
     contacts.find(c => c.id === contract.contactId)?.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const downloadCSV = () => {
+    if (contracts.length === 0) return;
+  
+    const headers = ['Title', 'Description', 'Contact', 'Company', 'Start Date', 'End Date', 'Contract Type', 'Contract Value'];
+    const csvData = contracts.map(contract => {
+      const contact = contacts.find(c => c.id === contract.contactId);
+      return [
+        contract.title,
+        contract.desc,
+        contact?.name || 'Unknown',
+        contact?.company || 'N/A',
+        new Date(contract.startDate).toLocaleDateString(),
+        new Date(contract.endDate).toLocaleDateString(),
+        contract.contractType,
+        contract.contractValue.toLocaleString('en-IN')
+      ];
+    });
+  
+    const csvContent = [
+      headers.join(','),
+      ...csvData.map(row => row.map(cell => `"${cell}"`).join(','))
+    ].join('\n');
+  
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'contracts.csv';
+    link.click();
+  };
+  
+  const downloadPDF = () => {
+    if (contracts.length === 0) return;
+  
+    const doc = new jsPDF();
+    
+    // Add title
+    doc.setFontSize(20);
+    doc.text('Contracts Report', 14, 22);
+    
+    // Add generation date
+    doc.setFontSize(10);
+    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 32);
+  
+    const tableData = contracts.map(contract => {
+      const contact = contacts.find(c => c.id === contract.contactId);
+      return [
+        contract.title,
+        contract.desc,
+        contact?.name || 'Unknown',
+        contact?.company || 'N/A',
+        new Date(contract.startDate).toLocaleDateString(),
+        new Date(contract.endDate).toLocaleDateString(),
+        contract.contractType,
+        `₹${contract.contractValue.toLocaleString('en-IN')}`
+      ];
+    });
+  
+    (doc as any).autoTable({
+      head: [['Title', 'Description', 'Contact', 'Company', 'Start Date', 'End Date', 'Contract Type', 'Contract Value']],
+      body: tableData,
+      startY: 40,
+      styles: { fontSize: 8 },
+      headStyles: { fillColor: [66, 139, 202] },
+    });
+  
+    doc.save('contracts.pdf');
+  };
+  
+  const handleDownloadClick = (type: 'csv' | 'pdf') => {
+    if (type === 'csv') {
+      downloadCSV();
+    } else {
+      downloadPDF();
+    }
+    setShowDownloadMenu(false);
+  };
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.download-dropdown')) {
+        setShowDownloadMenu(false);
+      }
+    };
+  
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -168,7 +261,7 @@ function App() {
         <div className="flex flex-col gap-6 mb-6">
           <div className="flex items-center gap-4">
             <div className="bg-blue-600 dark:bg-blue-500 p-3 rounded-xl">
-              <FileText className="h-8 w-8 text-white" />
+              <ReceiptText className="h-8 w-8 text-white" />
             </div>
             <div>
               <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
@@ -179,7 +272,7 @@ function App() {
               </p>
             </div>
           </div>
-          <div className="flex justify-end">
+          <div className="flex justify-end items-center gap-2">
             <button
               onClick={() => openModal('create')}
               className="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white text-sm font-medium rounded-md hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-900 transition-colors"
@@ -187,7 +280,39 @@ function App() {
               <Plus className="h-5 w-5 mr-2" />
               New Contract
             </button>
+            <div className="flex items-center gap-2">
+  <div className="relative download-dropdown">
+    <button
+      onClick={() => setShowDownloadMenu(!showDownloadMenu)}
+      className="inline-flex items-center p-2 bg-blue-600 dark:bg-blue-500 text-white text-sm font-medium rounded-md hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-900 transition-colors"
+      aria-label="Download options"
+    >
+      <FileDown className="h-5 w-5" />
+    </button>
+    {showDownloadMenu && (
+      <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 z-10">
+        <div className="py-1">
+          <button
+            onClick={() => handleDownloadClick('csv')}
+            className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center"
+          >
+            <FileDown className="h-4 w-4 mr-2" />
+            Download CSV
+          </button>
+          <button
+            onClick={() => handleDownloadClick('pdf')}
+            className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center"
+          >
+            <FileText className="h-4 w-4 mr-2" />
+            Download PDF
+          </button>
+        </div>
+      </div>
+    )}
+  </div>
+</div>
           </div>
+          
         </div>
 
         {/* Search Section */}
